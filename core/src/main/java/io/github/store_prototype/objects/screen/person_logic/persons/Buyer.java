@@ -59,7 +59,7 @@ public class Buyer extends QueuePerson {
     }
 
     private void setAssets(int personNum){
-        Texture texture = new Texture(Gdx.files.internal("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking.png"));
+        Texture texture = new Texture("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking.png");
         Json json = new Json();
         AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking.json"));
 

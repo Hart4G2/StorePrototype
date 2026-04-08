@@ -19,13 +19,18 @@ import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
-import io.github.store_prototype.screens.GameScreen;
+import io.github.store_prototype.objects.screen.person_logic.PersonScene;
+import io.github.store_prototype.utils.size.ObjectSize;
 
 public class EventSign extends Actor {
+
+    private static final String ANIMATION_TEXTURE = "gamescene/events/event.png", ANIMATION_JSON = "gamescene/events/event.json";
+    private static float REF_SIZE = 100, REF_X, REF_Y;
     private Animation<TextureRegion> animation;
     private TextureRegion texture;
     private TextureRegion textureOutlined;
     private float stateTime;
+    private ObjectSize size;
     private boolean showOutline = false;
 
     private EventSignState state;
@@ -37,18 +42,17 @@ public class EventSign extends Actor {
         ANIMATING, STAYING
     }
 
-    public EventSign(String eventName) {
+    public EventSign(String eventName, float x, float y) {
         this.eventName = eventName;
-
+        REF_X = x;
+        REF_Y = y;
+        size = new ObjectSize(REF_X, REF_Y, REF_SIZE, REF_SIZE);
         setVisible(false);
-
         setAssets();
         setListeners();
-
         setState(EventSignState.STAYING);
-
         Main.getInstance().getGameScreen().getStage().addActor(this);
-        setBounds(Gdx.graphics.getWidth() / 1.473f, Gdx.graphics.getHeight() / 4f, Gdx.graphics.getWidth()  / 15f, Gdx.graphics.getHeight() / 8.4f);
+        setBounds(size.getX(), size.getY(), size.getWidth(), size.getWidth());
         setTouchable(Touchable.enabled);
 
         setVisible(true);
@@ -64,9 +68,9 @@ public class EventSign extends Actor {
     }
 
     private void setAssets(){
-        Texture texture = new Texture("gamescene/events/event.png");
+        Texture texture = new Texture(ANIMATION_TEXTURE);
         Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/events/event.json"));
+        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal(ANIMATION_JSON));
 
         this.texture = getTextureRegion(data.meta.frameTags.get(0), data, texture);
         this.textureOutlined = getTextureRegion(data.meta.frameTags.get(1), data, texture);
@@ -118,6 +122,7 @@ public class EventSign extends Actor {
                 if(eventName.equals("DuckNoticedEvent")){
                     SimplePublisher.getPublisher().publish(new DuckNoticedEvent());
                 }
+                PersonScene.getPersonScene().removeEventSign(EventSign.this);
             }
         });
     }
@@ -153,20 +158,22 @@ public class EventSign extends Actor {
         if(animation.isAnimationFinished(stateTime)){
             setVisible(false);
         } else {
-            batch.draw(animation.getKeyFrame(stateTime), getX(), getY(), getWidth(), getHeight());
+            batch.draw(animation.getKeyFrame(stateTime), size.getX(), size.getY(), size.getWidth(), size.getWidth());
         }
     }
 
     private void render(Batch batch){
-        batch.draw(texture, getX(), getY(), getWidth(), getHeight());
+        batch.draw(texture, size.getX(), size.getY(), size.getWidth(), size.getWidth());
     }
 
     private void renderOutline(Batch batch){
-        batch.draw(textureOutlined, getX(), getY(), getWidth(), getHeight());
+        batch.draw(textureOutlined, size.getX(), size.getY(), size.getWidth(), size.getWidth());
     }
 
-    public void resize(float width, float height){
-        setBounds(width * 2 / 3, height / 8, width / 40f, height / 18f);
+    public void resize(){
+        size.updateFromReference();
+        setBounds(size.getX(), size.getY(), size.getWidth(), size.getWidth());
+
     }
 
     public void setState(EventSignState state) {

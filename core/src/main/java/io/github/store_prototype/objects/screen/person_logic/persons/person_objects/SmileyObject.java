@@ -12,6 +12,7 @@ import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
+import io.github.store_prototype.utils.size.ObjectSize;
 import io.github.store_prototype.utils.size.ScreenScaler;
 
 public class SmileyObject {
@@ -27,7 +28,7 @@ public class SmileyObject {
 
     private Animation<TextureRegion> animation;
     private float stateTime;
-    private float width, height;
+    private ObjectSize size;
     private boolean isPlaying;
     private int playedCount;
 
@@ -38,7 +39,7 @@ public class SmileyObject {
             init(DISLIKE_TEXTURE, DISLIKE_JSON);
         }
         playedCount = 0;
-        updateFromReference();
+        size = new ObjectSize(REF_WIDTH, REF_HEIGHT);
     }
 
     private void init(String texturePath, String jsonPath) {
@@ -65,15 +66,10 @@ public class SmileyObject {
         return new Animation<>(0.1f, regions, Animation.PlayMode.NORMAL);
     }
 
-    private void updateFromReference() {
-        width = ScreenScaler.scaleX(REF_WIDTH);
-        height = ScreenScaler.scaleY(REF_HEIGHT);
-    }
-
     public void render(float delta, Batch batch, float cenerX, float y) {
         if (isPlaying) {
             stateTime += delta;
-            batch.draw(animation.getKeyFrame(stateTime), cenerX - width / 2f, y, width, height);
+            batch.draw(animation.getKeyFrame(stateTime), cenerX - size.getWidth() / 2f, y, size.getWidth(), size.getHeight());
             if (animation.isAnimationFinished(stateTime)) {
                 if (playedCount == 2) {
                     isPlaying = false;
@@ -90,6 +86,6 @@ public class SmileyObject {
     }
 
     public void resize() {
-        updateFromReference();
+        size.updateFromReference();
     }
 }

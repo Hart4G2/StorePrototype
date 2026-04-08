@@ -1,5 +1,7 @@
 package io.github.store_prototype.screens;
 
+import static io.github.store_prototype.objects.screen.sky.Sky.*;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -33,10 +35,12 @@ import io.github.store_prototype.objects.screen.road.Road;
 import io.github.store_prototype.objects.screen.road.RoadLight;
 import io.github.store_prototype.objects.screen.road.Sewerage;
 import io.github.store_prototype.objects.screen.sky.Sky;
+import io.github.store_prototype.objects.screen.watch.Watch;
 import io.github.store_prototype.objects.shaders.DayNightShader;
 import io.github.store_prototype.screens.menu.SettingsDialog;
 import io.github.store_prototype.utils.Assets;
 import io.github.store_prototype.utils.time.DayStartAnimation;
+import io.github.store_prototype.utils.time.WorldTime;
 
 public class GameScreen implements Screen {
 
@@ -55,6 +59,7 @@ public class GameScreen implements Screen {
     private ProductsPanel productsPanel;
     private Store store;
     private Sewerage sewerage;
+    private Watch watch;
 
     private DayStartAnimation dayStartAnimation;
 
@@ -140,10 +145,12 @@ public class GameScreen implements Screen {
         sewerage = new Sewerage();
         SimplePublisher.getPublisher().addListener(store);
         productsPanel = new ProductsPanel(Assets.getAssets().getSkin());
+        watch = new Watch();
 
         stage.addActor(store);
         stage.addActor(productsPanel);
         stage.addActor(dayStartAnimation);
+        stage.addActor(watch);
 
         productsPanel.setVisible(false);
 
@@ -171,8 +178,16 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         float gameDelta = isPaused ? 0f : delta;
-
         ScreenUtils.clear(1, 1, 1, 1f);
+
+        if(!isPaused) {
+            WorldTime.getInstance().render(delta);
+        }
+
+        SkyState newSkyState = WorldTime.getInstance().getSkyState();
+        if (sky.getState() != newSkyState) {
+            sky.setState(newSkyState);
+        }
 
         float normalizedTime = 1;
 
@@ -265,11 +280,12 @@ public class GameScreen implements Screen {
 
         city.resize(width, height);
         road.resize(width, height);
-        sky.resize(width, height);
+        sky.resize();
         store.resize(width, height);
         productsPanel.resize(width, height);
         sewerage.resize(width, height);
         PersonScene.getPersonScene().resize(width, height);
+        watch.resize();
 
         gearButton.setSize(width / 40f, width / 40f);
         gearButton.setPosition(width - gearButton.getWidth() * 3f, height - gearButton.getWidth() * 2f);

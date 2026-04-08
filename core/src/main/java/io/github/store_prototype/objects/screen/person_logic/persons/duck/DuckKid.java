@@ -27,6 +27,7 @@ import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
+import io.github.store_prototype.objects.screen.person_logic.PersonScene;
 import io.github.store_prototype.objects.screen.person_logic.persons.Person;
 import io.github.store_prototype.utils.size.PersonSize;
 import io.github.store_prototype.utils.size.ScreenScaler;
@@ -157,19 +158,24 @@ public class DuckKid extends Actor implements Person {
         if (state == PersonState.FALLING) {
             size.setY(size.getY() - delta * fallingSpeed);
             alpha -= fadeSpeed * delta;
-            Color color = batch.getColor();
-            batch.setColor(1f, 1f, 1f, alpha);
-            ShaderProgram shaderProgram = batch.getShader();
+
+            // Сохраняем текущий шейдер и цвет
+            ShaderProgram oldShader = batch.getShader();
+
+            // Рисуем с обычным шейдером и прозрачностью
             batch.setShader(null);
+            batch.setColor(1f, 1f, 1f, alpha);
             renderAnimation(batch, walkingRightAnimation);
-            batch.setColor(color);
-            batch.setShader(shaderProgram);
+
+            // Восстанавливаем
+            batch.setShader(oldShader);
+            batch.setColor(1f, 1f, 1f, 1f);
             updateReferenceFromActual();
         }
         if (name.equals("kid_2") && isStandingOnSewerage() && state != PersonState.FALLING) {
             SimplePublisher.getPublisher().publish(new DuckFallingEvent());
             state = PersonState.FALLING;
-            new EventSign("DuckNoticedEvent");
+            PersonScene.getPersonScene().addEventSign(new EventSign("DuckNoticedEvent", 1100f, 200f));
         }
 
         setBounds(size.getX(), size.getY(), size.getWidth(),  size.getHeight());

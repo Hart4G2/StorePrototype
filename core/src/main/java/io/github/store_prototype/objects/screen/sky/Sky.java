@@ -12,16 +12,17 @@ import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
+import io.github.store_prototype.utils.size.ObjectSize;
 import io.github.store_prototype.utils.time.WorldTime;
 
 public class Sky {
 
-    private Animation<TextureRegion> dayAnimation;
-    private Animation<TextureRegion> morningAnimation;
-    private Animation<TextureRegion> nightAnimation;
-    private Animation<TextureRegion> eveningAnimation;
+    private static final String ANIMATION_TEXTURE = "gamescene/sky/sky_orange.png", ANIMATION_JSON = "gamescene/sky/sky_orange.json";
+    private static final float REF_WIDTH = 1600f, REF_HEIGHT = 450f, REF_Y = 450f;
+
+    private Animation<TextureRegion> dayAnimation, morningAnimation, nightAnimation, eveningAnimation;
     private float stateTime;
-    private float y, width, height;
+    private ObjectSize size;
     private SkyState state;
 
     public enum SkyState {
@@ -29,9 +30,15 @@ public class Sky {
     }
 
     public Sky() {
-        Texture texture = new Texture(Gdx.files.internal("gamescene/sky/sky_orange.png"));
+        size = new ObjectSize(0, REF_Y, REF_WIDTH, REF_HEIGHT);
+        setAssets();
+        setState(SkyState.MORNING);
+    }
+
+    private void setAssets() {
+        Texture texture = new Texture(Gdx.files.internal(ANIMATION_TEXTURE));
         Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/sky/sky_orange.json"));
+        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal(ANIMATION_JSON));
 
         for (FrameTag tag : data.meta.frameTags) {
             Animation<TextureRegion> animation = getTextureRegionAnimation(tag, data, texture);
@@ -54,7 +61,6 @@ public class Sky {
                     break;
             }
         }
-        setState(SkyState.NIGHT);
     }
 
     private static Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
@@ -70,50 +76,27 @@ public class Sky {
         return new Animation<>(0.23f, regions, Animation.PlayMode.NORMAL);
     }
 
-    public void render(float delta, Batch batch){
+    public void render(float delta, Batch batch) {
         stateTime += delta;
+        TextureRegion frame = getCurrentAnimation().getKeyFrame(stateTime);
+        batch.draw(frame, size.getX(), size.getY(), size.getWidth(), size.getHeight());
+    }
 
-        switch (state){
-            case DAY: {
-                renderAnimation(batch, dayAnimation, SkyState.EVENING);
-                break;
-            }
-            case NIGHT: {
-                renderAnimation(batch, nightAnimation, SkyState.MORNING);
-                break;
-            }
-            case MORNING: {
-                renderAnimation(batch, morningAnimation, SkyState.DAY);
-                break;
-            }
-            case EVENING: {
-                renderAnimation(batch, eveningAnimation, SkyState.NIGHT);
-                break;
-            }
+    private Animation<TextureRegion> getCurrentAnimation() {
+        switch (state) {
+            case DAY: return dayAnimation;
+            case NIGHT: return nightAnimation;
+            case MORNING: return morningAnimation;
+            case EVENING: return eveningAnimation;
+            default: return dayAnimation;
         }
     }
 
-    private void renderAnimation(Batch batch, Animation<TextureRegion> animation, SkyState nextState){
-        batch.draw(animation.getKeyFrame(stateTime), 0, y, width, height);
-        if(animation.isAnimationFinished(stateTime)){
-            setState(nextState);
-            System.out.println("Setting next sky state to " + nextState);
+    public void setState(SkyState newState) {
+        if (state != newState) {
+            state = newState;
             stateTime = 0;
-
-            if(nextState.equals(SkyState.MORNING)){
-                WorldTime.getInstance().nextDay();
-            }
         }
-    }
-
-    public void resize(float width, float height){
-        y = height / 2;
-        this.width = width;
-        this.height = height / 2f;
-    }
-
-    public void setState(SkyState state) {
-        this.state = state;
     }
 
     public SkyState getState() {
@@ -128,5 +111,9 @@ public class Sky {
             case MORNING: return morningAnimation.getKeyFrameIndex(stateTime);
         }
         return -1;
+    }
+
+    public void resize(){
+        size.updateFromReference();
     }
 }

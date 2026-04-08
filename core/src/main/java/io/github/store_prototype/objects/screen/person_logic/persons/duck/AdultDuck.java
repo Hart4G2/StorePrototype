@@ -46,7 +46,7 @@ public class AdultDuck extends QueuePerson {
     private boolean talkMode;
     private boolean talking;
     private DialogWindow dialogWindow;
-
+// todo bug with queue
     public AdultDuck(boolean talkMode) {
         this.talkMode = talkMode;
         setAssets();

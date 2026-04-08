@@ -5,8 +5,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import io.github.store_prototype.Main;
+import io.github.store_prototype.objects.event_handling.events.Event;
+import io.github.store_prototype.objects.screen.GUI.EventSign;
 import io.github.store_prototype.objects.screen.person_logic.persons.Person;
 import io.github.store_prototype.objects.screen.person_logic.persons.duck.AdultDuck;
 import io.github.store_prototype.objects.screen.person_logic.persons.duck.DuckChain;
@@ -15,6 +19,9 @@ import io.github.store_prototype.utils.Utils;
 public class PersonScene {
 
     private static PersonScene object;
+    private List<Person> persons = new ArrayList<>();
+    private List<EventSign> eventSigns = new ArrayList<>();
+
     private DuckChain duckChain;
 
     public static PersonScene getPersonScene() {
@@ -24,16 +31,15 @@ public class PersonScene {
         return object;
     }
 
-    private List<Person> persons = new ArrayList<>();
 
     public PersonScene() {
         duckChain = new DuckChain();
         persons.addAll(duckChain.getDucks());
 //        persons.add(duckChain.getDucks().stream().filter(duck -> duck.getName().equals("adult")).findFirst().get());
 
-        persons.add(PersonGenerator.generateRightPerson(1));
-        persons.add(PersonGenerator.generateRightPerson(2));
-        persons.add(PersonGenerator.generateLeftPerson(3));
+//        persons.add(PersonGenerator.generateRightPerson(1));
+//        persons.add(PersonGenerator.generateRightPerson(2));
+//        persons.add(PersonGenerator.generateLeftPerson(3));
 //        persons.add(PersonGenerator.generateLeftPerson(4));
 //        persons.add(PersonGenerator.generateRightSmuggler());
     }
@@ -60,6 +66,14 @@ public class PersonScene {
         persons.add(person);
     }
 
+    public void addEventSign(EventSign eventSign) {
+        eventSigns.add(eventSign);
+    }
+
+    public void removeEventSign(EventSign eventSign) {
+        eventSigns.remove(eventSign);
+    }
+
     public void removePerson(Person person) {
         persons.remove(person);
 
@@ -72,6 +86,10 @@ public class PersonScene {
     public void resize(float width, float height){
         for (Person p : persons) {
             p.resize(width, height);
+        }
+
+        for (EventSign eventSign : eventSigns) {
+            eventSign.resize();
         }
     }
 }
