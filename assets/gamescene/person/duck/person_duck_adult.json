@@ -1,0 +1,99 @@
+{ "frames": [
+   {
+    "filename": "person_duck_adult 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_adult 1.aseprite",
+    "frame": { "x": 90, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_adult 2.aseprite",
+    "frame": { "x": 180, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_adult 3.aseprite",
+    "frame": { "x": 270, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_adult 4.aseprite",
+    "frame": { "x": 0, "y": 135, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_adult 5.aseprite",
+    "frame": { "x": 90, "y": 135, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_adult 6.aseprite",
+    "frame": { "x": 180, "y": 135, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_adult 7.aseprite",
+    "frame": { "x": 270, "y": 135, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_adult 8.aseprite",
+    "frame": { "x": 0, "y": 270, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_adult 9.aseprite",
+    "frame": { "x": 90, "y": 270, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "frameTags": [
+   { "name": "Right", "from": 0, "to": 4 },
+   { "name": "Left", "from": 5, "to": 9 }
+  ]
+ }
+}

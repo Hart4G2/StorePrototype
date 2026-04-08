@@ -1,0 +1,209 @@
+{ "frames": [
+   {
+    "filename": "sewerage 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 1.aseprite",
+    "frame": { "x": 75, "y": 0, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 2.aseprite",
+    "frame": { "x": 75, "y": 0, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 3.aseprite",
+    "frame": { "x": 150, "y": 0, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 4.aseprite",
+    "frame": { "x": 225, "y": 0, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 5.aseprite",
+    "frame": { "x": 0, "y": 54, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 6.aseprite",
+    "frame": { "x": 75, "y": 54, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 7.aseprite",
+    "frame": { "x": 0, "y": 54, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 8.aseprite",
+    "frame": { "x": 225, "y": 0, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 9.aseprite",
+    "frame": { "x": 150, "y": 54, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 10.aseprite",
+    "frame": { "x": 150, "y": 0, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 11.aseprite",
+    "frame": { "x": 75, "y": 0, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 12.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 13.aseprite",
+    "frame": { "x": 225, "y": 54, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 14.aseprite",
+    "frame": { "x": 0, "y": 108, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 15.aseprite",
+    "frame": { "x": 75, "y": 108, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 16.aseprite",
+    "frame": { "x": 150, "y": 108, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 17.aseprite",
+    "frame": { "x": 75, "y": 108, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 18.aseprite",
+    "frame": { "x": 0, "y": 108, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 19.aseprite",
+    "frame": { "x": 225, "y": 108, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 20.aseprite",
+    "frame": { "x": 225, "y": 54, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   },
+   {
+    "filename": "sewerage 21.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 75, "h": 54 },
+    "sourceSize": { "w": 75, "h": 54 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "frameTags": [
+   { "name": "closed_outline", "from": 0, "to": 0 },
+   { "name": "closed", "from": 1, "to": 1 },
+   { "name": "opening", "from": 2, "to": 11 },
+   { "name": "opening_outline", "from": 12, "to": 21 }
+  ]
+ }
+}

@@ -1,0 +1,62 @@
+
+male.png
+size: 996,523
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arm1
+  rotate: false
+  xy: 804, 156
+  size: 190, 365
+  orig: 500, 1000
+  offset: 245, 434
+  index: -1
+arm2
+  rotate: false
+  xy: 625, 8
+  size: 134, 279
+  orig: 500, 1000
+  offset: 293, 519
+  index: -1
+head
+  rotate: false
+  xy: 761, 14
+  size: 127, 140
+  orig: 500, 1000
+  offset: 251, 841
+  index: -1
+pants1
+  rotate: true
+  xy: 298, 289
+  size: 232, 504
+  orig: 500, 1000
+  offset: 180, 94
+  index: -1
+pants2
+  rotate: false
+  xy: 2, 18
+  size: 294, 503
+  orig: 500, 1000
+  offset: 36, 91
+  index: -1
+shirt
+  rotate: true
+  xy: 298, 81
+  size: 206, 325
+  orig: 500, 1000
+  offset: 157, 531
+  index: -1
+shoe1
+  rotate: false
+  xy: 298, 2
+  size: 149, 77
+  orig: 500, 1000
+  offset: 350, 43
+  index: -1
+shoe2
+  rotate: true
+  xy: 890, 6
+  size: 148, 81
+  orig: 500, 1000
+  offset: 19, 30
+  index: -1

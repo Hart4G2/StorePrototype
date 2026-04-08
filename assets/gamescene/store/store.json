@@ -1,0 +1,137 @@
+{ "frames": [
+   {
+    "filename": "store 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 1.aseprite",
+    "frame": { "x": 664, "y": 0, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 2.aseprite",
+    "frame": { "x": 1328, "y": 0, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 3.aseprite",
+    "frame": { "x": 1992, "y": 0, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 4.aseprite",
+    "frame": { "x": 0, "y": 749, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 5.aseprite",
+    "frame": { "x": 1992, "y": 0, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 6.aseprite",
+    "frame": { "x": 664, "y": 749, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 7.aseprite",
+    "frame": { "x": 1328, "y": 749, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 8.aseprite",
+    "frame": { "x": 1992, "y": 749, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 9.aseprite",
+    "frame": { "x": 0, "y": 1498, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 10.aseprite",
+    "frame": { "x": 664, "y": 1498, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 11.aseprite",
+    "frame": { "x": 1328, "y": 1498, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 12.aseprite",
+    "frame": { "x": 664, "y": 1498, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   },
+   {
+    "filename": "store 13.aseprite",
+    "frame": { "x": 1992, "y": 1498, "w": 664, "h": 749 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 664, "h": 749 },
+    "sourceSize": { "w": 664, "h": 749 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "frameTags": [
+   { "name": "light", "from": 0, "to": 1 },
+   { "name": "light_buying", "from": 2, "to": 6 },
+   { "name": "dark", "from": 7, "to": 8 },
+   { "name": "dark_buying", "from": 9, "to": 13 }
+  ]
+ }
+}

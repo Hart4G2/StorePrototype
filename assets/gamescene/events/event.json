@@ -1,0 +1,81 @@
+{ "frames": [
+   {
+    "filename": "event 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 51, "h": 50 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 51, "h": 50 },
+    "sourceSize": { "w": 51, "h": 50 },
+    "duration": 100
+   },
+   {
+    "filename": "event 1.aseprite",
+    "frame": { "x": 51, "y": 0, "w": 51, "h": 50 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 51, "h": 50 },
+    "sourceSize": { "w": 51, "h": 50 },
+    "duration": 100
+   },
+   {
+    "filename": "event 2.aseprite",
+    "frame": { "x": 102, "y": 0, "w": 51, "h": 50 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 51, "h": 50 },
+    "sourceSize": { "w": 51, "h": 50 },
+    "duration": 100
+   },
+   {
+    "filename": "event 3.aseprite",
+    "frame": { "x": 0, "y": 50, "w": 51, "h": 50 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 51, "h": 50 },
+    "sourceSize": { "w": 51, "h": 50 },
+    "duration": 100
+   },
+   {
+    "filename": "event 4.aseprite",
+    "frame": { "x": 51, "y": 50, "w": 51, "h": 50 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 51, "h": 50 },
+    "sourceSize": { "w": 51, "h": 50 },
+    "duration": 100
+   },
+   {
+    "filename": "event 5.aseprite",
+    "frame": { "x": 102, "y": 50, "w": 51, "h": 50 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 51, "h": 50 },
+    "sourceSize": { "w": 51, "h": 50 },
+    "duration": 100
+   },
+   {
+    "filename": "event 6.aseprite",
+    "frame": { "x": 0, "y": 100, "w": 51, "h": 50 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 51, "h": 50 },
+    "sourceSize": { "w": 51, "h": 50 },
+    "duration": 100
+   },
+   {
+    "filename": "event 7.aseprite",
+    "frame": { "x": 51, "y": 100, "w": 51, "h": 50 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 51, "h": 50 },
+    "sourceSize": { "w": 51, "h": 50 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "frameTags": [
+   { "name": "Without", "from": 0, "to": 6 },
+   { "name": "With", "from": 7, "to": 7 }
+  ]
+ }
+}

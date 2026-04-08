@@ -1,0 +1,37 @@
+{ "frames": [
+   {
+    "filename": "main_screen 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 400, "h": 225 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 400, "h": 225 },
+    "sourceSize": { "w": 400, "h": 225 },
+    "duration": 100
+   },
+   {
+    "filename": "main_screen 1.aseprite",
+    "frame": { "x": 400, "y": 0, "w": 400, "h": 225 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 400, "h": 225 },
+    "sourceSize": { "w": 400, "h": 225 },
+    "duration": 100
+   },
+   {
+    "filename": "main_screen 2.aseprite",
+    "frame": { "x": 800, "y": 0, "w": 400, "h": 225 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 400, "h": 225 },
+    "sourceSize": { "w": 400, "h": 225 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "frameTags": [
+   { "name": "right", "from": 0, "to": 0 },
+   { "name": "straight", "from": 1, "to": 1 },
+   { "name": "left", "from": 2, "to": 2 }
+  ]
+ }
+}

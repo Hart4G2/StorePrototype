@@ -1,0 +1,135 @@
+{ "frames": [
+   {
+    "filename": "person_smuggler_selling 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 1.aseprite",
+    "frame": { "x": 90, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 2.aseprite",
+    "frame": { "x": 180, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 3.aseprite",
+    "frame": { "x": 270, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 4.aseprite",
+    "frame": { "x": 360, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 5.aseprite",
+    "frame": { "x": 450, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 6.aseprite",
+    "frame": { "x": 540, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 7.aseprite",
+    "frame": { "x": 630, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 8.aseprite",
+    "frame": { "x": 720, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 9.aseprite",
+    "frame": { "x": 810, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 10.aseprite",
+    "frame": { "x": 900, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 11.aseprite",
+    "frame": { "x": 990, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 12.aseprite",
+    "frame": { "x": 1080, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   },
+   {
+    "filename": "person_smuggler_selling 13.aseprite",
+    "frame": { "x": 1170, "y": 0, "w": 90, "h": 135 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 135 },
+    "sourceSize": { "w": 90, "h": 135 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "frameTags": [
+   { "name": "Right", "from": 0, "to": 6 },
+   { "name": "Left", "from": 7, "to": 13 }
+  ]
+ }
+}

@@ -1,0 +1,37 @@
+{ "frames": [
+   {
+    "filename": "city 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 800, "h": 225 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 800, "h": 225 },
+    "sourceSize": { "w": 800, "h": 225 },
+    "duration": 100
+   },
+   {
+    "filename": "city 1.aseprite",
+    "frame": { "x": 800, "y": 0, "w": 800, "h": 225 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 800, "h": 225 },
+    "sourceSize": { "w": 800, "h": 225 },
+    "duration": 100
+   },
+   {
+    "filename": "city 2.aseprite",
+    "frame": { "x": 1600, "y": 0, "w": 800, "h": 225 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 800, "h": 225 },
+    "sourceSize": { "w": 800, "h": 225 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "frameTags": [
+   { "name": "No_light", "from": 0, "to": 0 },
+   { "name": "With_light1", "from": 1, "to": 1 },
+   { "name": "With_light2", "from": 2, "to": 2 }
+  ]
+ }
+}

@@ -1,0 +1,55 @@
+
+person_1.png
+size: 1923,555
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Arm1
+  rotate: true
+  xy: 658, 414
+  size: 139, 609
+  orig: 298, 655
+  offset: 0, 1
+  index: -1
+bag
+  rotate: false
+  xy: 1269, 52
+  size: 339, 501
+  orig: 506, 1492
+  offset: 0, 557
+  index: -1
+body
+  rotate: false
+  xy: 1610, 64
+  size: 311, 489
+  orig: 311, 557
+  offset: 0, 67
+  index: -1
+hair
+  rotate: true
+  xy: 659, 2
+  size: 410, 374
+  orig: 410, 374
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 1035, 103
+  size: 217, 309
+  orig: 415, 433
+  offset: 172, 38
+  index: -1
+leg1
+  rotate: true
+  xy: 2, 5
+  size: 246, 655
+  orig: 294, 655
+  offset: 0, 0
+  index: -1
+leg2
+  rotate: true
+  xy: 2, 253
+  size: 300, 654
+  orig: 402, 664
+  offset: 102, 9
+  index: -1

@@ -1,0 +1,99 @@
+{ "frames": [
+   {
+    "filename": "person_duck_kid_2 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 60, "h": 85 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 60, "h": 85 },
+    "sourceSize": { "w": 60, "h": 85 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_2 1.aseprite",
+    "frame": { "x": 60, "y": 0, "w": 60, "h": 85 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 60, "h": 85 },
+    "sourceSize": { "w": 60, "h": 85 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_2 2.aseprite",
+    "frame": { "x": 120, "y": 0, "w": 60, "h": 85 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 60, "h": 85 },
+    "sourceSize": { "w": 60, "h": 85 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_2 3.aseprite",
+    "frame": { "x": 180, "y": 0, "w": 60, "h": 85 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 60, "h": 85 },
+    "sourceSize": { "w": 60, "h": 85 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_2 4.aseprite",
+    "frame": { "x": 0, "y": 85, "w": 60, "h": 85 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 60, "h": 85 },
+    "sourceSize": { "w": 60, "h": 85 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_2 5.aseprite",
+    "frame": { "x": 60, "y": 85, "w": 60, "h": 85 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 60, "h": 85 },
+    "sourceSize": { "w": 60, "h": 85 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_2 6.aseprite",
+    "frame": { "x": 120, "y": 85, "w": 60, "h": 85 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 60, "h": 85 },
+    "sourceSize": { "w": 60, "h": 85 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_2 7.aseprite",
+    "frame": { "x": 180, "y": 85, "w": 60, "h": 85 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 60, "h": 85 },
+    "sourceSize": { "w": 60, "h": 85 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_2 8.aseprite",
+    "frame": { "x": 0, "y": 170, "w": 60, "h": 85 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 60, "h": 85 },
+    "sourceSize": { "w": 60, "h": 85 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_2 9.aseprite",
+    "frame": { "x": 60, "y": 170, "w": 60, "h": 85 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 60, "h": 85 },
+    "sourceSize": { "w": 60, "h": 85 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "frameTags": [
+   { "name": "Right", "from": 0, "to": 4 },
+   { "name": "Outlined", "from": 5, "to": 9 }
+  ]
+ }
+}

@@ -1,0 +1,27 @@
+{ "frames": [
+   {
+    "filename": "alcohol 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 21, "h": 21 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 21 },
+    "sourceSize": { "w": 21, "h": 21 },
+    "duration": 100
+   },
+   {
+    "filename": "alcohol 1.aseprite",
+    "frame": { "x": 21, "y": 0, "w": 21, "h": 21 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 21 },
+    "sourceSize": { "w": 21, "h": 21 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "frameTags": [
+   { "name": "With", "from": 0, "to": 0 },
+   { "name": "Without", "from": 1, "to": 1 }
+  ]
+ }
+}

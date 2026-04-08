@@ -1,0 +1,53 @@
+{ "frames": [
+   {
+    "filename": "person_duck_kid_1 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 65, "h": 92 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 65, "h": 92 },
+    "sourceSize": { "w": 65, "h": 92 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_1 1.aseprite",
+    "frame": { "x": 65, "y": 0, "w": 65, "h": 92 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 65, "h": 92 },
+    "sourceSize": { "w": 65, "h": 92 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_1 2.aseprite",
+    "frame": { "x": 130, "y": 0, "w": 65, "h": 92 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 65, "h": 92 },
+    "sourceSize": { "w": 65, "h": 92 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_1 3.aseprite",
+    "frame": { "x": 0, "y": 92, "w": 65, "h": 92 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 65, "h": 92 },
+    "sourceSize": { "w": 65, "h": 92 },
+    "duration": 100
+   },
+   {
+    "filename": "person_duck_kid_1 4.aseprite",
+    "frame": { "x": 65, "y": 92, "w": 65, "h": 92 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 65, "h": 92 },
+    "sourceSize": { "w": 65, "h": 92 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "frameTags": [
+   { "name": "Right", "from": 0, "to": 4 }
+  ]
+ }
+}
