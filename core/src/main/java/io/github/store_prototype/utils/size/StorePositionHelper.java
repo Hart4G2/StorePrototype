@@ -6,7 +6,7 @@ import io.github.store_prototype.objects.screen.person_logic.persons.Person.Pers
 
 public class StorePositionHelper {
     public static final float REF_THRESHOLD_Y = 20f;       // порог по Y (близость к уровню магазина)
-    public static final float REF_THRESHOLD_NEAR = 2f;    // близкое расстояние (у магазина)
+    public static final float REF_THRESHOLD_NEAR = 5f;    // близкое расстояние (у магазина)
     public static final float REF_THRESHOLD_FAR = 100f;    // дальнее расстояние (заметил магазин)
     public static final float REF_STEP = 20f;              // шаг между персонажами в очереди
     public static final float REF_STORE_X = 800f;
@@ -23,18 +23,18 @@ public class StorePositionHelper {
     /**
      * Проверяет, находится ли персонаж на дальнем расстоянии от магазина (100px при 1600x900).
      */
-    public static boolean isWithinFarDistanceFromStore(PersonSize size, PersonState state) {
+    public static boolean isWithinFarDistanceFromStore(PersonSize size) {
         float storeX = ScreenScaler.scaleX(REF_STORE_X);
-        float distance = state == PersonState.LEFT ? (size.getX() + size.getWidth() / 2f) - storeX : storeX - (size.getX() + size.getWidth() / 2f);
+        float distance = Math.abs((size.getX() + size.getWidth() / 2f) - storeX);
         return distance < ScreenScaler.scaleThreshold(REF_THRESHOLD_FAR);
     }
 
     /**
-     * Проверяет, находится ли персонаж на близком расстоянии от магазина (20px при 1600x900).
+     * Проверяет, находится ли персонаж на близком расстоянии от магазина (5px при 1600x900).
      */
-    public static boolean isWithinNearDistanceFromStore(PersonSize size, PersonState state) {
+    public static boolean isWithinNearDistanceFromStore(PersonSize size) {
         float storeX = ScreenScaler.scaleX(REF_STORE_X);
-        float distance = state == PersonState.LEFT ? (size.getX() + size.getWidth() / 2f) - storeX : storeX - (size.getX() + size.getWidth() / 2f);
+        float distance = Math.abs((size.getX() + size.getWidth() / 2f) - storeX);
         return distance < ScreenScaler.scaleThreshold(REF_THRESHOLD_NEAR);
     }
 

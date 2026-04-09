@@ -31,7 +31,7 @@ public abstract class QueuePerson implements Person {
     }
 
     protected boolean isFarFromStore() {
-        return StorePositionHelper.isWithinFarDistanceFromStore(size, state)
+        return StorePositionHelper.isWithinFarDistanceFromStore(size)
             && StorePositionHelper.isAtStoreYLevel(size);
     }
 
@@ -80,9 +80,9 @@ public abstract class QueuePerson implements Person {
     }
 
     protected void moveToStoreCounter() {
-        setState(StorePositionHelper.getDirectionToStore(size.getX()));
+        setState(StorePositionHelper.getDirectionToStore(size.getX() + size.getWidth() / 2f));
 
-        if (StorePositionHelper.isWithinNearDistanceFromStore(size, state)) {
+        if (StorePositionHelper.isWithinNearDistanceFromStore(size)) {
             onReachCounter();
         }
     }

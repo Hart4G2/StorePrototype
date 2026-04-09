@@ -31,17 +31,16 @@ public class PersonScene {
         return object;
     }
 
-
     public PersonScene() {
         duckChain = new DuckChain();
         persons.addAll(duckChain.getDucks());
 //        persons.add(duckChain.getDucks().stream().filter(duck -> duck.getName().equals("adult")).findFirst().get());
 
-//        persons.add(PersonGenerator.generateRightPerson(1));
-//        persons.add(PersonGenerator.generateRightPerson(2));
-//        persons.add(PersonGenerator.generateLeftPerson(3));
-//        persons.add(PersonGenerator.generateLeftPerson(4));
-//        persons.add(PersonGenerator.generateRightSmuggler());
+        persons.add(PersonGenerator.generateRightPerson(1));
+        persons.add(PersonGenerator.generateRightPerson(2));
+        persons.add(PersonGenerator.generateLeftPerson(3));
+        persons.add(PersonGenerator.generateLeftPerson(4));
+        persons.add(PersonGenerator.generateRightSmuggler());
     }
 
     public void render(Batch batch, float delta) {

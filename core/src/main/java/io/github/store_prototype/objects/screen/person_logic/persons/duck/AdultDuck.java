@@ -44,14 +44,13 @@ public class AdultDuck extends QueuePerson {
     private float stateTime;
     private Person.PersonState state;
     private boolean talkMode;
-    private boolean talking;
     private DialogWindow dialogWindow;
-// todo bug with queue
+
     public AdultDuck(boolean talkMode) {
         this.talkMode = talkMode;
         setAssets();
 
-        if (talkMode) {
+        if (this.talkMode) {
             size.setRefPosition(REF_WIDTH + 100, REF_HEIGHT / 2.8f);
             state = Person.PersonState.LEFT;
         } else {
@@ -102,7 +101,7 @@ public class AdultDuck extends QueuePerson {
         stateTime += delta;
 
         if (talkMode) {
-            if (talking) {
+            if (state == PersonState.BUYING) {
                 talk();
             } else {
                 getToStore(delta);
@@ -136,7 +135,6 @@ public class AdultDuck extends QueuePerson {
     @Override
     protected void onReachCounter() {
         setState(PersonState.BUYING);
-        talking = true;
     }
 
     @Override
