@@ -19,7 +19,7 @@ import io.github.store_prototype.utils.size.ScreenScaler;
 
 public class Passerby implements Person {
     private PersonSize size;
-    private float refSpeed = 80f;
+    private float refSpeed = 120f;
     private float speed;
 
     private Animation<TextureRegion> walkingRightAnimation, walkingLeftAnimation;
@@ -38,9 +38,15 @@ public class Passerby implements Person {
         Json json = new Json();
         AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking.json"));
 
+//        if (size == null) {
+//            float refW = data.frames.get(0).frame.w * 1.8f;
+//            float refH = data.frames.get(0).frame.h * 1.8f;
+//            size = new PersonSize(refW, refH);
+//        }
+
         if (size == null) {
-            float refW = data.frames.get(0).frame.w * 1.8f;
-            float refH = data.frames.get(0).frame.h * 1.8f;
+            float refW = data.frames.get(0).frame.w * 3f;
+            float refH = data.frames.get(0).frame.h * 3f;
             size = new PersonSize(refW, refH);
         }
 
@@ -71,7 +77,7 @@ public class Passerby implements Person {
             regions.add(region);
         }
 
-        return new Animation<>(0.2f, regions, Animation.PlayMode.NORMAL);
+        return new Animation<>(0.1f, regions, Animation.PlayMode.NORMAL);
     }
 
     @Override

@@ -1,135 +1,99 @@
 { "frames": [
    {
     "filename": "person_4_walking 0.aseprite",
-    "frame": { "x": 0, "y": 0, "w": 97, "h": 147 },
+    "frame": { "x": 0, "y": 0, "w": 43, "h": 76 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 43, "h": 76 },
+    "sourceSize": { "w": 43, "h": 76 },
     "duration": 100
    },
    {
     "filename": "person_4_walking 1.aseprite",
-    "frame": { "x": 97, "y": 0, "w": 97, "h": 147 },
+    "frame": { "x": 43, "y": 0, "w": 43, "h": 76 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 43, "h": 76 },
+    "sourceSize": { "w": 43, "h": 76 },
     "duration": 100
    },
    {
     "filename": "person_4_walking 2.aseprite",
-    "frame": { "x": 194, "y": 0, "w": 97, "h": 147 },
+    "frame": { "x": 86, "y": 0, "w": 43, "h": 76 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 43, "h": 76 },
+    "sourceSize": { "w": 43, "h": 76 },
     "duration": 100
    },
    {
     "filename": "person_4_walking 3.aseprite",
-    "frame": { "x": 291, "y": 0, "w": 97, "h": 147 },
+    "frame": { "x": 129, "y": 0, "w": 43, "h": 76 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 43, "h": 76 },
+    "sourceSize": { "w": 43, "h": 76 },
     "duration": 100
    },
    {
     "filename": "person_4_walking 4.aseprite",
-    "frame": { "x": 0, "y": 147, "w": 97, "h": 147 },
+    "frame": { "x": 0, "y": 76, "w": 43, "h": 76 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 43, "h": 76 },
+    "sourceSize": { "w": 43, "h": 76 },
     "duration": 100
    },
    {
     "filename": "person_4_walking 5.aseprite",
-    "frame": { "x": 97, "y": 147, "w": 97, "h": 147 },
+    "frame": { "x": 43, "y": 76, "w": 43, "h": 76 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 43, "h": 76 },
+    "sourceSize": { "w": 43, "h": 76 },
     "duration": 100
    },
    {
     "filename": "person_4_walking 6.aseprite",
-    "frame": { "x": 194, "y": 147, "w": 97, "h": 147 },
+    "frame": { "x": 86, "y": 76, "w": 43, "h": 76 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 43, "h": 76 },
+    "sourceSize": { "w": 43, "h": 76 },
     "duration": 100
    },
    {
     "filename": "person_4_walking 7.aseprite",
-    "frame": { "x": 291, "y": 147, "w": 97, "h": 147 },
+    "frame": { "x": 129, "y": 76, "w": 43, "h": 76 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 43, "h": 76 },
+    "sourceSize": { "w": 43, "h": 76 },
     "duration": 100
    },
    {
     "filename": "person_4_walking 8.aseprite",
-    "frame": { "x": 0, "y": 294, "w": 97, "h": 147 },
+    "frame": { "x": 0, "y": 152, "w": 43, "h": 76 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 43, "h": 76 },
+    "sourceSize": { "w": 43, "h": 76 },
     "duration": 100
    },
    {
     "filename": "person_4_walking 9.aseprite",
-    "frame": { "x": 97, "y": 294, "w": 97, "h": 147 },
+    "frame": { "x": 43, "y": 152, "w": 43, "h": 76 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
-    "duration": 100
-   },
-   {
-    "filename": "person_4_walking 10.aseprite",
-    "frame": { "x": 194, "y": 294, "w": 97, "h": 147 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
-    "duration": 100
-   },
-   {
-    "filename": "person_4_walking 11.aseprite",
-    "frame": { "x": 291, "y": 294, "w": 97, "h": 147 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
-    "duration": 100
-   },
-   {
-    "filename": "person_4_walking 12.aseprite",
-    "frame": { "x": 0, "y": 441, "w": 97, "h": 147 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
-    "duration": 100
-   },
-   {
-    "filename": "person_4_walking 13.aseprite",
-    "frame": { "x": 97, "y": 441, "w": 97, "h": 147 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 97, "h": 147 },
-    "sourceSize": { "w": 97, "h": 147 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 43, "h": 76 },
+    "sourceSize": { "w": 43, "h": 76 },
     "duration": 100
    }
  ],
  "meta": {
   "frameTags": [
-   { "name": "Right", "from": 0, "to": 6 },
-   { "name": "Left", "from": 7, "to": 13 }
+   { "name": "Right", "from": 0, "to": 4 },
+   { "name": "Left", "from": 5, "to": 9 }
   ]
  }
 }

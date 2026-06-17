@@ -11,7 +11,6 @@ import io.github.store_prototype.screens.menu.MenuScreen;
 
 public class Main extends Game {
 
-    private SpriteBatch spriteBatch;
     private MenuScreen menuScreen;
     private GameScreen gameScreen;
 
@@ -26,8 +25,6 @@ public class Main extends Game {
 
     @Override
     public void create() {
-        spriteBatch = new SpriteBatch();
-
         menuScreen = new MenuScreen(this);
         gameScreen = new GameScreen(this);
 
@@ -50,7 +47,6 @@ public class Main extends Game {
 
     @Override
     public void dispose() {
-        spriteBatch.dispose();
         super.dispose();
     }
 

@@ -9,18 +9,22 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.github.store_prototype.Main;
+import io.github.store_prototype.objects.event_handling.SimpleEventListener;
 import io.github.store_prototype.objects.event_handling.events.Event;
 import io.github.store_prototype.objects.screen.GUI.EventSign;
 import io.github.store_prototype.objects.screen.person_logic.persons.Person;
 import io.github.store_prototype.objects.screen.person_logic.persons.duck.AdultDuck;
 import io.github.store_prototype.objects.screen.person_logic.persons.duck.DuckChain;
+import io.github.store_prototype.objects.screen.upgrades.UpgradeEvent;
+import io.github.store_prototype.objects.screen.upgrades.UpgradeScene;
 import io.github.store_prototype.utils.Utils;
 
-public class PersonScene {
+public class PersonScene implements SimpleEventListener {
 
     private static PersonScene object;
     private List<Person> persons = new ArrayList<>();
     private List<EventSign> eventSigns = new ArrayList<>();
+    private boolean isVendingBought = false;
 
     private DuckChain duckChain;
 
@@ -32,16 +36,21 @@ public class PersonScene {
     }
 
     public PersonScene() {
-        duckChain = new DuckChain();
-        persons.addAll(duckChain.getDucks());
+//        duckChain = new DuckChain();
+//        persons.addAll(duckChain.getDucks());
 //        persons.add(duckChain.getDucks().stream().filter(duck -> duck.getName().equals("adult")).findFirst().get());
 
-        persons.add(PersonGenerator.generateRightPerson(1));
-        persons.add(PersonGenerator.generateRightPerson(2));
-        persons.add(PersonGenerator.generateLeftPerson(3));
-        persons.add(PersonGenerator.generateLeftPerson(4));
-        persons.add(PersonGenerator.generateRightSmuggler());
+//        persons.add(PersonGenerator.generateRightPerson(1));
+//        persons.add(PersonGenerator.generateRightPerson(2));
+//        persons.add(PersonGenerator.generateLeftPerson(3));
+//        persons.add(PersonGenerator.generateLeftPerson(4));
+//        persons.add(PersonGenerator.generateRightSmuggler());
+
+//        persons.add(PersonGenerator.generateLeftPasserby(11));
     }
+
+    private float generateTime = 0;
+    private int personIndex = 4;
 
     public void render(Batch batch, float delta) {
         sortZIndex();
@@ -54,6 +63,16 @@ public class PersonScene {
             if(persons.get(i).isEnded()){
                 removePerson(persons.get(i));
             }
+        }
+
+        generateTime += delta;
+
+        if(generateTime > 3 && personIndex < 14){
+            generateTime = 0;
+            if(isVendingBought){
+                addPerson(PersonGenerator.generateLeftVendingBuyer(4));
+            }
+            personIndex++;
         }
     }
 
@@ -90,6 +109,17 @@ public class PersonScene {
         for (EventSign eventSign : eventSigns) {
             eventSign.resize();
         }
+    }
+
+    @Override
+    public void handleChange(Event event) {
+        try{
+            UpgradeEvent e = (UpgradeEvent) event;
+            if(e.getName() == UpgradeScene.Upgrades.VENDING_MACHINE){
+                System.out.println("PersonScene get event with vending machine!");
+                isVendingBought = true;
+            }
+        } catch (Exception ignore){}
     }
 }
 

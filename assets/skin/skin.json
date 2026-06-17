@@ -67,6 +67,12 @@
 		"g": 1,
 		"b": 1,
 		"a": 1
+	},
+	"yellow": {
+		"r": 1,
+		"g": 0.9882353,
+		"b": 0.10980392,
+		"a": 1
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable": {
@@ -239,11 +245,10 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle": {
 	"default": {
-		"background": "list",
-		"hScroll": "round-black-small",
-		"hScrollKnob": "round-gray-small",
-		"vScroll": "round-black-small",
-		"vScrollKnob": "round-gray-small"
+		"hScroll": "round-black",
+		"hScrollKnob": "round-blue",
+		"vScroll": "round-black",
+		"vScrollKnob": "round-blue"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle": {
@@ -321,7 +326,7 @@
 		"background": "round-white"
 	},
 	"none": {
-		"label": "white_12"
+		"label": "black_12"
 	},
 	"white_12_none": {
 		"label": "black_12"
@@ -344,6 +349,12 @@
 		"background": "window",
 		"titleFont": "pixel_16",
 		"titleFontColor": "black"
+	},
+	"dialog": {
+		"background": "window",
+		"titleFont": "pixel_16",
+		"titleFontColor": "black",
+		"stageBackground": "white"
 	}
 }
 }

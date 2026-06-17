@@ -11,6 +11,7 @@ import java.util.List;
 import io.github.store_prototype.objects.screen.person_logic.persons.Buyer;
 import io.github.store_prototype.objects.screen.person_logic.persons.Passerby;
 import io.github.store_prototype.objects.screen.person_logic.persons.Person;
+import io.github.store_prototype.objects.screen.person_logic.persons.VendingBuyer;
 import io.github.store_prototype.objects.screen.person_logic.persons.smuggler.Smuggler;
 import io.github.store_prototype.utils.Utils;
 
@@ -46,6 +47,26 @@ public class PersonGenerator {
         return new Buyer(1700, startY, PersonState.LEFT, personNum);
     }
 
+    public static Person generatePasserby(int personNum) {
+        float startY = Utils.randomFloat(250f, 300f);
+
+        return Utils.randomInt(0, 2) == 1 ?
+            new Passerby(-100, startY, PersonState.RIGHT, personNum) :
+            new Passerby(1700, startY, PersonState.LEFT, personNum);
+    }
+
+    public static Person generateRightPasserby(int personNum) {
+        float startY = Utils.randomFloat(250f, 300f);
+
+        return new Passerby(-100, startY, PersonState.RIGHT, personNum);
+    }
+
+    public static Person generateLeftPasserby(int personNum) {
+        float startY = Utils.randomFloat(250f, 300f);
+
+        return new Passerby(1700, startY, PersonState.LEFT, personNum);
+    }
+
     public static Person generateSmuggler(){
         PersonState state = Utils.randomInt(1, 3) == 1 ? PersonState.RIGHT : PersonState.LEFT;
         float startX = state == PersonState.RIGHT ? -100 : 1700;
@@ -68,5 +89,17 @@ public class PersonGenerator {
         persons.add(new Buyer(-100, Gdx.graphics.getHeight() / 3.2f, PersonState.RIGHT, 2));
 
         return persons;
+    }
+
+    public static Person generateRightVendingBuyer(int personNum) {
+        float startY = Utils.randomFloat(250f, 270f);
+
+        return new VendingBuyer(-100, startY, PersonState.RIGHT, personNum);
+    }
+
+    public static Person generateLeftVendingBuyer(int personNum) {
+        float startY = Utils.randomFloat(250f, 270f);
+
+        return new VendingBuyer(1700, startY, PersonState.LEFT, personNum);
     }
 }

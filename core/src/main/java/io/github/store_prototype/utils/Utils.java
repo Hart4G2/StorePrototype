@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Utils {
 
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     public static int randomInt(int a, int b){
         return random.nextInt(a, b);

@@ -27,6 +27,7 @@ import com.crashinvaders.vfx.effects.VignettingEffect;
 
 import io.github.store_prototype.Main;
 import io.github.store_prototype.objects.event_handling.SimplePublisher;
+import io.github.store_prototype.objects.event_handling.events.gui.ModalClosedEvent;
 import io.github.store_prototype.objects.screen.City;
 import io.github.store_prototype.objects.screen.GUI.ProductsPanel;
 import io.github.store_prototype.objects.screen.Store;
@@ -35,6 +36,8 @@ import io.github.store_prototype.objects.screen.road.Road;
 import io.github.store_prototype.objects.screen.road.RoadLight;
 import io.github.store_prototype.objects.screen.road.Sewerage;
 import io.github.store_prototype.objects.screen.sky.Sky;
+import io.github.store_prototype.objects.screen.upgrades.UpgradeScene;
+import io.github.store_prototype.objects.screen.upgrades.UpgradeWindow;
 import io.github.store_prototype.objects.screen.watch.Watch;
 import io.github.store_prototype.objects.shaders.DayNightShader;
 import io.github.store_prototype.screens.menu.SettingsDialog;
@@ -76,6 +79,15 @@ public class GameScreen implements Screen {
     private SettingsDialog settingsDialog;
     private Button gearButton;
 
+    // upgrades
+    private TextButton upgradesButton;
+    private UpgradeWindow upgradesWindow;
+    private UpgradeScene upgradeScene;
+
+    // modal windows
+    private Stage modalStage;
+    private boolean isModalOpen = false;
+
     private boolean initialized = false;
 
     public GameScreen(Main game) {
@@ -91,6 +103,29 @@ public class GameScreen implements Screen {
 
         pauseStage = new Stage(viewport);
         createPauseMenu();
+
+        SimplePublisher.getPublisher().addListener(PersonScene.getPersonScene());
+
+        modalStage = new Stage(viewport);
+
+        modalStage.addListener(event -> {
+            if (event instanceof ModalClosedEvent) {
+                closeModal();
+                return true;
+            }
+            return false;
+        });
+
+        modalStage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Input.Keys.ESCAPE) {
+                    closeModal();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         gearButton = new Button(skin, "settingsButton");
         gearButton.addListener(new ClickListener() {
@@ -123,6 +158,18 @@ public class GameScreen implements Screen {
             }
         });
 
+        upgradeScene = new UpgradeScene(stage);
+        SimplePublisher.getPublisher().addListener(upgradeScene);
+
+        upgradesButton = new TextButton("Upgrades", skin);
+        upgradesButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                openUpgradesWindow();
+            }
+        });
+        stage.addActor(upgradesButton);
+
         vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
         bloomEffect = new BloomEffect();
         vignetteEffect = new VignettingEffect(false);
@@ -149,6 +196,7 @@ public class GameScreen implements Screen {
 
         stage.addActor(store);
         stage.addActor(productsPanel);
+        upgradeScene.init();
         stage.addActor(dayStartAnimation);
         stage.addActor(watch);
 
@@ -264,6 +312,11 @@ public class GameScreen implements Screen {
         vfxManager.applyEffects();
         vfxManager.renderToScreen();
 
+        if (isModalOpen) {
+            modalStage.act(gameDelta);
+            modalStage.draw();
+        }
+
         if (isPaused) {
             pauseStage.act(delta);
             pauseStage.draw();
@@ -297,6 +350,9 @@ public class GameScreen implements Screen {
         settingsPauseButton.setBounds(width / 2f - buttonWidth / 2f, height / 2f, buttonWidth, buttonHeight);
         menuButton.setBounds(width / 2f - buttonWidth / 2f, height / 2.35f, buttonWidth, buttonHeight);
         settingsDialog.resize(width, height);
+
+        upgradesButton.setSize(width / 12f, width / 45f);
+        upgradesButton.setPosition(width - upgradesButton.getHeight() * 6f, height - upgradesButton.getHeight() * 2f);
     }
 
     @Override
@@ -351,6 +407,26 @@ public class GameScreen implements Screen {
         } else {
             Gdx.input.setInputProcessor(stage);
         }
+    }
+
+    private void openUpgradesWindow() {
+        if (isModalOpen) return;
+
+        upgradesWindow = new UpgradeWindow("Upgrades", Assets.getAssets().getSkin());
+        upgradesWindow.show(modalStage);
+        modalStage.setScrollFocus(upgradesWindow.getScrollPane());
+
+        Gdx.input.setInputProcessor(modalStage);
+        isModalOpen = true;
+    }
+
+    public void closeModal() {
+        if (!isModalOpen) return;
+
+        isModalOpen = false;
+        upgradesWindow.dispose();
+        upgradesWindow = null;
+        Gdx.input.setInputProcessor(isPaused ? pauseStage : stage);
     }
 
     @Override
