@@ -21,6 +21,10 @@ import io.github.store_prototype.utils.ui.CustomTextTooltip;
 
 public class Item extends Actor {
 
+    public enum ItemNames {
+        ALCOHOL, MAGAZINES, AUDIOCASSETTES;
+    }
+
     private float refWidth;
     private float refHeight;
 

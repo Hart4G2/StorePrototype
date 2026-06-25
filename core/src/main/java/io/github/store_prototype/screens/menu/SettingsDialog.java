@@ -60,7 +60,6 @@ public class SettingsDialog extends Dialog {
         fullscreenCheckbox = getFullscreenCheckBox();
         resolutionSelect = getResolutionSelectBox();
 
-        // Строим содержимое диалога
         getContentTable().add(fullscreenCheckbox).left().padTop(10).row();
         getContentTable().add(new Label("Resolution:", skin)).left().padTop(10);
         getContentTable().add(resolutionSelect).width(200).padLeft(10).row();
