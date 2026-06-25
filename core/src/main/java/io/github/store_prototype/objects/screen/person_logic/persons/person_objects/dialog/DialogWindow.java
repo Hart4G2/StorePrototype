@@ -1,6 +1,7 @@
 package io.github.store_prototype.objects.screen.person_logic.persons.person_objects.dialog;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,43 +11,50 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import io.github.store_prototype.screens.GameScreen;
 import io.github.store_prototype.utils.Assets;
 
 public class DialogWindow extends Table {
 
-    private List<Dialog> answers;
-    private int dialogIndex = 0;
+    private DialogNode currentNode;
+    private AnswerOption[] currentOptions;
     private Label textLabel;
     private String fullText;
-    private Answer answer1;
-    private Answer answer2;
-    private Answer answer3;
-
-    private Container<Label> textContainer;
+    private Answer answer1, answer2, answer3;
+    private Table textContainer;
 
     private float x, y, width, height;
+    private Runnable onFinished;
+    private Consumer<Integer> onAnswerSelected; // передаёт индекс выбранного ответа (0-2)
 
-    public DialogWindow(List<Dialog> answers) {
-        this.answers = answers;
+    private boolean answersShowed;
 
-        this.width = Gdx.graphics.getWidth() / 3f; // 400 px
-        this.height = Gdx.graphics.getHeight() / 4.5f; // 200 px
+    public DialogWindow(DialogNode startNode) {
+        this.currentNode = startNode;
+
+        this.width = Gdx.graphics.getWidth() / 3f;
+        this.height = Gdx.graphics.getHeight() / 4.5f;
         x = Gdx.graphics.getWidth() / 2f - this.width / 2f;
-        y = Gdx.graphics.getHeight() / 1.5f; // 600 px
+        y = Gdx.graphics.getHeight() / 1.5f;
 
         setBounds(x, y, width, height);
 
-        answer1 = new Answer(answers.get(dialogIndex).getAnswer1());
-        answer2 = new Answer(answers.get(dialogIndex).getAnswer2());
-        answer3 = new Answer(answers.get(dialogIndex).getAnswer3());
-        textLabel = new Label(answers.get(dialogIndex).getText().getComposed(), Assets.getAssets().getSkin(), "white_12");
-        textContainer = new Container<>(textLabel);
+        answer1 = new Answer(new AnswerText(new Text(""), false, false));
+        answer2 = new Answer(new AnswerText(new Text(""), false, false));
+        answer3 = new Answer(new AnswerText(new Text(""), false, false));
 
+        textLabel = new Label("", Assets.getAssets().getSkin(), "white_14");
+        textContainer = new Table();
+        textContainer.setBackground(new TextureRegionDrawable(new Texture("answer_in.png")));
+        textContainer.add(textLabel).padBottom(15).padTop(15).padRight(20).padLeft(20);
+
+        // Размещение в таблице
         for (int i = 0; i < 3; i++) {
             columnDefaults(i).expandX().uniform().center();
         }
@@ -72,14 +80,35 @@ public class DialogWindow extends Table {
         answer2.setTouchable(Touchable.disabled);
         answer3.setTouchable(Touchable.disabled);
 
-        addListenerToAnswer(answer1);
-        addListenerToAnswer(answer2);
-        addListenerToAnswer(answer3);
+        addListenerToAnswer(answer1, 0);
+        addListenerToAnswer(answer2, 1);
+        addListenerToAnswer(answer3, 2);
         clickListenerShowText();
     }
 
     public void show() {
+        updateFromNode(currentNode);
         showText();
+    }
+
+    private void updateFromNode(DialogNode node) {
+        this.currentNode = node;
+        currentOptions = node.getAnswers();
+
+        updateAnswer(answer1, currentOptions[0]);
+        updateAnswer(answer2, currentOptions[1]);
+        updateAnswer(answer3, currentOptions[2]);
+
+        textLabel.setText(node.getText().getComposed());
+        fullText = node.getText().getComposed();
+    }
+
+    private void updateAnswer(Answer answer, AnswerOption option) {
+        if (option != null) {
+            answer.setAnswerText(new AnswerText(new Text(option.getText()), option.isHighlighted(), option.isVisible()));
+        } else {
+            answer.setAnswerText(new AnswerText(new Text(""), false, false));
+        }
     }
 
     private void showText() {
@@ -87,14 +116,11 @@ public class DialogWindow extends Table {
         textLabel.setText("");
 
         Array<Action> actions = new Array<>();
-
         StringBuilder visibleText = new StringBuilder();
 
         for (int i = 0; i < fullText.length(); i++) {
             final char c = fullText.charAt(i);
-
             actions.add(Actions.delay(0.05f));
-
             actions.add(Actions.run(() -> {
                 visibleText.append(c);
                 textLabel.setText(visibleText.toString());
@@ -104,22 +130,19 @@ public class DialogWindow extends Table {
         textLabel.addAction(
             Actions.sequence(
                 Actions.fadeIn(.5f),
-                Actions.sequence(
-                    actions.toArray(Action.class)
-                ),
+                Actions.sequence(actions.toArray(Action.class)),
                 Actions.run(this::showAnswers)
             )
         );
     }
 
-    private boolean answersShowed;
     private void showAnswers() {
         showAnswerIfVisible(answer1, -25);
         showAnswerIfVisible(answer2, 0);
         showAnswerIfVisible(answer3, 25);
     }
 
-    private void showAnswerIfVisible(Answer answer, float xShift){
+    private void showAnswerIfVisible(Answer answer, float xShift) {
         if (answer.isVisibleFromText()) {
             showAnswer(answer, xShift);
         } else {
@@ -135,7 +158,7 @@ public class DialogWindow extends Table {
         answer.addAction(
             Actions.sequence(
                 Actions.parallel(
-                    Actions.moveTo(answer.getX() - xShift, answer.getY() - (float) 25),
+                    Actions.moveTo(answer.getX() - xShift, answer.getY() - 25),
                     Actions.fadeOut(.01f)
                 ),
                 Actions.run(() -> {
@@ -152,10 +175,9 @@ public class DialogWindow extends Table {
     }
 
     private void clickListenerShowText() {
-        textLabel.addListener(new ClickListener() {
+        textContainer.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
                 if (!textLabel.getText().toString().equals(fullText)) {
                     textLabel.clearActions();
                     textLabel.setText(fullText);
@@ -165,70 +187,77 @@ public class DialogWindow extends Table {
         });
     }
 
-    private void addListenerToAnswer(final Answer answer) {
+    private void addListenerToAnswer(final Answer answer, final int index) {
         answer.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                super.enter(event, x, y, pointer, fromActor);
-                if(answersShowed) {
+                if (answersShowed) {
                     answer.setBackgroundEnter(true);
                 }
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                super.exit(event, x, y, pointer, toActor);
-                if(answersShowed) {
+                if (answersShowed) {
                     answer.setBackgroundEnter(false);
                 }
             }
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                if(answersShowed) {
-                    nextPart();
+                if (answersShowed) {
+                    onAnswerClicked(index);
                 }
                 answer.setBackgroundEnter(false);
-
-                System.out.println("Selected: " + answer.getLabel().getText());
             }
         });
     }
 
-    private void nextPart() {
-        dialogIndex++;
+    private void onAnswerClicked(int index) {
+        if (onAnswerSelected != null) {
+            onAnswerSelected.accept(index);
+        }
 
-        if(dialogIndex < answers.size()){
+        AnswerOption chosen = currentOptions[index];
+        if (chosen != null && chosen.getNextNode() != null) {
+            answer1.setVisible(false);
+            answer1.setTouchable(Touchable.disabled);
+            answer1.clearActions();
+            answer2.setVisible(false);
+            answer2.setTouchable(Touchable.disabled);
+            answer2.clearActions();
+            answer3.setVisible(false);
+            answer3.setTouchable(Touchable.disabled);
+            answer3.clearActions();
+
             answersShowed = false;
+
             textLabel.addAction(Actions.fadeOut(.1f));
-            nextAnswerAction(answer1, answers.get(dialogIndex).getAnswer1());
-            nextAnswerAction(answer2, answers.get(dialogIndex).getAnswer2());
-            nextAnswerAction(answer3, answers.get(dialogIndex).getAnswer3());
-            textLabel.setText(answers.get(dialogIndex).getText().getComposed());
+            currentNode = chosen.getNextNode();
+            updateFromNode(currentNode);
             show();
         } else {
+            // Конец диалога
             hideDialog();
         }
-    }
-
-    private void nextAnswerAction(Answer answer, AnswerText nextAnswer){
-        answer.addAction(Actions.sequence(
-            Actions.fadeOut(.3f),
-            Actions.run(() -> {
-                answer.setVisible(false);
-                answer.setTouchable(Touchable.disabled);
-                answer.setAnswerText(nextAnswer);
-                invalidate();
-            })
-        ));
     }
 
     public void hideDialog() {
         this.addAction(Actions.sequence(
             Actions.fadeOut(.3f),
-            Actions.run(() -> setVisible(false))
+            Actions.run(() -> {
+                setVisible(false);
+                if (onFinished != null) onFinished.run();
+            })
         ));
+    }
+
+    public void setOnAnswerSelected(Consumer<Integer> onAnswerSelected) {
+        this.onAnswerSelected = onAnswerSelected;
+    }
+
+    public void setOnFinished(Runnable onFinished) {
+        this.onFinished = onFinished;
     }
 
     public void resize(float screenWidth, float screenHeight) {
@@ -236,7 +265,6 @@ public class DialogWindow extends Table {
         height = screenHeight / 4.5f;
         x = screenWidth / 2f - this.width / 2f;
         y = screenHeight / 1.5f;
-
         setBounds(x, y, this.width, this.height);
     }
 }

@@ -1,6 +1,7 @@
 package io.github.store_prototype.objects.screen.person_logic.persons.person_objects.dialog;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -33,7 +34,8 @@ public class Answer extends Table {
         this.highlighted = answerText.isHighlighted();
         this.visibleFromText = answerText.isVisible();
 
-        label = new Label(answerText.getText().getComposed(), skin, "white_12");
+        label = new Label(answerText.getText().getComposed(), skin, "white_14");
+        label.setColor(Color.BLACK);
 
         add(label).center().pad(30);
         pack();
@@ -59,7 +61,7 @@ public class Answer extends Table {
             regions.add(region);
         }
 
-        return new Animation<>(.1f, regions, Animation.PlayMode.LOOP);
+        return new Animation<>(.2f, regions, Animation.PlayMode.LOOP);
     }
 
     @Override
@@ -72,8 +74,10 @@ public class Answer extends Table {
 
     private void updateBackground() {
         if (backgroundEnter) {
+            label.setColor(Color.WHITE);
             setBackground(backgroundIn);
         } else {
+            label.setColor(Color.BLACK);
             if (highlighted) {
                 setBackground(backgroundAnimation.getKeyFrame(stateTime));
             } else {
