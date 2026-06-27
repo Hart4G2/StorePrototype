@@ -220,4 +220,3 @@ public class VendingBuyer implements Person {
         this.state = state;
     }
 }
-

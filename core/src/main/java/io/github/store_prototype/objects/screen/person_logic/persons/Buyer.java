@@ -44,28 +44,14 @@ public class Buyer extends QueuePerson {
         updateFromReference();
     }
 
-    public Buyer(float x, float y, PersonState state, int personNum, boolean ble) {
-        setAssets(personNum);
-        size.setRefPosition(x, y);
-        this.state = state;
-        if(ble) { refYSpeed = 5f; }
-
-        Value valueToBuy = new Value(ValueNames.COKE, 1);
-        int cost = 10;
-
-        buyingPanel = new BuyingPanel(valueToBuy, cost);
-
-        updateFromReference();
-    }
-
     private void setAssets(int personNum){
         Texture texture = new Texture("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking.png");
         Json json = new Json();
         AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking.json"));
 
         if (size == null) {
-            float refW = data.frames.get(0).frame.w * 1.8f;
-            float refH = data.frames.get(0).frame.h * 1.8f;
+            float refW = data.frames.get(0).frame.w * 3f;
+            float refH = data.frames.get(0).frame.h * 3f;
             size = new PersonSize(refW, refH);
         }
 

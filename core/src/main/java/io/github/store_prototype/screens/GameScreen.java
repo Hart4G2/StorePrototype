@@ -5,7 +5,6 @@ import static io.github.store_prototype.objects.screen.sky.Sky.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -29,8 +29,11 @@ import io.github.store_prototype.Main;
 import io.github.store_prototype.objects.event_handling.SimplePublisher;
 import io.github.store_prototype.objects.event_handling.events.gui.ModalClosedEvent;
 import io.github.store_prototype.objects.screen.City;
+import io.github.store_prototype.objects.screen.GUI.Inventory;
 import io.github.store_prototype.objects.screen.GUI.ProductsPanel;
 import io.github.store_prototype.objects.screen.Store;
+import io.github.store_prototype.objects.screen.mini_games.fishing.FishingModal;
+import io.github.store_prototype.objects.screen.mini_games.radio.RadioModal;
 import io.github.store_prototype.objects.screen.person_logic.PersonScene;
 import io.github.store_prototype.objects.screen.road.Road;
 import io.github.store_prototype.objects.screen.road.RoadLight;
@@ -63,6 +66,7 @@ public class GameScreen implements Screen {
     private Store store;
     private Sewerage sewerage;
     private Watch watch;
+    private Image bench;
 
     private DayStartAnimation dayStartAnimation;
 
@@ -77,18 +81,20 @@ public class GameScreen implements Screen {
     private Stage pauseStage;
     private TextButton resumeButton, settingsPauseButton, menuButton;
     private SettingsDialog settingsDialog;
-    private Button gearButton;
+    private Button settingsButton;
 
     // upgrades
     private TextButton upgradesButton;
     private UpgradeWindow upgradesWindow;
-    private UpgradeScene upgradeScene;
 
     // modal windows
     private Stage modalStage;
+    private Actor currentModal;
     private boolean isModalOpen = false;
 
     private boolean initialized = false;
+
+    //todo скопировать всё из demo
 
     public GameScreen(Main game) {
         this.game = game;
@@ -127,15 +133,6 @@ public class GameScreen implements Screen {
             }
         });
 
-        gearButton = new Button(skin, "settingsButton");
-        gearButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                togglePause();
-            }
-        });
-        stage.addActor(gearButton);
-
         stage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
@@ -157,9 +154,6 @@ public class GameScreen implements Screen {
                 return false;
             }
         });
-
-        upgradeScene = new UpgradeScene(stage);
-        SimplePublisher.getPublisher().addListener(upgradeScene);
 
         upgradesButton = new TextButton("Upgrades", skin);
         upgradesButton.addListener(new ClickListener() {
@@ -189,14 +183,14 @@ public class GameScreen implements Screen {
         city = new City();
         road = new Road();
         store = new Store();
-        sewerage = new Sewerage();
         SimplePublisher.getPublisher().addListener(store);
+        sewerage = new Sewerage();
         productsPanel = new ProductsPanel(Assets.getAssets().getSkin());
         watch = new Watch();
 
         stage.addActor(store);
         stage.addActor(productsPanel);
-        upgradeScene.init();
+        UpgradeScene.getInstance().init(stage);
         stage.addActor(dayStartAnimation);
         stage.addActor(watch);
 
@@ -213,6 +207,15 @@ public class GameScreen implements Screen {
                 productsPanel.setVisible(false);
             }
         });
+
+        settingsButton = new Button(skin, "settingsButton");
+        settingsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                togglePause();
+            }
+        });
+        stage.addActor(settingsButton);
     }
 
     @Override
@@ -225,7 +228,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        float gameDelta = isPaused ? 0f : delta;
+        float gameDelta = (isPaused || isModalOpen) ? 0f : delta;
         ScreenUtils.clear(1, 1, 1, 1f);
 
         if(!isPaused) {
@@ -313,7 +316,7 @@ public class GameScreen implements Screen {
         vfxManager.renderToScreen();
 
         if (isModalOpen) {
-            modalStage.act(gameDelta);
+            modalStage.act(isPaused ? gameDelta : delta);
             modalStage.draw();
         }
 
@@ -340,8 +343,8 @@ public class GameScreen implements Screen {
         PersonScene.getPersonScene().resize(width, height);
         watch.resize();
 
-        gearButton.setSize(width / 40f, width / 40f);
-        gearButton.setPosition(width - gearButton.getWidth() * 3f, height - gearButton.getWidth() * 2f);
+        settingsButton.setSize(width / 40f, width / 40f);
+        settingsButton.setPosition(width - settingsButton.getWidth() * 3f, height - settingsButton.getWidth() * 2f);
 
         float buttonWidth = width / 10f;
         float buttonHeight = height / 20f;
@@ -353,6 +356,8 @@ public class GameScreen implements Screen {
 
         upgradesButton.setSize(width / 12f, width / 45f);
         upgradesButton.setPosition(width - upgradesButton.getHeight() * 6f, height - upgradesButton.getHeight() * 2f);
+
+        Inventory.getInstance().resize(width, height);
     }
 
     @Override
@@ -415,17 +420,43 @@ public class GameScreen implements Screen {
         upgradesWindow = new UpgradeWindow("Upgrades", Assets.getAssets().getSkin());
         upgradesWindow.show(modalStage);
         modalStage.setScrollFocus(upgradesWindow.getScrollPane());
+        currentModal = upgradesWindow;
 
+        Gdx.input.setInputProcessor(modalStage);
+        isModalOpen = true;
+    }
+
+    public void openRadioModal(Runnable onCompleted) {
+        if (isModalOpen) return;
+        RadioModal radio = new RadioModal(skin, () -> {
+            closeModal();
+            onCompleted.run();
+        });
+        currentModal = radio;
+        modalStage.addActor(radio);
+        Gdx.input.setInputProcessor(modalStage);
+        isModalOpen = true;
+    }
+
+    public void openFishingModal(Runnable onCompleted) {
+        if (isModalOpen) return;
+        FishingModal fishing = new FishingModal(skin, () -> {
+            closeModal();
+            onCompleted.run();
+        });
+        currentModal = fishing;
+        modalStage.addActor(fishing);
         Gdx.input.setInputProcessor(modalStage);
         isModalOpen = true;
     }
 
     public void closeModal() {
         if (!isModalOpen) return;
-
+        if (currentModal != null) {
+            currentModal.remove();
+            currentModal = null;
+        }
         isModalOpen = false;
-        upgradesWindow.dispose();
-        upgradesWindow = null;
         Gdx.input.setInputProcessor(isPaused ? pauseStage : stage);
     }
 
