@@ -5,27 +5,35 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.store_prototype.objects.event_handling.SimpleEventListener;
-import io.github.store_prototype.objects.event_handling.events.Event;
+import io.github.store_prototype.objects.event_handling.SimplePublisher;
+import io.github.store_prototype.objects.event_handling.events.upgrades.VendingBoughtEvent;
 
-public class UpgradeScene implements SimpleEventListener {
+public class UpgradeScene {
 
     public enum Upgrades {
         BEAUTIFUL_PRICE_TAGS, GOOSE_FOOT_KEYCHAIN, VENDING_MACHINE, ADVERTISING, CARNIVAL_COSTUMES, CAT,
         CHRISTMAS_DECORATIONS, FIRST_AID_KIT_ANTIPOHMELIN, LICENSE_FOR_DIETARY_SUPPLEMENTS, PAINTING,
         PIECE_OF_METEORITE, POSSIBILITY_OF_LOSING_ONCE, PRODUCTS_WITH_DEFECTS, REDUCTION_OF_THE_FINE,
-        REPUTATION_INCREASE, SIGH_SPINNER, SUPPLIER_PRICE_REDUCTION, TAX_DISCOUNT
+        REPUTATION_INCREASE, SIGH_SPINNER, SUPPLIER_PRICE_REDUCTION, TAX_DISCOUNT, OLD_RADIO
     }
 
-    private Stage stage;
     private BeautifulPriceTags beautifulPriceTags;
     private GooseKeychain gooseKeychain;
     private VendingMachine vendingMachine;
 
     private static List<Upgrades> boughtUpgrades = new ArrayList();
+    private static List<Upgrades> availableUpgrades = new ArrayList();
 
-    public UpgradeScene(Stage stage) {
-        this.stage = stage;
+    private static UpgradeScene instance;
+
+    public static UpgradeScene getInstance() {
+        if(instance == null){
+            return instance = new UpgradeScene();
+        }
+        return instance;
+    }
+
+    public UpgradeScene() {
         beautifulPriceTags = new BeautifulPriceTags();
         beautifulPriceTags.setVisible(false);
 
@@ -36,7 +44,7 @@ public class UpgradeScene implements SimpleEventListener {
         vendingMachine.setVisible(false);
     }
 
-    public void init(){
+    public void init(Stage stage){
         stage.addActor(beautifulPriceTags);
         stage.addActor(gooseKeychain);
         stage.addActor(vendingMachine);
@@ -48,18 +56,18 @@ public class UpgradeScene implements SimpleEventListener {
         vendingMachine.resize(worldWidth, worldHeight);
     }
 
-    @Override
-    public void handleChange(Event event) {
-        try{
-            UpgradeEvent e = (UpgradeEvent) event;
-            activateUpgrade(e.getName());
-        } catch (Exception ignore){}
+    public void setUpgradeAvailable(Upgrades upgrade){
+        availableUpgrades.add(upgrade);
     }
 
-    public void activateUpgrade(Upgrades upgrade){
+    public void buyUpgrade(Upgrades upgrade){
         switch (upgrade){
             case CAT:{
                 boughtUpgrades.add(Upgrades.CAT);
+                break;
+            }
+            case OLD_RADIO:{
+                boughtUpgrades.add(Upgrades.OLD_RADIO);
                 break;
             }
             case PAINTING:{
@@ -86,6 +94,7 @@ public class UpgradeScene implements SimpleEventListener {
             case VENDING_MACHINE:{
                 vendingMachine.setVisible(true);
                 boughtUpgrades.add(Upgrades.VENDING_MACHINE);
+                SimplePublisher.getPublisher().publish(new VendingBoughtEvent());
                 break;
             }
             case GOOSE_FOOT_KEYCHAIN:{
@@ -138,5 +147,9 @@ public class UpgradeScene implements SimpleEventListener {
 
     public static List<Upgrades> getBoughtUpgrades(){
         return boughtUpgrades;
+    }
+
+    public static List<Upgrades> getAvailableUpgrades() {
+        return availableUpgrades;
     }
 }
