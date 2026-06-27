@@ -28,20 +28,18 @@ import io.github.store_prototype.utils.size.StorePositionHelper;
 
 public class Smuggler extends QueuePerson {
 
-    private Animation<TextureRegion> walkingRightAnimation, walkingLeftAnimation, sellingRightAnimation, sellingLeftAnimation;
+    private Animation<TextureRegion> walkRight, walkLeft;
     private Texture stayingTexture;
     private float stateTime;
     private Bag bag;
 
     private boolean isSold = false;
 
-    public Smuggler(float refX, float refY, PersonState state) {
-        setAnimations();
+    public Smuggler(float refX, float refY, Person.PersonState state) {
+        setAssets();
         this.state = state;
         size.setRefPosition(refX, refY);
         size.updateFromReference();
-
-        stayingTexture = new Texture("gamescene/person/smuggler/person_smuggler_staying.png");
 
         bag = new Bag();
         bag.setVisible(false);
@@ -49,53 +47,47 @@ public class Smuggler extends QueuePerson {
         updateFromReference();
     }
 
-    private void setAnimations() {
-        Map<String, Animation<TextureRegion>> walking = loadAnimations(
-            "gamescene/person/smuggler/person_smuggler_walking.png",
-            "gamescene/person/smuggler/person_smuggler_walking.json",
-            0.2f,
-            Animation.PlayMode.LOOP
-        );
-        walkingLeftAnimation  = walking.get("Left");
-        walkingRightAnimation = walking.get("Right");
-
-        Map<String, Animation<TextureRegion>> selling = loadAnimations(
-            "gamescene/person/smuggler/person_smuggler_selling.png",
-            "gamescene/person/smuggler/person_smuggler_selling.json",
-            0.4f,
-            Animation.PlayMode.NORMAL
-        );
-        sellingLeftAnimation  = selling.get("Left");
-        sellingRightAnimation = selling.get("Right");
-    }
-
-    private Map<String, Animation<TextureRegion>> loadAnimations(String texturePath, String jsonPath, float frameDuration, Animation.PlayMode playMode) {
-        Texture texture = new Texture(Gdx.files.internal(texturePath));
+    private void setAssets(){
+        Texture texture = new Texture("gamescene/person/smuggler/person_smuggler_walking.png");
         Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal(jsonPath));
+        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/smuggler/person_smuggler_walking.json"));
 
         if (size == null) {
-            float refW = data.frames.get(0).frame.w * 1.8f;
-            float refH = data.frames.get(0).frame.h * 1.8f;
+            float refW = data.frames.get(0).frame.w * 3.5f;
+            float refH = data.frames.get(0).frame.h * 3.5f;
             size = new PersonSize(refW, refH);
         }
 
-        Map<String, Animation<TextureRegion>> result = new HashMap<>();
         for (FrameTag tag : data.meta.frameTags) {
-            result.put(tag.name, getTextureRegionAnimation(tag, data, texture, frameDuration, playMode));
+            Animation<TextureRegion> animation = getTextureRegionAnimation(tag, data, texture);
+
+            switch(tag.name) {
+                case "Left":
+                    walkLeft = animation;
+                    break;
+                case "Right":
+                    walkRight = animation;
+                    break;
+                default:
+                    Gdx.app.log("Smuggler", "Неизвестный тег анимации: " + tag.name);
+                    break;
+            }
         }
-        return result;
+
+        stayingTexture = new Texture("gamescene/person/smuggler/person_smuggler_staying.png");
     }
 
-    private static Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture, float frameDuration, Animation.PlayMode playMode) {
+    private static Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
         Array<TextureRegion> regions = new Array<>();
+
         for (int i = tag.from; i <= tag.to; i++) {
             AsepriteFrame frameData = data.frames.get(i);
             Frame f = frameData.frame;
             TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
             regions.add(region);
         }
-        return new Animation<>(frameDuration, regions, playMode);
+
+        return new Animation<>(0.15f, regions, Animation.PlayMode.LOOP);
     }
 
     @Override
@@ -103,7 +95,7 @@ public class Smuggler extends QueuePerson {
         stateTime += delta;
 
         if (!isSold) {
-            if (state == PersonState.SELLING_LEFT || state == PersonState.SELLING_RIGHT) {
+            if (state == PersonState.BUYING) {
                 sell();
             } else {
                 getToStore(delta);
@@ -126,7 +118,7 @@ public class Smuggler extends QueuePerson {
 
     @Override
     protected void onReachCounter() {
-        setState(state == PersonState.RIGHT ? PersonState.SELLING_RIGHT : PersonState.SELLING_LEFT);
+        setState(PersonState.BUYING);
         bag.setOpen(true);
         bag.setVisible(true);
         Main.getInstance().getGameScreen().getStage().addActor(bag);
@@ -152,41 +144,36 @@ public class Smuggler extends QueuePerson {
     private void animate(float delta, Batch batch) {
         switch (state) {
             case RIGHT:
-                renderAnimation(batch, walkingRightAnimation);
+                animate(batch, walkRight);
                 size.setX(size.getX() + delta * speed);
                 updateReferenceFromActual();
                 break;
             case LEFT:
-                renderAnimation(batch, walkingLeftAnimation);
+                animate(batch, walkLeft);
                 size.setX(size.getX() - delta * speed);
                 updateReferenceFromActual();
                 break;
             case STAYING:
-                renderAnimation(batch, stayingTexture);
-                break;
-            case SELLING_LEFT:
-                renderAnimation(batch, sellingLeftAnimation);
-                break;
-            case SELLING_RIGHT:
-                renderAnimation(batch, sellingRightAnimation);
+            case BUYING:
+                animate(batch, stayingTexture);
                 break;
         }
     }
 
-    private void renderAnimation(Batch batch, Animation<TextureRegion> animation) {
+    private void animate(Batch batch, Animation<TextureRegion> animation) {
         batch.draw(animation.getKeyFrame(stateTime), size.getX(), size.getY(), size.getWidth(), size.getHeight());
         if (animation.getPlayMode() == Animation.PlayMode.LOOP && animation.isAnimationFinished(stateTime)) {
             stateTime = 0;
         }
     }
 
-    private void renderAnimation(Batch batch, Texture texture) {
+    private void animate(Batch batch, Texture texture) {
         batch.draw(texture, size.getX(), size.getY(), size.getWidth(), size.getHeight());
     }
 
     @Override
     public boolean isEnded() {
-        if(state == PersonState.SELLING_RIGHT || state == PersonState.SELLING_LEFT || state == PersonState.STAYING) {
+        if(state == PersonState.BUYING || state == PersonState.STAYING) {
             return false;
         }
         return state == PersonState.RIGHT ? size.getX() >= Gdx.graphics.getWidth() + 200 : size.getX() <= -200;

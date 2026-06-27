@@ -19,11 +19,9 @@ import io.github.store_prototype.utils.Assets;
 import io.github.store_prototype.utils.size.ScreenScaler;
 import io.github.store_prototype.utils.ui.CustomTextTooltip;
 
-public class Item extends Actor {
+public class BagItem extends Actor {
 
-    public enum ItemNames {
-        ALCOHOL, MAGAZINES, AUDIOCASSETTES;
-    }
+    private Inventory.Items name;
 
     private float refWidth;
     private float refHeight;
@@ -32,7 +30,8 @@ public class Item extends Actor {
     private TextureRegion textureWithStroke;
     private boolean showStroke;
 
-    public Item(ItemNames itemName) {
+    public BagItem(Inventory.Items itemName) {
+        this.name = itemName;
         generateTextures(itemName);
 
         refWidth = REF_WIDTH / 16f;
@@ -53,17 +52,19 @@ public class Item extends Actor {
                 super.exit(event, x, y, pointer, toActor);
                 showStroke = false;
             }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                Inventory.getInstance().addItem(new Item(name, new TextureRegion(new Texture("gamescene/smuggler/" + name.toString().toLowerCase() + ".png"), 21, 21)));
+                BagItem.this.remove();
+            }
         });
 
         updateFromReference();
     }
 
-    private void updateFromReference() {
-        setWidth(ScreenScaler.scaleX(refWidth));
-        setHeight(ScreenScaler.scaleY(refHeight));
-    }
-
-    private void generateTextures(ItemNames itemName) {
+    private void generateTextures(Inventory.Items itemName) {
         Texture texture = new Texture("gamescene/smuggler/" + itemName.toString().toLowerCase() + ".png");
         Json json = new Json();
         AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/smuggler/" + itemName.toString().toLowerCase() + ".json"));
@@ -85,5 +86,10 @@ public class Item extends Actor {
         } else {
             batch.draw(textureWithoutStroke, getX(), getY(), getWidth(), getHeight());
         }
+    }
+
+    private void updateFromReference() {
+        setWidth(ScreenScaler.scaleX(refWidth));
+        setHeight(ScreenScaler.scaleY(refHeight));
     }
 }

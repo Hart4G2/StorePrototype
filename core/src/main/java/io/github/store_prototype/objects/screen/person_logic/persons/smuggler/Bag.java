@@ -29,7 +29,7 @@ public class Bag extends Actor {
     private Texture backgroundTexture;
     private float x, y, width, height;
 
-    private List<Item> items;
+    private List<BagItem> items;
     private boolean isOpen;
 
     public Bag() {
@@ -76,12 +76,12 @@ public class Bag extends Actor {
     }
 
     private void generateItems() {
-        addItem(new Item(ItemNames.ALCOHOL));
-        addItem(new Item(ItemNames.MAGAZINES));
-        addItem(new Item(ItemNames.AUDIOCASSETTES));
+        addItem(new BagItem(Inventory.Items.ALCOHOL));
+        addItem(new BagItem(Inventory.Items.MAGAZINES));
+        addItem(new BagItem(Inventory.Items.AUDIOCASSETTES));
     }
 
-    private void addItem(Item item) {
+    private void addItem(BagItem item) {
         items.add(item);
     }
 
@@ -95,7 +95,7 @@ public class Bag extends Actor {
         float currentX = startX;
         float currentY = startY;
 
-        for (Item item : items) {
+        for (BagItem item : items) {
             float itemWidth = item.getWidth();
             float itemHeight = item.getHeight();
 
@@ -113,9 +113,6 @@ public class Bag extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         batch.draw(backgroundTexture, x, y, width, height);
-        for (Item item : items) {
-            item.draw(batch, parentAlpha);
-        }
     }
 
     public void resize() {
@@ -127,7 +124,7 @@ public class Bag extends Actor {
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         closeButton.setVisible(visible);
-        for (Item i : items) {
+        for (BagItem i : items) {
             i.setVisible(visible);
         }
     }
@@ -137,7 +134,7 @@ public class Bag extends Actor {
         super.setStage(stage);
         if (stage != null) {
             stage.addActor(closeButton);
-            for (Item item : items) {
+            for (BagItem item : items) {
                 stage.addActor(item);
             }
         }
