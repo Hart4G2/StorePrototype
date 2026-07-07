@@ -13,6 +13,7 @@ import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class MenuBackground extends Group {
 
@@ -95,7 +96,7 @@ public class MenuBackground extends Group {
     }
 
     private static void loadTextures() {
-        Texture texture = new Texture("main_screen.png");
+        Texture texture = Assets.getAssets().getTexture("main_screen.png");
 
         Json json = new Json();
         AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("main_screen.json"));

@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import io.github.store_prototype.objects.event_handling.SimplePublisher;
 import io.github.store_prototype.objects.values.PlayerValues;
 import io.github.store_prototype.objects.values.ValueNames;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class ProductsPanel extends Table {
 
@@ -27,7 +28,7 @@ public class ProductsPanel extends Table {
         products.add(createProduct(ValueNames.COOKIES));
         products.add(createProduct(ValueNames.NEWSPAPERS));
 
-        setBackground(new TextureRegionDrawable(new Texture("gamescene/products/panel.png")));
+        setBackground(new TextureRegionDrawable(Assets.getAssets().getTexture("gamescene/products/panel.png")));
 
         add(products.get(0)).pad(10);
         add(products.get(1)).pad(10);
@@ -55,7 +56,7 @@ public class ProductsPanel extends Table {
 
     private Product createProduct(ValueNames name) {
         Product product = new Product(getSkin(),
-            new Texture("gamescene/products/" + name.getName().toLowerCase() + ".png"),
+            Assets.getAssets().getTexture("gamescene/products/" + name.getName().toLowerCase() + ".png"),
             PlayerValues.getPlayerValues().getValue(name));
         SimplePublisher.getPublisher().addListener(product);
         return product;

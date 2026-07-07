@@ -35,16 +35,18 @@ import io.github.store_prototype.objects.screen.Store;
 import io.github.store_prototype.objects.screen.mini_games.fishing.FishingModal;
 import io.github.store_prototype.objects.screen.mini_games.radio.RadioModal;
 import io.github.store_prototype.objects.screen.person_logic.PersonScene;
+import io.github.store_prototype.objects.screen.person_logic.persons.quests.OldManWithBag;
 import io.github.store_prototype.objects.screen.road.Road;
 import io.github.store_prototype.objects.screen.road.RoadLight;
 import io.github.store_prototype.objects.screen.road.Sewerage;
 import io.github.store_prototype.objects.screen.sky.Sky;
 import io.github.store_prototype.objects.screen.upgrades.UpgradeScene;
-import io.github.store_prototype.objects.screen.upgrades.UpgradeWindow;
+import io.github.store_prototype.objects.screen.upgrades.window.UpgradeWindow;
 import io.github.store_prototype.objects.screen.watch.Watch;
 import io.github.store_prototype.objects.shaders.DayNightShader;
 import io.github.store_prototype.screens.menu.SettingsDialog;
-import io.github.store_prototype.utils.Assets;
+import io.github.store_prototype.utils.assets.Assets;
+import io.github.store_prototype.utils.size.ScreenScaler;
 import io.github.store_prototype.utils.time.DayStartAnimation;
 import io.github.store_prototype.utils.time.WorldTime;
 
@@ -94,10 +96,9 @@ public class GameScreen implements Screen {
 
     private boolean initialized = false;
 
-    //todo скопировать всё из demo
-
     public GameScreen(Main game) {
         this.game = game;
+        skin = Assets.getAssets().getSkin();
         this.spriteBatch = new SpriteBatch();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = .95f;
@@ -105,12 +106,8 @@ public class GameScreen implements Screen {
         viewport = new ScreenViewport(camera);
         stage = new Stage(viewport);
 
-        skin = Assets.getAssets().getSkin();
-
         pauseStage = new Stage(viewport);
         createPauseMenu();
-
-        SimplePublisher.getPublisher().addListener(PersonScene.getPersonScene());
 
         modalStage = new Stage(viewport);
 
@@ -126,7 +123,9 @@ public class GameScreen implements Screen {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.ESCAPE) {
-                    closeModal();
+                    if(currentModal == upgradesWindow){
+                        closeModal();
+                    }
                     return true;
                 }
                 return false;
@@ -175,7 +174,7 @@ public class GameScreen implements Screen {
         if (initialized) return;
         initialized = true;
 
-        dayStartAnimation = new DayStartAnimation();
+        dayStartAnimation = new DayStartAnimation(skin);
 
         dayNightShader = new DayNightShader();
 
@@ -185,8 +184,12 @@ public class GameScreen implements Screen {
         store = new Store();
         SimplePublisher.getPublisher().addListener(store);
         sewerage = new Sewerage();
-        productsPanel = new ProductsPanel(Assets.getAssets().getSkin());
+        productsPanel = new ProductsPanel(skin);
         watch = new Watch();
+
+        bench = new Image(Assets.getAssets().getTexture("gamescene/road/bench.png"));
+        bench.setBounds(ScreenScaler.scaleX(1300f), ScreenScaler.scaleY(420f), ScreenScaler.scaleX(195f), ScreenScaler.scaleY(120f));
+        stage.addActor(bench);
 
         stage.addActor(store);
         stage.addActor(productsPanel);
@@ -216,6 +219,8 @@ public class GameScreen implements Screen {
             }
         });
         stage.addActor(settingsButton);
+
+        PersonScene.getPersonScene().addPerson(new OldManWithBag(bench, stage));
     }
 
     @Override
@@ -231,9 +236,7 @@ public class GameScreen implements Screen {
         float gameDelta = (isPaused || isModalOpen) ? 0f : delta;
         ScreenUtils.clear(1, 1, 1, 1f);
 
-        if(!isPaused) {
-            WorldTime.getInstance().render(delta);
-        }
+        WorldTime.getInstance().render(gameDelta);
 
         SkyState newSkyState = WorldTime.getInstance().getSkyState();
         if (sky.getState() != newSkyState) {
@@ -247,7 +250,7 @@ public class GameScreen implements Screen {
                 normalizedTime = -.1f;
                 city.setState(City.CityState.DARK);
                 store.setState(Store.StoreState.LIGHT);
-                road.setState(road.getState(), RoadLight.LightState.ON);
+                road.setState(road.getState(), RoadLight.LightState.OFF);
                 break;
             }
             case DAY:{
@@ -259,14 +262,14 @@ public class GameScreen implements Screen {
                 store.setState(Store.StoreState.LIGHT);
                 city.setState(City.CityState.DARK1);
                 normalizedTime = (8 - sky.getKeyFrameIndex()) * .1f;
-                road.setState(road.getState(), RoadLight.LightState.ON);
+                road.setLightState(RoadLight.LightState.ON);
                 break;
             }
             case MORNING:{
                 store.setState(Store.StoreState.LIGHT);
                 city.setState(City.CityState.LIGHT);
                 normalizedTime = sky.getKeyFrameIndex() * .1f;
-                road.setState(road.getState(), RoadLight.LightState.ON);
+                road.setLightState(RoadLight.LightState.ON);
                 break;
             }
         }
@@ -342,8 +345,9 @@ public class GameScreen implements Screen {
         sewerage.resize(width, height);
         PersonScene.getPersonScene().resize(width, height);
         watch.resize();
+        bench.setBounds(ScreenScaler.scaleX(1300f), ScreenScaler.scaleY(420f), ScreenScaler.scaleX(195f), ScreenScaler.scaleY(120f));
 
-        settingsButton.setSize(width / 40f, width / 40f);
+        settingsButton.setSize(width / 45f, width / 45f);
         settingsButton.setPosition(width - settingsButton.getWidth() * 3f, height - settingsButton.getWidth() * 2f);
 
         float buttonWidth = width / 10f;
@@ -355,7 +359,7 @@ public class GameScreen implements Screen {
         settingsDialog.resize(width, height);
 
         upgradesButton.setSize(width / 12f, width / 45f);
-        upgradesButton.setPosition(width - upgradesButton.getHeight() * 6f, height - upgradesButton.getHeight() * 2f);
+        upgradesButton.setPosition(width - upgradesButton.getHeight() * 7f, height - upgradesButton.getHeight() * 2f);
 
         Inventory.getInstance().resize(width, height);
     }
@@ -369,7 +373,7 @@ public class GameScreen implements Screen {
         resumeButton = new TextButton("Resume", skin);
         settingsPauseButton = new TextButton("Settings", skin);
         menuButton = new TextButton("Main Menu", skin, "red");
-        settingsDialog = new SettingsDialog("Settings", skin);
+        settingsDialog = new SettingsDialog("Settings");
 
         resumeButton.pad(8, 16, 8, 16);
         settingsPauseButton.pad(8, 16, 8, 16);
@@ -417,7 +421,7 @@ public class GameScreen implements Screen {
     private void openUpgradesWindow() {
         if (isModalOpen) return;
 
-        upgradesWindow = new UpgradeWindow("Upgrades", Assets.getAssets().getSkin());
+        upgradesWindow = new UpgradeWindow("Upgrades", skin);
         upgradesWindow.show(modalStage);
         modalStage.setScrollFocus(upgradesWindow.getScrollPane());
         currentModal = upgradesWindow;
@@ -452,7 +456,7 @@ public class GameScreen implements Screen {
 
     public void closeModal() {
         if (!isModalOpen) return;
-        if (currentModal != null) {
+        if(currentModal != null){
             currentModal.remove();
             currentModal = null;
         }
@@ -559,10 +563,6 @@ public class GameScreen implements Screen {
                 camera.position.y += moveSpeed;
             }
         }
-    }
-
-    public boolean isCameraReturning(){
-        return cameraReturning;
     }
 
     public void playDayStartAnimation(int daysCount) {

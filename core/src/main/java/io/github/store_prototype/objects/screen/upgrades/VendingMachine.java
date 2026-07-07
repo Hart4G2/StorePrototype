@@ -18,13 +18,11 @@ import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class VendingMachine extends Actor implements SimpleEventListener {
 
-    private Animation<TextureRegion> lightAnimation;
-    private Animation<TextureRegion> darkAnimation;
-    private Animation<TextureRegion> lightBuyingAnimation;
-    private Animation<TextureRegion> darkBuyingAnimation;
+    private Animation<TextureRegion> lightAnimation, darkAnimation, lightBuyingAnimation, darkBuyingAnimation;
     private float x, y, width, height;
     private float stateTime;
     private Store.StoreState state;
@@ -38,48 +36,20 @@ public class VendingMachine extends Actor implements SimpleEventListener {
     }
 
     private void initAnimations(){
-        Texture texture = new Texture("gamescene/upgrades/vending_machine.png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/upgrades/vending_machine.json"));
-
-        for (FrameTag tag : data.meta.frameTags) {
-            Animation<TextureRegion> animation = getTextureRegionAnimation(tag, data, texture);
-
-            switch(tag.name) {
-                case "light":
-                    lightAnimation = animation;
-                    break;
-                case "dark":
-                    darkAnimation = animation;
-                    break;
-                case "light_buying":
-                    lightBuyingAnimation = animation;
-                    lightBuyingAnimation.setFrameDuration(.1f);
-                    break;
-                case "dark_buying":
-                    darkBuyingAnimation = animation;
-                    darkBuyingAnimation.setFrameDuration(.1f);
-                    break;
-                default:
-                    Gdx.app.log("VendingMachine", "Неизвестный тег анимации: " + tag.name);
-                    break;
-            }
-        }
+        lightAnimation = Assets.getAssets().getAnimation("gamescene/upgrades/vending_machine", "light");
+        lightAnimation.setFrameDuration(1f);
+        lightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        darkAnimation = Assets.getAssets().getAnimation("gamescene/upgrades/vending_machine", "dark");
+        darkAnimation.setFrameDuration(1f);
+        darkAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        lightBuyingAnimation = Assets.getAssets().getAnimation("gamescene/upgrades/vending_machine", "light_buying");
+        lightBuyingAnimation.setFrameDuration(.1f);
+        lightBuyingAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        darkBuyingAnimation = Assets.getAssets().getAnimation("gamescene/upgrades/vending_machine", "dark_buying");
+        darkBuyingAnimation.setFrameDuration(.1f);
+        darkBuyingAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    }
-
-    private Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-
-        return new Animation<>(1f, regions, Animation.PlayMode.LOOP);
     }
 
     @Override

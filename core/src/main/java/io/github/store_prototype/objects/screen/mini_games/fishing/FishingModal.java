@@ -28,6 +28,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
+import io.github.store_prototype.utils.assets.Assets;
+
 public class FishingModal extends Table {
 
     private static final float WORLD_STEP = 1 / 60f;
@@ -105,8 +107,8 @@ public class FishingModal extends Table {
         setTouchable(Touchable.enabled);
         addListener(createInputListener());
 
-        background = new TextureRegion(new Texture("gamescene/mini_games/fishing/background.png"));
-        reelRegion = new TextureRegion(new Texture("gamescene/mini_games/fishing/reel.png"));
+        background = new TextureRegion(Assets.getAssets().getTexture("gamescene/mini_games/fishing/background.png"));
+        reelRegion = new TextureRegion(Assets.getAssets().getTexture("gamescene/mini_games/fishing/reel.png"));
     }
 
     private void createFishingLine() {

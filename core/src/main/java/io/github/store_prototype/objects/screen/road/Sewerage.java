@@ -21,13 +21,11 @@ import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
-import io.github.store_prototype.screens.GameScreen;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class Sewerage extends Actor implements SimpleEventListener {
-    private Animation<TextureRegion> openingAnimation;
-    private Animation<TextureRegion> openingOtlineAnimation;
-    private TextureRegion closedTexture;
-    private TextureRegion closedOutlineTexture;
+    private Animation<TextureRegion> opening, openingOutline;
+    private TextureRegion closedTexture, closedOutlineTexture;
     private float stateTime;
     private boolean showOutline = false;
 
@@ -51,49 +49,13 @@ public class Sewerage extends Actor implements SimpleEventListener {
     }
 
     private void setAssets(){
-        Texture texture = new Texture("gamescene/road/sewerage.png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/road/sewerage.json"));
+        opening = Assets.getAssets().getAnimation("gamescene/road/sewerage", "opening");
+        opening.setFrameDuration(.1f);
+        openingOutline = Assets.getAssets().getAnimation("gamescene/road/sewerage", "opening_outline");
+        openingOutline.setFrameDuration(.1f);
 
-        for (FrameTag tag : data.meta.frameTags) {
-            switch (tag.name){
-                case "opening":{
-                    openingAnimation = getTextureRegionAnimation(tag, data, texture);
-                    break;
-                }
-                case "opening_outline":{
-                    openingOtlineAnimation = getTextureRegionAnimation(tag, data, texture);
-                    break;
-                }
-                case "closed":{
-                    closedTexture = getTextureRegion(tag, data, texture);
-                    break;
-                }
-                case "closed_outline":{
-                    closedOutlineTexture = getTextureRegion(tag, data, texture);
-                    break;
-                }
-            }
-        }
-    }
-
-    private Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-
-        return new Animation<>(.1f, regions, Animation.PlayMode.NORMAL);
-    }
-
-    private TextureRegion getTextureRegion(FrameTag tag, AsepriteData data, Texture texture){
-        AsepriteFrame frameData = data.frames.get(tag.from);
-        Frame f = frameData.frame;
-        return new TextureRegion(texture, f.x, f.y, f.w, f.h);
+        closedTexture = Assets.getAssets().getAnimation("gamescene/road/sewerage", "closed").getKeyFrame(0f);
+        closedOutlineTexture = Assets.getAssets().getAnimation("gamescene/road/sewerage", "closed_outline").getKeyFrame(0f);
     }
 
     private void setListeners() {
@@ -131,14 +93,14 @@ public class Sewerage extends Actor implements SimpleEventListener {
     }
 
     private void renderAnimation(Batch batch){
-        if(openingAnimation.isAnimationFinished(stateTime)){
+        if(opening.isAnimationFinished(stateTime)){
             setState(SewerageState.CLOSE);
             renderClosed(batch);
         } else {
             if(showOutline) {
-                batch.draw(openingOtlineAnimation.getKeyFrame(stateTime), getX(), getY(), getWidth(), getHeight());
+                batch.draw(openingOutline.getKeyFrame(stateTime), getX(), getY(), getWidth(), getHeight());
             } else {
-                batch.draw(openingAnimation.getKeyFrame(stateTime), getX(), getY(), getWidth(), getHeight());
+                batch.draw(opening.getKeyFrame(stateTime), getX(), getY(), getWidth(), getHeight());
             }
         }
     }

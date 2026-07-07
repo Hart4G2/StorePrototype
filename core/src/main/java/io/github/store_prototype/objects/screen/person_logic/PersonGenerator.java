@@ -5,9 +5,6 @@ import static io.github.store_prototype.objects.screen.person_logic.persons.Pers
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.github.store_prototype.objects.screen.person_logic.persons.Buyer;
 import io.github.store_prototype.objects.screen.person_logic.persons.Passerby;
 import io.github.store_prototype.objects.screen.person_logic.persons.Person;
@@ -80,15 +77,6 @@ public class PersonGenerator {
 
     public static Person generateRightSmuggler(){
         return new Smuggler(-100, 300f, PersonState.RIGHT);
-    }
-
-    public static Array<Person> generatePersonsForZIndexText(){
-        Array<Person> persons = new Array<>();
-
-        persons.add(new Buyer(-100, Gdx.graphics.getHeight() / 3.3f, PersonState.RIGHT, 1, true));
-        persons.add(new Buyer(-100, Gdx.graphics.getHeight() / 3.2f, PersonState.RIGHT, 2));
-
-        return persons;
     }
 
     public static Person generateRightVendingBuyer(int personNum) {

@@ -21,6 +21,7 @@ import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
 import io.github.store_prototype.objects.screen.person_logic.PersonScene;
 import io.github.store_prototype.objects.screen.person_logic.persons.QueuePerson;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.PersonSize;
 
 public class DuckKid extends QueuePerson {
@@ -30,7 +31,7 @@ public class DuckKid extends QueuePerson {
     }
 
     private Phase phase = Phase.WALKING_RIGHT;
-    private Animation<TextureRegion> walkingAnimation;
+    private Animation<TextureRegion> walk;
     private float stateTime;
     private float alpha = 1f;
     private float fadeSpeed = 20f;
@@ -47,31 +48,15 @@ public class DuckKid extends QueuePerson {
         refYSpeed = REF_HEIGHT / 3f;
     }
 
-    private void setAssets() {
-        Texture texture = new Texture(Gdx.files.internal("gamescene/person/quests/duck/person_duck_" + name + ".png"));
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/quests/duck/person_duck_" + name + ".json"));
+    private void setAssets(){
+        walk = Assets.getAssets().getAnimation("gamescene/person/quests/duck/person_duck_" + name, "Right");
 
         if (size == null) {
-            float refW = data.frames.get(0).frame.w * 1.8f;
-            float refH = data.frames.get(0).frame.h * 1.8f;
+            TextureRegion firstFrame = walk.getKeyFrame(0);
+            float refW = firstFrame.getRegionWidth() * 3f;
+            float refH = firstFrame.getRegionHeight() * 3f;
             size = new PersonSize(refW, refH);
         }
-
-        for (FrameTag tag : data.meta.frameTags) {
-            walkingAnimation = getTextureRegionAnimation(tag, data, texture);
-        }
-    }
-
-    private static Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-        return new Animation<>(0.2f, regions, Animation.PlayMode.NORMAL);
     }
 
     @Override
@@ -82,17 +67,17 @@ public class DuckKid extends QueuePerson {
             case WALKING_RIGHT:
                 size.setX(size.getX() + speed * delta);
                 updateReferenceFromActual();
-                drawAnimation(batch, walkingAnimation, 1f);
+                drawAnimation(batch, walk, 1f);
                 if (isStandingOnSewerage() && name.equals("kid_2")) {
                     phase = Phase.FALLING;
                     SimplePublisher.getPublisher().publish(new DuckFallingEvent());
-                    PersonScene.getPersonScene().addEventSign(new EventSign("DuckNoticedEvent", 1100f, 200f));
+                    PersonScene.getPersonScene().addEventSign("DuckNoticedEvent", 1100f, 200f);
                 }
                 break;
             case FALLING:
                 size.setY(size.getY() - ySpeed * delta);
                 alpha -= fadeSpeed * delta;
-                drawAnimation(batch, walkingAnimation, alpha);
+                drawAnimation(batch, walk, alpha);
                 updateReferenceFromActual();
                 break;
         }

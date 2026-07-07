@@ -21,7 +21,7 @@ import com.crashinvaders.vfx.effects.VfxEffect;
 import com.crashinvaders.vfx.effects.VignettingEffect;
 
 import io.github.store_prototype.Main;
-import io.github.store_prototype.utils.Assets;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class MenuScreen implements Screen {
     private Viewport viewport;
@@ -44,10 +44,11 @@ public class MenuScreen implements Screen {
 
     public MenuScreen(Main game) {
         this.game = game;
+        Skin skin = Assets.getAssets().getSkin();
+
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = 1f;
         viewport = new ScreenViewport(camera);
-        Skin skin = Assets.getAssets().getSkin();
 
         // background and effect
         backgroundStage = new Stage(viewport);
@@ -103,7 +104,7 @@ public class MenuScreen implements Screen {
             }
         });
 
-        settingsDialog = new SettingsDialog("Settings", skin);
+        settingsDialog = new SettingsDialog("Settings");
     }
 
     @Override

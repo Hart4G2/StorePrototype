@@ -14,7 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.store_prototype.utils.Assets;
+import io.github.store_prototype.Main;
+import io.github.store_prototype.objects.screen.GUI.Inventory;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.ScreenScaler;
 
 public class Bag extends Actor {
@@ -33,7 +35,7 @@ public class Bag extends Actor {
     private boolean isOpen;
 
     public Bag() {
-        this.backgroundTexture = new Texture("gamescene/smuggler/smuggler_bag.png");
+        this.backgroundTexture = Assets.getAssets().getTexture("gamescene/smuggler/smuggler_bag.png");
 
         refWidth = REF_WIDTH / 4f;
         refHeight = REF_HEIGHT / 4.5f;

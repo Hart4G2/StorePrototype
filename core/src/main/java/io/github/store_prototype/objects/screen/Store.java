@@ -19,13 +19,12 @@ import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
 import io.github.store_prototype.screens.GameScreen;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class Store extends Actor implements SimpleEventListener {
 
-    private Animation<TextureRegion> lightAnimation;
-    private Animation<TextureRegion> darkAnimation;
-    private Animation<TextureRegion> lightBuyingAnimation;
-    private Animation<TextureRegion> darkBuyingAnimation;
+    private Animation<TextureRegion> lightAnimation, darkAnimation;
+    private Animation<TextureRegion> lightBuyingAnimation, darkBuyingAnimation;
     private float stateTime;
     private float x, y, width, height;
     private StoreState state;
@@ -45,33 +44,14 @@ public class Store extends Actor implements SimpleEventListener {
     }
 
     private void initAnimations(){
-        Texture texture = new Texture("gamescene/store/store.png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/store/store.json"));
-
-        for (FrameTag tag : data.meta.frameTags) {
-            Animation<TextureRegion> animation = getTextureRegionAnimation(tag, data, texture);
-
-            switch(tag.name) {
-                case "light":
-                    lightAnimation = animation;
-                    break;
-                case "dark":
-                    darkAnimation = animation;
-                    break;
-                case "light_buying":
-                    lightBuyingAnimation = animation;
-                    lightBuyingAnimation.setFrameDuration(.15f);
-                    break;
-                case "dark_buying":
-                    darkBuyingAnimation = animation;
-                    darkBuyingAnimation.setFrameDuration(.15f);
-                    break;
-                default:
-                    Gdx.app.log("Store", "Неизвестный тег анимации: " + tag.name);
-                    break;
-            }
-        }
+        lightAnimation = Assets.getAssets().getAnimation("gamescene/store/store", "light");
+        lightAnimation.setFrameDuration(1f);
+        darkAnimation = Assets.getAssets().getAnimation("gamescene/store/store", "dark");
+        darkAnimation.setFrameDuration(1f);
+        lightBuyingAnimation = Assets.getAssets().getAnimation("gamescene/store/store", "light_buying");
+        lightBuyingAnimation.setFrameDuration(.15f);
+        darkBuyingAnimation = Assets.getAssets().getAnimation("gamescene/store/store", "dark_buying");
+        darkBuyingAnimation.setFrameDuration(.15f);
 
         if (lightAnimation != null) {
             TextureRegion firstFrame = lightAnimation.getKeyFrame(0);
@@ -81,19 +61,6 @@ public class Store extends Actor implements SimpleEventListener {
         }
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    }
-
-    private Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-
-        return new Animation<>(1f, regions, Animation.PlayMode.LOOP);
     }
 
     @Override

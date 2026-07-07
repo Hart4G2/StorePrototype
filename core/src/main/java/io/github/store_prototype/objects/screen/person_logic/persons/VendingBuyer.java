@@ -17,6 +17,7 @@ import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
 import io.github.store_prototype.objects.values.Value;
 import io.github.store_prototype.objects.values.ValueNames;
 import io.github.store_prototype.utils.Utils;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.PersonSize;
 import io.github.store_prototype.utils.size.ScreenScaler;
 import io.github.store_prototype.utils.size.StorePositionHelper;
@@ -31,7 +32,7 @@ public class VendingBuyer implements Person {
     private float speed, ySpeed;
     private float necesseryY;
 
-    private Animation<TextureRegion> walkingRightAnimation, walkingLeftAnimation;
+    private Animation<TextureRegion> walkRight, walkLeft;
     private Texture buyingTexture;
     private float stateTime;
     private Value value;
@@ -48,46 +49,20 @@ public class VendingBuyer implements Person {
     }
 
     private void setAssets(int personNum){
-        Texture texture = new Texture("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking.png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking.json"));
+        Assets assets = Assets.getAssets();
+
+        walkRight = assets.getAnimation("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking", "Right");
+
+        walkLeft = assets.getAnimation("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking", "Left");
 
         if (size == null) {
-            float refW = data.frames.get(0).frame.w * 3f;
-            float refH = data.frames.get(0).frame.h * 3f;
+            TextureRegion firstFrame = walkRight.getKeyFrame(0);
+            float refW = firstFrame.getRegionWidth() * 3f;
+            float refH = firstFrame.getRegionHeight() * 3f;
             size = new PersonSize(refW, refH);
         }
 
-        for (FrameTag tag : data.meta.frameTags) {
-            Animation<TextureRegion> animation = getTextureRegionAnimation(tag, data, texture);
-
-            switch(tag.name) {
-                case "Left":
-                    walkingLeftAnimation = animation;
-                    break;
-                case "Right":
-                    walkingRightAnimation = animation;
-                    break;
-                default:
-                    Gdx.app.log("Buyer", "Неизвестный тег анимации: " + tag.name);
-                    break;
-            }
-        }
-
-        buyingTexture = new Texture("gamescene/person/person_" + personNum + "/person_" + personNum + "_buying.png");
-    }
-
-    private static Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-
-        return new Animation<>(0.2f, regions, Animation.PlayMode.NORMAL);
+        buyingTexture = assets.getTexture("gamescene/person/person_" + personNum + "/person_" + personNum + "_buying.png");
     }
 
     protected void updateFromReference() {
@@ -144,13 +119,13 @@ public class VendingBuyer implements Person {
     private void animate(float delta, Batch batch){
         switch (state){
             case RIGHT: {
-                renderAnimation(batch, walkingRightAnimation);
+                renderAnimation(batch, walkRight);
                 size.setX(size.getX() + delta * speed);
                 updateReferenceFromActual();
                 break;
             }
             case LEFT: {
-                renderAnimation(batch, walkingLeftAnimation);
+                renderAnimation(batch, walkLeft);
                 size.setX(size.getX() - delta * speed);
                 updateReferenceFromActual();
                 break;

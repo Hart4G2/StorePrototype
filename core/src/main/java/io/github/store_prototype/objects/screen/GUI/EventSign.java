@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
@@ -27,8 +28,7 @@ public class EventSign extends Actor {
     private static final String ANIMATION_TEXTURE = "gamescene/events/event.png", ANIMATION_JSON = "gamescene/events/event.json";
     private static float REF_SIZE = 100, REF_X, REF_Y;
     private Animation<TextureRegion> animation;
-    private TextureRegion texture;
-    private TextureRegion textureOutlined;
+    private TextureRegion textureNormal, textureOutlined;
     private float stateTime;
     private ObjectSize size;
     private boolean showOutline = false;
@@ -42,19 +42,21 @@ public class EventSign extends Actor {
         ANIMATING, STAYING
     }
 
-    public EventSign(String eventName, float x, float y) {
+    public EventSign(String eventName, float x, float y,
+                     Animation<TextureRegion> animation,
+                     TextureRegion normal, TextureRegion outlined,
+                     Stage stage) {
         this.eventName = eventName;
-        REF_X = x;
-        REF_Y = y;
-        size = new ObjectSize(REF_X, REF_Y, REF_SIZE, REF_SIZE);
+        this.animation = animation;
+        this.textureNormal = normal;
+        this.textureOutlined = outlined;
+        this.size = new ObjectSize(x, y, REF_SIZE, REF_SIZE);
         setVisible(false);
-        setAssets();
-        setListeners();
         setState(EventSignState.STAYING);
-        Main.getInstance().getGameScreen().getStage().addActor(this);
-        setBounds(size.getX(), size.getY(), size.getWidth(), size.getWidth());
+        stage.addActor(this);
+        setBounds(size.getX(), size.getY(), size.getWidth(), size.getHeight());
         setTouchable(Touchable.enabled);
-
+        setListeners();
         setVisible(true);
     }
 
@@ -65,40 +67,6 @@ public class EventSign extends Actor {
         if(visible){
             time = 0;
         }
-    }
-
-    private void setAssets(){
-        Texture texture = new Texture(ANIMATION_TEXTURE);
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal(ANIMATION_JSON));
-
-        this.texture = getTextureRegion(data.meta.frameTags.get(0), data, texture);
-        this.textureOutlined = getTextureRegion(data.meta.frameTags.get(1), data, texture);
-
-        for (FrameTag tag : data.meta.frameTags) {
-            if(tag.name.equals("Without")) {
-                animation = getTextureRegionAnimation(tag, data, texture);
-            }
-        }
-    }
-
-    private Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-
-        return new Animation<>(.1f, regions, Animation.PlayMode.NORMAL);
-    }
-
-    private TextureRegion getTextureRegion(FrameTag tag, AsepriteData data, Texture texture){
-        AsepriteFrame frameData = data.frames.get(tag.from);
-        Frame f = frameData.frame;
-        return new TextureRegion(texture, f.x, f.y, f.w, f.h);
     }
 
     private void setListeners() {
@@ -147,9 +115,9 @@ public class EventSign extends Actor {
             renderAnimation(batch);
         } else {
             if(showOutline){
-                renderOutline(batch);
+                render(batch, textureOutlined);
             } else {
-                render(batch);
+                render(batch, textureNormal);
             }
         }
     }
@@ -162,12 +130,8 @@ public class EventSign extends Actor {
         }
     }
 
-    private void render(Batch batch){
+    private void render(Batch batch, TextureRegion texture){
         batch.draw(texture, size.getX(), size.getY(), size.getWidth(), size.getWidth());
-    }
-
-    private void renderOutline(Batch batch){
-        batch.draw(textureOutlined, size.getX(), size.getY(), size.getWidth(), size.getWidth());
     }
 
     public void resize(){

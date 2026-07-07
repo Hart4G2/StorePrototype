@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import io.github.store_prototype.utils.Assets;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class SettingsDialog extends Dialog {
 
@@ -31,9 +31,9 @@ public class SettingsDialog extends Dialog {
     private Slider volumeSlider;
     private CheckBox fullscreenCheckbox;
 
-    public SettingsDialog(String title, Skin skin) {
-        super(title, skin);
-        this.skin = skin;
+    public SettingsDialog(String title) {
+        super(title, Assets.getAssets().getSkin());
+        this.skin = Assets.getAssets().getSkin();
         this.setMovable(false);
         init();
     }

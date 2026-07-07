@@ -4,13 +4,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+import io.github.store_prototype.utils.assets.Assets;
+
 public class Item {
     private Inventory.Items name;
     private Image image;
 
     public Item(Inventory.Items name, String texturePath) {
         this.name = name;
-        this.image = new Image(new Texture(texturePath));
+        this.image = new Image(Assets.getAssets().getTexture(texturePath));
 
         image.setName(name.toString());
     }

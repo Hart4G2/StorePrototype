@@ -12,15 +12,14 @@ import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.ObjectSize;
 import io.github.store_prototype.utils.size.ScreenScaler;
 
 public class SmileyObject {
 
-    private static final String DISLIKE_TEXTURE = "products/crying_smiley.png";
-    private static final String DISLIKE_JSON = "products/crying_smiley.json";
-    private static final String LIKE_TEXTURE = "products/smiling_smiley.png";
-    private static final String LIKE_JSON = "products/smiling_smiley.json";
+    private static final String LIKE_PATH = "products/smiling_smiley";
+    private static final String DISLIKE_PATH = "products/crying_smiley";
 
     // Эталонные размеры (при 1600x900)
     private static final float REF_WIDTH = 1600f / 19.7f;   // ≈81.22
@@ -34,36 +33,17 @@ public class SmileyObject {
 
     public SmileyObject(boolean like) {
         if (like) {
-            init(LIKE_TEXTURE, LIKE_JSON);
+            init(LIKE_PATH);
         } else {
-            init(DISLIKE_TEXTURE, DISLIKE_JSON);
+            init(DISLIKE_PATH);
         }
         playedCount = 0;
         size = new ObjectSize(REF_WIDTH, REF_HEIGHT);
     }
 
-    private void init(String texturePath, String jsonPath) {
-        Texture texture = new Texture(texturePath);
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal(jsonPath));
-
-        for (FrameTag tag : data.meta.frameTags) {
-            Animation<TextureRegion> animation = getTextureRegionAnimation(tag, data, texture);
-            if (tag.name.equals("anim")) {
-                this.animation = animation;
-            }
-        }
-    }
-
-    private static Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-        return new Animation<>(0.1f, regions, Animation.PlayMode.NORMAL);
+    private void init(String path) {
+        animation = Assets.getAssets().getAnimation(path, "anim");
+        animation.setFrameDuration(0.1f);
     }
 
     public void render(float delta, Batch batch, float cenerX, float y) {

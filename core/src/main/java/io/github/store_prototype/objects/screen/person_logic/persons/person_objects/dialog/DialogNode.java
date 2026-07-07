@@ -2,7 +2,7 @@ package io.github.store_prototype.objects.screen.person_logic.persons.person_obj
 
 public class DialogNode {
     private Text text;
-    private AnswerOption[] answers; // размер всегда 3, но могут быть null
+    private AnswerOption[] answers;
 
     public DialogNode(Text text, AnswerOption ans1, AnswerOption ans2, AnswerOption ans3) {
         this.text = text;

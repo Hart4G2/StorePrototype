@@ -21,6 +21,7 @@ import io.github.store_prototype.objects.screen.person_logic.persons.person_obje
 import io.github.store_prototype.objects.screen.person_logic.persons.person_objects.dialog.DialogWindow;
 import io.github.store_prototype.objects.screen.person_logic.persons.person_objects.dialog.Text;
 import io.github.store_prototype.objects.screen.upgrades.UpgradeScene;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.PersonSize;
 import io.github.store_prototype.utils.size.ScreenScaler;
 
@@ -56,37 +57,27 @@ public class FishingMen extends QueuePerson {
     }
 
     private void setAssets(){
-        initAnimations("man1_walking");
-        initAnimations("man2_walking");
+        Assets assets = Assets.getAssets();
 
-        men1StandTexture = new TextureRegion(new Texture("gamescene/person/quests/fishing_men/man1_staying.png"));
-        men1BuyingTexture = new TextureRegion(new Texture("gamescene/person/quests/fishing_men/man1_buying.png"));
+        men1WalkRight = assets.getAnimation("gamescene/person/quests/fishing_men/man1_walking", "Right");
+        men1WalkRight.setFrameDuration(.15f);
+        men1WalkRight.setPlayMode(Animation.PlayMode.LOOP);
+        men1WalkLeft = assets.getAnimation("gamescene/person/quests/fishing_men/man1_walking", "Left");
+        men1WalkLeft.setFrameDuration(.15f);
+        men1WalkLeft.setPlayMode(Animation.PlayMode.LOOP);
 
-        men2StandTexture = new TextureRegion(new Texture("gamescene/person/quests/fishing_men/man2_staying.png"));
-        men2BuyingTexture = new TextureRegion(new Texture("gamescene/person/quests/fishing_men/man2_buying.png"));
-    }
+        men2WalkRight = assets.getAnimation("gamescene/person/quests/fishing_men/man2_walking", "Right2");
+        men2WalkRight.setFrameDuration(.15f);
+        men2WalkRight.setPlayMode(Animation.PlayMode.LOOP);
+        men2WalkLeft = assets.getAnimation("gamescene/person/quests/fishing_men/man2_walking", "Left2");
+        men2WalkLeft.setFrameDuration(.15f);
+        men2WalkLeft.setPlayMode(Animation.PlayMode.LOOP);
 
-    private void initAnimations(String filename){
-        Texture texture = new Texture("gamescene/person/quests/fishing_men/" + filename + ".png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/quests/fishing_men/" + filename + ".json"));
-        for (FrameTag tag : data.meta.frameTags) {
-            Animation<TextureRegion> anim = createAnimation(tag, data, texture);
-            if (tag.name.equals("Right")) men1WalkRight = anim;
-            else if (tag.name.equals("Left")) men1WalkLeft = anim;
-            else if (tag.name.equals("Right2")) men2WalkRight = anim;
-            else if (tag.name.equals("Left2")) men2WalkLeft = anim;
-        }
-    }
+        men1StandTexture = new TextureRegion(assets.getTexture("gamescene/person/quests/fishing_men/man1_staying.png"));
+        men1BuyingTexture = new TextureRegion(assets.getTexture("gamescene/person/quests/fishing_men/man1_buying.png"));
 
-    private Animation<TextureRegion> createAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            regions.add(new TextureRegion(texture, f.x, f.y, f.w, f.h));
-        }
-        return new Animation<>(0.15f, regions, Animation.PlayMode.LOOP);
+        men2StandTexture = new TextureRegion(assets.getTexture("gamescene/person/quests/fishing_men/man2_staying.png"));
+        men2BuyingTexture = new TextureRegion(assets.getTexture("gamescene/person/quests/fishing_men/man2_buying.png"));
     }
 
     @Override

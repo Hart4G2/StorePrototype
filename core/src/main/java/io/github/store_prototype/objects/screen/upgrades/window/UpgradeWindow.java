@@ -1,5 +1,7 @@
 package io.github.store_prototype.objects.screen.upgrades.window;
 
+import static io.github.store_prototype.objects.screen.upgrades.UpgradeScene.*;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,9 +17,8 @@ import com.badlogic.gdx.utils.Disposable;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.render_demo.test1.events.ModalClosedEvent;
-import io.github.render_demo.test1.upgrades.UpgradeScene;
-import io.github.render_demo.test1.upgrades.UpgradeScene.Upgrades;
+import io.github.store_prototype.objects.event_handling.events.gui.ModalClosedEvent;
+import io.github.store_prototype.objects.screen.upgrades.UpgradeScene;
 
 public class UpgradeWindow extends Dialog implements Disposable {
 
@@ -82,8 +83,8 @@ public class UpgradeWindow extends Dialog implements Disposable {
     }
 
     private void getUpgrades(){
-        List<Upgrades> boughtUpgrades = UpgradeScene.getBoughtUpgrades();
-        List<Upgrades> availableUpgrades = UpgradeScene.getAvailableUpgrades();
+        List<Upgrades> boughtUpgrades = getBoughtUpgrades();
+        List<Upgrades> availableUpgrades = getAvailableUpgrades();
         upgrades = new ArrayList<>();
 
         for(Upgrades upgrade: availableUpgrades){
@@ -115,7 +116,7 @@ public class UpgradeWindow extends Dialog implements Disposable {
                 upgradeItems.add(new UpgradeItem("gamescene/upgrades/carnival_costumes_icon.png", "Carnival Costumes", "Attracts children and their parents", "Buy", upgrade));
             }
             if(upgrade == Upgrades.CAT){
-                upgradeItems.add(new UpgradeItem("gamescene/upgrades/cat_icon.png", "Cat", "Attracts single middle-aged women", "Buy", upgrade));
+                upgradeItems.add(new UpgradeItem("gamescene/upgrades/cat_icon.png", "Cat", "Attracts single middle-aged women", "Buy", upgrade ));
             }
             if(upgrade == Upgrades.CHRISTMAS_DECORATIONS){
                 upgradeItems.add(new UpgradeItem("gamescene/upgrades/christmas_decorations_icon.png", "Christmas decorations", "Attracts very thrifty people", "Buy", upgrade));

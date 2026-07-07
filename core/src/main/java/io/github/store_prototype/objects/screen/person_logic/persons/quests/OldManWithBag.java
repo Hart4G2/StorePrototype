@@ -26,6 +26,7 @@ import io.github.store_prototype.objects.screen.person_logic.persons.person_obje
 import io.github.store_prototype.objects.screen.person_logic.persons.person_objects.dialog.DialogWindow;
 import io.github.store_prototype.objects.screen.person_logic.persons.person_objects.dialog.Text;
 import io.github.store_prototype.objects.screen.upgrades.UpgradeScene;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.PersonSize;
 
 public class OldManWithBag extends QueuePerson {
@@ -71,12 +72,12 @@ public class OldManWithBag extends QueuePerson {
         this.stage = stage;
 
         size = new PersonSize(40 * 3f, 60 * 3f);
-        refYSpeed = 10f;
+        refYSpeed = 8f;
         updateFromReference();
 
         setAssets();
 
-        size.setRefPosition(-200, 250);
+        size.setRefPosition(-200, 300);
         updateReferenceFromActual();
         state = PersonState.RIGHT;
 
@@ -85,38 +86,28 @@ public class OldManWithBag extends QueuePerson {
     }
 
     private void setAssets(){
-        initAnimations("person_8_walking");
-        initAnimations("person_8_sitting");
-        sitting.setPlayMode(Animation.PlayMode.NORMAL);
+        Assets assets = Assets.getAssets();
 
-        standTexture = new TextureRegion(new Texture("gamescene/person/quests/oldman_with_bag/person_8_standing.png"));
-        bagTexture = new Texture("gamescene/person/quests/oldman_with_bag/bag.png");
-        buyingTexture = new TextureRegion(new Texture("gamescene/person/quests/oldman_with_bag/person_8_buying.png"));
-    }
+        walkRight = assets.getAnimation("gamescene/person/quests/oldman_with_bag/person_8_walking", "Right");
+        walkRight.setFrameDuration(.15f);
+        walkRight.setPlayMode(Animation.PlayMode.LOOP);
+        walkLeft = assets.getAnimation("gamescene/person/quests/oldman_with_bag/person_8_walking", "Left");
+        walkLeft.setFrameDuration(.15f);
+        walkLeft.setPlayMode(Animation.PlayMode.LOOP);
+        walkRightWithoutBag = assets.getAnimation("gamescene/person/quests/oldman_with_bag/person_8_walking", "Right_without_bag");
+        walkRightWithoutBag.setFrameDuration(.15f);
+        walkRightWithoutBag.setPlayMode(Animation.PlayMode.LOOP);
+        walkLeftWithoutBag = assets.getAnimation("gamescene/person/quests/oldman_with_bag/person_8_walking", "Left_without_bag");
+        walkLeftWithoutBag.setFrameDuration(.15f);
+        walkLeftWithoutBag.setPlayMode(Animation.PlayMode.LOOP);
+        sitting = assets.getAnimation("gamescene/person/quests/oldman_with_bag/person_8_sitting", "Sitting");
+        sitting.setFrameDuration(.15f);
+        gettingUp = assets.getAnimation("gamescene/person/quests/oldman_with_bag/person_8_sitting", "Getting_up");
+        gettingUp.setFrameDuration(.15f);
 
-    private void initAnimations(String filename){
-        Texture texture = new Texture("gamescene/person/quests/oldman_with_bag/" + filename + ".png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/quests/oldman_with_bag/" + filename + ".json"));
-        for (FrameTag tag : data.meta.frameTags) {
-            Animation<TextureRegion> anim = createAnimation(tag, data, texture);
-            if (tag.name.equals("Right")) walkRight = anim;
-            if (tag.name.equals("Right_without_bag")) walkRightWithoutBag = anim;
-            else if (tag.name.equals("Left")) walkLeft = anim;
-            else if (tag.name.equals("Left_without_bag")) walkLeftWithoutBag = anim;
-            else if (tag.name.equals("Sitting")) sitting = anim;
-            else if (tag.name.equals("Getting_up")) gettingUp = anim;
-        }
-    }
-
-    private Animation<TextureRegion> createAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            regions.add(new TextureRegion(texture, f.x, f.y, f.w, f.h));
-        }
-        return new Animation<>(0.15f, regions, Animation.PlayMode.LOOP);
+        standTexture = new TextureRegion(assets.getTexture("gamescene/person/quests/oldman_with_bag/person_8_standing.png"));
+        bagTexture = assets.getTexture("gamescene/person/quests/oldman_with_bag/bag.png");
+        buyingTexture = new TextureRegion(assets.getTexture("gamescene/person/quests/oldman_with_bag/person_8_buying.png"));
     }
 
     @Override

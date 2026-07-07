@@ -13,14 +13,12 @@ import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class City {
 
-    private Animation<TextureRegion> lightAnimation;
-    private Animation<TextureRegion> darkAnimation;
-    private Animation<TextureRegion> darkAnimation1;
-    private Texture leninTexture;
-    private Texture buildingFarLayer;
+    private Animation<TextureRegion> lightAnimation, darkAnimation, darkAnimation1;
+    private Texture leninTexture, buildingFarLayer;
     private float x, y, width, height;
     private float leninX, buildingFarLayerX;
     private CityState state;
@@ -34,46 +32,17 @@ public class City {
         leninX = 0;
         buildingFarLayerX = 0;
 
-        leninTexture = new Texture("gamescene/city/lenin.png");
-        buildingFarLayer = new Texture("gamescene/city/buildingFarLayer.png");
+        leninTexture = Assets.getAssets().getTexture("gamescene/city/lenin.png");
+        buildingFarLayer = Assets.getAssets().getTexture("gamescene/city/buildingFarLayer.png");
 
-        Texture texture = new Texture("gamescene/city/city.png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/city/city.json"));
-
-        for (FrameTag tag : data.meta.frameTags) {
-            Animation<TextureRegion> animation = getTextureRegionAnimation(tag, data, texture);
-
-            switch(tag.name) {
-                case "With_light1":
-                    darkAnimation = animation;
-                    break;
-                case "With_light2":
-                    darkAnimation1 = animation;
-                    break;
-                case "No_light":
-                    lightAnimation = animation;
-                    break;
-                default:
-                    Gdx.app.log("Store", "Неизвестный тег анимации: " + tag.name);
-                    break;
-            }
-        }
+        darkAnimation = Assets.getAssets().getAnimation("gamescene/city/city", "With_light1");
+        darkAnimation.setFrameDuration(0.25f);
+        darkAnimation1 = Assets.getAssets().getAnimation("gamescene/city/city", "With_light2");
+        darkAnimation1.setFrameDuration(0.25f);
+        lightAnimation = Assets.getAssets().getAnimation("gamescene/city/city", "No_light");
+        lightAnimation.setFrameDuration(0.25f);
 
         setState(CityState.DARK);
-    }
-
-    private static Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-
-        return new Animation<>(0.25f, regions, Animation.PlayMode.NORMAL);
     }
 
     public void render(float delta, Batch batch){
@@ -95,14 +64,6 @@ public class City {
         }
 
         batch.draw(leninTexture, leninX, Gdx.graphics.getHeight() / 2f, width, height);
-
-        if(Main.getInstance().getGameScreen().isCameraReturning()){
-            moveToCenter(delta);
-        }
-
-        moveLayer(Layer.LENIN, delta);
-        moveLayer(Layer.CITY, delta);
-        moveLayer(Layer.FAR_LAYER, delta);
     }
 
     private void renderAnimation(Batch batch, Animation<TextureRegion> animation){
@@ -117,75 +78,6 @@ public class City {
         y = height / 2;
         this.width = width;
         this.height = height / 2f;
-    }
-
-    private enum Layer {
-        LENIN, CITY, FAR_LAYER
-    }
-
-    private void moveLayer(Layer layer, float delta){
-        float screenWidth = Gdx.graphics.getWidth();
-
-        float mouseX = Gdx.input.getX();
-        float screenWidthPart = screenWidth * .2f;
-
-        switch (layer){
-            case LENIN:{
-                float edgeWidthZone = screenWidth * .005f;
-                float maxMoveSpeed = 20f * delta;
-
-                if (mouseX < screenWidthPart && leninX > -edgeWidthZone) {
-                    leninX -= maxMoveSpeed - (mouseX / screenWidthPart * maxMoveSpeed);
-                } else if (mouseX > screenWidth - screenWidthPart && leninX < edgeWidthZone) {
-                    leninX += (mouseX - (screenWidth - screenWidthPart)) / screenWidthPart * maxMoveSpeed;
-                }
-                break;
-            }
-            case CITY: {
-                float edgeWidthZone = screenWidth * .007f;
-                float maxMoveSpeed = 30f * delta;
-
-                if (mouseX < screenWidthPart && x > -edgeWidthZone) {
-                    x -= maxMoveSpeed - (mouseX / screenWidthPart * maxMoveSpeed);
-                } else if (mouseX > screenWidth - screenWidthPart && x < edgeWidthZone) {
-                    x += (mouseX - (screenWidth - screenWidthPart)) / screenWidthPart * maxMoveSpeed;
-                }
-                break;
-            }
-            case FAR_LAYER:{
-                float edgeWidthZone = screenWidth * .01f;
-                float maxMoveSpeed = 40f * delta;
-
-                if (mouseX < screenWidthPart && buildingFarLayerX > -edgeWidthZone) {
-                    buildingFarLayerX -= maxMoveSpeed - (mouseX / screenWidthPart * maxMoveSpeed);
-                } else if (mouseX > screenWidth - screenWidthPart && buildingFarLayerX < edgeWidthZone) {
-                    buildingFarLayerX += (mouseX - (screenWidth - screenWidthPart)) / screenWidthPart * maxMoveSpeed;
-                }
-                break;
-            }
-        }
-    }
-
-    private void moveToCenter(float delta){
-        float moveSpeed = 10f * delta;
-
-        if(leninX > 0){
-            leninX -= moveSpeed;
-        } else {
-            leninX += moveSpeed;
-        }
-
-        if(x > 0){
-            x -= moveSpeed;
-        } else{
-            x += moveSpeed;
-        }
-
-        if(buildingFarLayerX > 0){
-            buildingFarLayerX -= moveSpeed;
-        } else {
-            buildingFarLayerX += moveSpeed;
-        }
     }
 }
 

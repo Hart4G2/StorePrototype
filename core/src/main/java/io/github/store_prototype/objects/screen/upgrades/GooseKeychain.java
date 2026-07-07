@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import io.github.store_prototype.utils.assets.Assets;
+
 public class GooseKeychain extends Actor {
 
     private float x, y, width, height;
@@ -14,7 +16,7 @@ public class GooseKeychain extends Actor {
     private TextureRegion texture;
 
     public GooseKeychain() {
-        texture = new TextureRegion(new Texture("gamescene/upgrades/keychain.png"));
+        texture = new TextureRegion(Assets.getAssets().getTexture("gamescene/upgrades/keychain.png"));
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }

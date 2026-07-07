@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -14,15 +15,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 
+import io.github.store_prototype.Main;
 import io.github.store_prototype.objects.event_handling.SimplePublisher;
-import io.github.store_prototype.objects.event_handling.events.PersonLeftStoreEvent;
 import io.github.store_prototype.objects.event_handling.events.gui.BuyingEvent;
 import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
 import io.github.store_prototype.objects.values.PlayerValues;
 import io.github.store_prototype.objects.values.Value;
-import io.github.store_prototype.utils.Assets;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class BuyingPanel extends Table {
 
@@ -36,10 +37,7 @@ public class BuyingPanel extends Table {
     public BuyingPanel(Value value, int cost) {
         super(Assets.getAssets().getSkin());
 
-        Texture texture = new Texture("products/element.png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("products/element.json"));
-        backgroundAnimation = getTextureRegionAnimation(data, texture);
+        backgroundAnimation = Assets.getAssets().getAnimation("products/element", "anim");
 
         isBought = false;
 
@@ -95,17 +93,6 @@ public class BuyingPanel extends Table {
                 break;
         }
         return new Texture("products/" + productImageName + ".png");
-    }
-
-    private static Animation<TextureRegion> getTextureRegionAnimation(AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-        for (int i = 0; i <= 8; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-        return new Animation<>(1f, regions, Animation.PlayMode.NORMAL);
     }
 
     @Override

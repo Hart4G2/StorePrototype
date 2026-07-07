@@ -19,7 +19,25 @@
    },
    {
     "filename": "answer_highlighted 2.aseprite",
-    "frame": { "x": 200, "y": 0, "w": 100, "h": 20 },
+    "frame": { "x": 0, "y": 20, "w": 100, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 20 },
+    "sourceSize": { "w": 100, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "answer_highlighted 3.aseprite",
+    "frame": { "x": 100, "y": 0, "w": 100, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 20 },
+    "sourceSize": { "w": 100, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "answer_highlighted 4.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 100, "h": 20 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 20 },
@@ -29,7 +47,7 @@
  ],
  "meta": {
   "frameTags": [
-   { "name": "loop", "from": 0, "to": 2 }
+   { "name": "loop", "from": 0, "to": 4 }
   ]
  }
 }

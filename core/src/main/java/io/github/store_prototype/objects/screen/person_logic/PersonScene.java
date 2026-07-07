@@ -1,11 +1,16 @@
 package io.github.store_prototype.objects.screen.person_logic;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.store_prototype.Main;
 import io.github.store_prototype.objects.event_handling.SimpleEventListener;
+import io.github.store_prototype.objects.event_handling.SimplePublisher;
 import io.github.store_prototype.objects.event_handling.events.Event;
 import io.github.store_prototype.objects.event_handling.events.persons.duck.ReturningDuckEvent;
 import io.github.store_prototype.objects.event_handling.events.upgrades.VendingBoughtEvent;
@@ -13,6 +18,8 @@ import io.github.store_prototype.objects.screen.GUI.EventSign;
 import io.github.store_prototype.objects.screen.person_logic.persons.Person;
 import io.github.store_prototype.objects.screen.person_logic.persons.quests.duck.AdultDuck;
 import io.github.store_prototype.objects.screen.person_logic.persons.quests.duck.DuckChain;
+import io.github.store_prototype.utils.assets.AnimationCache;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class PersonScene implements SimpleEventListener {
 
@@ -33,11 +40,14 @@ public class PersonScene implements SimpleEventListener {
     }
 
     public PersonScene() {
+        SimplePublisher.getPublisher().addListener(this);
+
 //        duckChain = new DuckChain();
 //        persons.addAll(duckChain.getDucks());
 
 //        addPerson(new OldWomanWithRadio());
 //        addPerson(new FishingMen());
+//        addPerson(PersonGenerator.generatePerson(4));
     }
 
     private float generateTime = 0;
@@ -137,6 +147,18 @@ public class PersonScene implements SimpleEventListener {
 
     public void addEventSign(EventSign eventSign) {
         eventSigns.add(eventSign);
+    }
+
+    public void addEventSign(String eventName, float x, float y) {
+        try {
+            Animation<TextureRegion> animationNormal = Assets.getAssets().getAnimation("gamescene/events/event", "Without");
+            Animation<TextureRegion> animationOutlined = Assets.getAssets().getAnimation("gamescene/events/event", "With");
+            TextureRegion textureNormal = animationNormal.getKeyFrames()[0];
+            TextureRegion textureOutlined = animationOutlined.getKeyFrames()[0];
+            eventSigns.add(new EventSign(eventName, x, y, animationNormal, textureNormal, textureOutlined, Main.getInstance().getGameScreen().getStage()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void removeEventSign(EventSign eventSign) {

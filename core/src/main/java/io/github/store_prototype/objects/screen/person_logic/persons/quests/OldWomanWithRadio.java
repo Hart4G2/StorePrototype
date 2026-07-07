@@ -21,6 +21,7 @@ import io.github.store_prototype.objects.screen.person_logic.persons.person_obje
 import io.github.store_prototype.objects.screen.person_logic.persons.person_objects.dialog.DialogWindow;
 import io.github.store_prototype.objects.screen.person_logic.persons.person_objects.dialog.Text;
 import io.github.store_prototype.objects.screen.upgrades.UpgradeScene;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.PersonSize;
 
 public class OldWomanWithRadio extends QueuePerson {
@@ -51,31 +52,16 @@ public class OldWomanWithRadio extends QueuePerson {
     }
 
     private void setAssets(){
-        initAnimations("oldwoman_with_radio_walking");
+        walkRight = Assets.getAssets().getAnimation("gamescene/person/quests/oldwoman_with_radio/oldwoman_with_radio_walking", "Right");
+        walkRight.setPlayMode(Animation.PlayMode.LOOP);
+        walkRight.setFrameDuration(.15f);
 
-        standTexture = new TextureRegion(new Texture("gamescene/person/quests/oldwoman_with_radio/oldwoman_with_radio_staying.png"));
-        buyingTexture = new TextureRegion(new Texture("gamescene/person/quests/oldwoman_with_radio/oldwoman_with_radio_buying.png"));
-    }
+        walkLeft = Assets.getAssets().getAnimation("gamescene/person/quests/oldwoman_with_radio/oldwoman_with_radio_walking", "Left");
+        walkLeft.setPlayMode(Animation.PlayMode.LOOP);
+        walkLeft.setFrameDuration(.15f);
 
-    private void initAnimations(String filename){
-        Texture texture = new Texture("gamescene/person/quests/oldwoman_with_radio/" + filename + ".png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/quests/oldwoman_with_radio/" + filename + ".json"));
-        for (FrameTag tag : data.meta.frameTags) {
-            Animation<TextureRegion> anim = createAnimation(tag, data, texture);
-            if (tag.name.equals("Right")) walkRight = anim;
-            else if (tag.name.equals("Left")) walkLeft = anim;
-        }
-    }
-
-    private Animation<TextureRegion> createAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            regions.add(new TextureRegion(texture, f.x, f.y, f.w, f.h));
-        }
-        return new Animation<>(0.15f, regions, Animation.PlayMode.LOOP);
+        standTexture = new TextureRegion(Assets.getAssets().getTexture("gamescene/person/quests/oldwoman_with_radio/oldwoman_with_radio_staying.png"));
+        buyingTexture = new TextureRegion(Assets.getAssets().getTexture("gamescene/person/quests/oldwoman_with_radio/oldwoman_with_radio_buying.png"));
     }
 
     @Override

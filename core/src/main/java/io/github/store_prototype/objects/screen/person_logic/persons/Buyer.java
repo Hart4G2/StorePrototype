@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Json;
 
 import io.github.store_prototype.Main;
 import io.github.store_prototype.objects.event_handling.SimplePublisher;
@@ -19,13 +18,15 @@ import io.github.store_prototype.objects.screen.person_logic.persons.person_obje
 import io.github.store_prototype.objects.screen.person_logic.persons.person_objects.SmileyObject;
 import io.github.store_prototype.objects.values.Value;
 import io.github.store_prototype.objects.values.ValueNames;
+import io.github.store_prototype.utils.assets.AnimationCache;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.PersonSize;
 import io.github.store_prototype.utils.Utils;
 
 public class Buyer extends QueuePerson {
 
-    private Animation<TextureRegion> walkingRightAnimation, walkingLeftAnimation;
-    private Texture standingTexture, buyingTexture;
+    private Animation<TextureRegion> walkRight, walkLeft;
+    private Texture stayingTexture, buyingTexture;
     private float stateTime;
 
     private BuyingPanel buyingPanel;
@@ -33,6 +34,7 @@ public class Buyer extends QueuePerson {
 
     public Buyer(float x, float y, PersonState state, int personNum) {
         setAssets(personNum);
+
         size.setRefPosition(x, y);
         this.state = state;
 
@@ -45,48 +47,20 @@ public class Buyer extends QueuePerson {
     }
 
     private void setAssets(int personNum){
-        Texture texture = new Texture("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking.png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking.json"));
+        Assets assets = Assets.getAssets();
+
+        walkRight = assets.getAnimation("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking", "Right");
+        walkLeft = assets.getAnimation("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking", "Left");
 
         if (size == null) {
-            float refW = data.frames.get(0).frame.w * 3f;
-            float refH = data.frames.get(0).frame.h * 3f;
+            TextureRegion firstFrame = walkRight.getKeyFrame(0);
+            float refW = firstFrame.getRegionWidth() * 3f;
+            float refH = firstFrame.getRegionHeight() * 3f;
             size = new PersonSize(refW, refH);
         }
 
-        for (FrameTag tag : data.meta.frameTags) {
-            Animation<TextureRegion> animation = getTextureRegionAnimation(tag, data, texture);
-
-            switch(tag.name) {
-                case "Left":
-                    walkingLeftAnimation = animation;
-                    break;
-                case "Right":
-                    walkingRightAnimation = animation;
-                    break;
-                default:
-                    Gdx.app.log("Buyer", "Неизвестный тег анимации: " + tag.name);
-                    break;
-            }
-        }
-
-        buyingTexture = new Texture("gamescene/person/person_" + personNum + "/person_" + personNum + "_buying.png");
-
-        standingTexture = new Texture("gamescene/person/person_" + personNum + "/person_" + personNum + "_staying.png");
-    }
-
-    private static Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-
-        return new Animation<>(0.2f, regions, Animation.PlayMode.NORMAL);
+        buyingTexture = assets.getTexture("gamescene/person/person_" + personNum + "/person_" + personNum + "_buying.png");
+        stayingTexture = assets.getTexture("gamescene/person/person_" + personNum + "/person_" + personNum + "_staying.png");
     }
 
     float time = 0;
@@ -149,19 +123,19 @@ public class Buyer extends QueuePerson {
     private void animate(float delta, Batch batch){
         switch (state){
             case RIGHT: {
-                renderAnimation(batch, walkingRightAnimation);
+                renderAnimation(batch, walkRight);
                 size.setX(size.getX() + delta * speed);
                 updateReferenceFromActual();
                 break;
             }
             case LEFT: {
-                renderAnimation(batch, walkingLeftAnimation);
+                renderAnimation(batch, walkLeft);
                 size.setX(size.getX() - delta * speed);
                 updateReferenceFromActual();
                 break;
             }
             case STAYING: {
-                renderAnimation(batch, standingTexture);
+                renderAnimation(batch, stayingTexture);
                 break;
             }
             case BUYING: {

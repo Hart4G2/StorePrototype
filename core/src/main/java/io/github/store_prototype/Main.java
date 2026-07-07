@@ -3,7 +3,6 @@ package io.github.store_prototype;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.store_prototype.screens.GameScreen;
@@ -13,7 +12,6 @@ public class Main extends Game {
 
     private MenuScreen menuScreen;
     private GameScreen gameScreen;
-
     private static Main instance;
 
     public static Main getInstance() {

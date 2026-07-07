@@ -12,6 +12,7 @@ import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class RoadLight {
 
@@ -25,28 +26,9 @@ public class RoadLight {
     }
 
     public RoadLight() {
-        Texture texture = new Texture("gamescene/road/road_light.png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/road/road_light.json"));
-
-        for (FrameTag tag : data.meta.frameTags) {
-            lightAnimation = getTextureRegionAnimation(tag, data, texture);
-        }
+        lightAnimation = Assets.getAssets().getAnimation("gamescene/road/road_light", "Night");
 
         setState(LightState.ON);
-    }
-
-    private Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-
-        return new Animation<>(.25f, regions, Animation.PlayMode.LOOP);
     }
 
     public void render(float delta, Batch batch){

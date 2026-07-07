@@ -12,18 +12,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 
+import io.github.store_prototype.Main;
 import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
-import io.github.store_prototype.utils.Assets;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class Answer extends Table {
 
     private Label label;
     private Skin skin;
-    private Animation<TextureRegionDrawable> backgroundAnimation;
-    private TextureRegionDrawable backgroundIn;
-    private TextureRegionDrawable background;
+    private Animation<TextureRegion> backgroundAnimation;
+    private TextureRegionDrawable backgroundIn, background;
     private boolean backgroundEnter = false;
     private boolean highlighted;
     private float stateTime;
@@ -40,28 +40,11 @@ public class Answer extends Table {
         add(label).center().pad(30);
         pack();
 
-        backgroundIn = new TextureRegionDrawable(new Texture("answer_in.png"));
-        background = new TextureRegionDrawable(new Texture("answer.png"));
-        backgroundAnimation = getTextureRegionAnimation();
+        backgroundIn = new TextureRegionDrawable(Assets.getAssets().getTexture("answer_in.png"));
+        background = new TextureRegionDrawable(Assets.getAssets().getTexture("answer.png"));
+        backgroundAnimation = Assets.getAssets().getAnimation("answer_highlighted",  "loop");
 
         setBackground(background);
-    }
-
-    private static Animation<TextureRegionDrawable> getTextureRegionAnimation() {
-        Texture texture = new Texture("answer_highlighted.png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("answer_highlighted.json"));
-
-        Array<TextureRegionDrawable> regions = new Array<>();
-
-        for (int i = 0; i <= 2; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegionDrawable region = new TextureRegionDrawable(new TextureRegion(texture, f.x, f.y, f.w, f.h));
-            regions.add(region);
-        }
-
-        return new Animation<>(.2f, regions, Animation.PlayMode.LOOP);
     }
 
     @Override
@@ -79,7 +62,7 @@ public class Answer extends Table {
         } else {
             label.setColor(Color.BLACK);
             if (highlighted) {
-                setBackground(backgroundAnimation.getKeyFrame(stateTime));
+                setBackground(new TextureRegionDrawable(backgroundAnimation.getKeyFrame(stateTime)));
             } else {
                 setBackground(background);
             }

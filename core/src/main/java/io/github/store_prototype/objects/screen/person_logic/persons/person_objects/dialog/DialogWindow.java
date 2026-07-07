@@ -7,18 +7,16 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.List;
 import java.util.function.Consumer;
 
-import io.github.store_prototype.screens.GameScreen;
-import io.github.store_prototype.utils.Assets;
+import io.github.store_prototype.Main;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class DialogWindow extends Table {
 
@@ -51,7 +49,8 @@ public class DialogWindow extends Table {
 
         textLabel = new Label("", Assets.getAssets().getSkin(), "white_14");
         textContainer = new Table();
-        textContainer.setBackground(new TextureRegionDrawable(new Texture("answer_in.png")));
+
+        textContainer.setBackground(new TextureRegionDrawable(Assets.getAssets().get("answer_in.png", Texture.class)));
         textContainer.add(textLabel).padBottom(15).padTop(15).padRight(20).padLeft(20);
 
         // Размещение в таблице
@@ -65,13 +64,9 @@ public class DialogWindow extends Table {
         row();
 
         add(answer1).pad(10).left();
-        add().expandX();
+        add(textContainer).pad(10).center().expandX();
         add(answer3).pad(10).right();
         row();
-
-        add().expandX();
-        add(textContainer).pad(10).center();
-        add().expandX();
 
         answer1.setVisible(false);
         answer2.setVisible(false);

@@ -20,6 +20,7 @@ import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
 import io.github.store_prototype.objects.screen.person_logic.persons.Person;
 import io.github.store_prototype.objects.screen.person_logic.persons.QueuePerson;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.PersonSize;
 import io.github.store_prototype.objects.screen.person_logic.persons.StoreQueue;
 import io.github.store_prototype.utils.size.ScreenScaler;
@@ -48,46 +49,22 @@ public class Smuggler extends QueuePerson {
     }
 
     private void setAssets(){
-        Texture texture = new Texture("gamescene/person/smuggler/person_smuggler_walking.png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/smuggler/person_smuggler_walking.json"));
+        Assets assets = Assets.getAssets();
+
+        walkRight = assets.getAnimation("gamescene/person/smuggler/person_smuggler_walking", "Right");
+        walkRight.setFrameDuration(0.15f);
+
+        walkLeft = assets.getAnimation("gamescene/person/smuggler/person_smuggler_walking", "Left");
+        walkLeft.setFrameDuration(0.15f);
 
         if (size == null) {
-            float refW = data.frames.get(0).frame.w * 3.5f;
-            float refH = data.frames.get(0).frame.h * 3.5f;
+            TextureRegion firstFrame = walkRight.getKeyFrame(0);
+            float refW = firstFrame.getRegionWidth() * 3.5f;
+            float refH = firstFrame.getRegionHeight() * 3.5f;
             size = new PersonSize(refW, refH);
         }
 
-        for (FrameTag tag : data.meta.frameTags) {
-            Animation<TextureRegion> animation = getTextureRegionAnimation(tag, data, texture);
-
-            switch(tag.name) {
-                case "Left":
-                    walkLeft = animation;
-                    break;
-                case "Right":
-                    walkRight = animation;
-                    break;
-                default:
-                    Gdx.app.log("Smuggler", "Неизвестный тег анимации: " + tag.name);
-                    break;
-            }
-        }
-
-        stayingTexture = new Texture("gamescene/person/smuggler/person_smuggler_staying.png");
-    }
-
-    private static Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-
-        return new Animation<>(0.15f, regions, Animation.PlayMode.LOOP);
+        stayingTexture = assets.getTexture("gamescene/person/smuggler/person_smuggler_staying.png");
     }
 
     @Override

@@ -30,6 +30,7 @@ import io.github.store_prototype.objects.screen.person_logic.persons.person_obje
 import io.github.store_prototype.objects.screen.person_logic.persons.person_objects.dialog.DialogWindow;
 import io.github.store_prototype.objects.screen.person_logic.persons.person_objects.dialog.Text;
 import io.github.store_prototype.objects.screen.upgrades.UpgradeScene;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.PersonSize;
 import io.github.store_prototype.utils.size.ScreenScaler;
 
@@ -46,7 +47,7 @@ public class AdultDuck extends QueuePerson implements SimpleEventListener {
     private Phase phase;
 
     private Animation<TextureRegion> walkRight, walkLeft;
-    private Texture talkTexture, standTexture;
+    private TextureRegion talkTexture, standTexture;
     private float stateTime;
     private DialogWindow dialogWindow;
     private boolean isDialogStarted;
@@ -72,38 +73,24 @@ public class AdultDuck extends QueuePerson implements SimpleEventListener {
         SimplePublisher.getPublisher().addListener(this);
     }
 
-    private void setAssets() {
-        Texture texture = new Texture("gamescene/person/quests/duck/person_duck_adult.png");
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/quests/duck/person_duck_adult.json"));
+    private void setAssets(){
+        Assets assets = Assets.getAssets();
+
+        walkRight = assets.getAnimation("gamescene/person/quests/duck/person_duck_adult", "Right");
+        walkRight.setFrameDuration(.4f);
+
+        walkLeft = assets.getAnimation("gamescene/person/quests/duck/person_duck_adult", "Left");
+        walkLeft.setFrameDuration(.4f);
 
         if (size == null) {
-            float refW = data.frames.get(0).frame.w * 1.8f;
-            float refH = data.frames.get(0).frame.h * 1.8f;
+            TextureRegion firstFrame = walkRight.getKeyFrame(0);
+            float refW = firstFrame.getRegionWidth() * 3f;
+            float refH = firstFrame.getRegionHeight() * 3f;
             size = new PersonSize(refW, refH);
         }
 
-        for (FrameTag tag : data.meta.frameTags) {
-            if (tag.name.equals("Right")) {
-                walkRight = getTextureRegionAnimation(tag, data, texture);
-            } else {
-                walkLeft = getTextureRegionAnimation(tag, data, texture);
-            }
-        }
-
-        talkTexture = new Texture("gamescene/person/quests/duck/person_duck_adult_talking.png");
-        standTexture = new Texture("gamescene/person/quests/duck/person_duck_adult_standing.png");
-    }
-
-    private static Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-        return new Animation<>(0.4f, regions, Animation.PlayMode.NORMAL);
+        standTexture = new TextureRegion(assets.getTexture("gamescene/person/quests/duck/person_duck_adult_standing.png"));
+        talkTexture = new TextureRegion(assets.getTexture("gamescene/person/quests/duck/person_duck_adult_talking.png"));
     }
 
     @Override
@@ -183,10 +170,10 @@ public class AdultDuck extends QueuePerson implements SimpleEventListener {
                 render(batch, walkLeft);
                 break;
             case STAYING:
-                renderTexture(batch, standTexture);
+                render(batch, standTexture);
                 break;
             case BUYING:
-                renderTexture(batch, talkTexture);
+                render(batch, talkTexture);
                 break;
         }
     }
@@ -198,7 +185,7 @@ public class AdultDuck extends QueuePerson implements SimpleEventListener {
         }
     }
 
-    private void renderTexture(Batch batch, Texture texture) {
+    private void render(Batch batch, TextureRegion texture) {
         batch.draw(texture, size.getX(), size.getY(), size.getWidth(), size.getHeight());
     }
 

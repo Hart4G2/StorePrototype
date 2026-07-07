@@ -19,6 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
+import io.github.store_prototype.utils.assets.Assets;
+
 public class RadioModal extends Table {
     private KnobActor knobFM, knobVolume;
     private float targetFrequency = 103.7f;
@@ -42,9 +44,9 @@ public class RadioModal extends Table {
         setFillParent(true);
         align(Align.center);
 
-        Texture radioTex = new Texture("gamescene/mini_games/radio/radio.png");
-        Texture knobFMTex = new Texture("gamescene/mini_games/radio/knob_fm.png");
-        Texture knobVolumeTex = new Texture("gamescene/mini_games/radio/knob_volume.png");
+        Texture radioTex = Assets.getAssets().getTexture("gamescene/mini_games/radio/radio.png");
+        Texture knobFMTex = Assets.getAssets().getTexture("gamescene/mini_games/radio/knob_fm.png");
+        Texture knobVolumeTex = Assets.getAssets().getTexture("gamescene/mini_games/radio/knob_volume.png");
 
         Image radioBody = new Image(new TextureRegionDrawable(new TextureRegion(radioTex)));
 

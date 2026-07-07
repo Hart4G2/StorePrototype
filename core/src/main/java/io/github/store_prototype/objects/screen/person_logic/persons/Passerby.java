@@ -1,7 +1,6 @@
 package io.github.store_prototype.objects.screen.person_logic.persons;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -13,7 +12,7 @@ import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
-import io.github.store_prototype.screens.GameScreen;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.PersonSize;
 import io.github.store_prototype.utils.size.ScreenScaler;
 
@@ -22,7 +21,7 @@ public class Passerby implements Person {
     private float refSpeed = 120f;
     private float speed;
 
-    private Animation<TextureRegion> walkingRightAnimation, walkingLeftAnimation;
+    private Animation<TextureRegion> walkRight, walkLeft;
     private float stateTime;
     private PersonState state;
 
@@ -34,50 +33,20 @@ public class Passerby implements Person {
     }
 
     private void setAssets(int personNum){
-        Texture texture = new Texture(Gdx.files.internal("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking.png"));
-        Json json = new Json();
-        AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking.json"));
+        Assets assets = Assets.getAssets();
 
-//        if (size == null) {
-//            float refW = data.frames.get(0).frame.w * 1.8f;
-//            float refH = data.frames.get(0).frame.h * 1.8f;
-//            size = new PersonSize(refW, refH);
-//        }
+        walkRight = assets.getAnimation("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking", "Right");
+        walkRight.setFrameDuration(0.1f);
+
+        walkLeft = assets.getAnimation("gamescene/person/person_" + personNum + "/person_" + personNum + "_walking", "Left");
+        walkLeft.setFrameDuration(0.1f);
 
         if (size == null) {
-            float refW = data.frames.get(0).frame.w * 3f;
-            float refH = data.frames.get(0).frame.h * 3f;
+            TextureRegion firstFrame = walkRight.getKeyFrame(0);
+            float refW = firstFrame.getRegionWidth() * 3f;
+            float refH = firstFrame.getRegionHeight() * 3f;
             size = new PersonSize(refW, refH);
         }
-
-        for (FrameTag tag : data.meta.frameTags) {
-            Animation<TextureRegion> animation = getTextureRegionAnimation(tag, data, texture);
-
-            switch(tag.name) {
-                case "Left":
-                    walkingLeftAnimation = animation;
-                    break;
-                case "Right":
-                    walkingRightAnimation = animation;
-                    break;
-                default:
-                    Gdx.app.log("Passerby", "Неизвестный тег анимации: " + tag.name);
-                    break;
-            }
-        }
-    }
-
-    private static Animation<TextureRegion> getTextureRegionAnimation(FrameTag tag, AsepriteData data, Texture texture) {
-        Array<TextureRegion> regions = new Array<>();
-
-        for (int i = tag.from; i <= tag.to; i++) {
-            AsepriteFrame frameData = data.frames.get(i);
-            Frame f = frameData.frame;
-            TextureRegion region = new TextureRegion(texture, f.x, f.y, f.w, f.h);
-            regions.add(region);
-        }
-
-        return new Animation<>(0.1f, regions, Animation.PlayMode.NORMAL);
     }
 
     @Override
@@ -86,10 +55,10 @@ public class Passerby implements Person {
 
         if(state == PersonState.RIGHT){
             size.setX(size.getX() + delta * speed);
-            renderAnimation(batch, walkingRightAnimation);
+            renderAnimation(batch, walkRight);
         } else {
             size.setX(size.getX() - delta * speed);
-            renderAnimation(batch, walkingLeftAnimation);
+            renderAnimation(batch, walkLeft);
         }
 
         updateReferenceFromActual();

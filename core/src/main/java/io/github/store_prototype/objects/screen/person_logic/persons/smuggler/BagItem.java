@@ -12,10 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Json;
 
+import io.github.store_prototype.Main;
+import io.github.store_prototype.objects.screen.GUI.Inventory;
+import io.github.store_prototype.objects.screen.GUI.Item;
 import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
-import io.github.store_prototype.utils.Assets;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.ScreenScaler;
 import io.github.store_prototype.utils.ui.CustomTextTooltip;
 
@@ -56,7 +59,10 @@ public class BagItem extends Actor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                Inventory.getInstance().addItem(new Item(name, new TextureRegion(new Texture("gamescene/smuggler/" + name.toString().toLowerCase() + ".png"), 21, 21)));
+
+                Texture texture = Assets.getAssets().getTexture("gamescene/smuggler/" + name.toString().toLowerCase() + ".png");
+                Item item = new Item(name, new TextureRegion(texture, 21, 21));
+                Inventory.getInstance().addItem(item);
                 BagItem.this.remove();
             }
         });
@@ -65,7 +71,7 @@ public class BagItem extends Actor {
     }
 
     private void generateTextures(Inventory.Items itemName) {
-        Texture texture = new Texture("gamescene/smuggler/" + itemName.toString().toLowerCase() + ".png");
+        Texture texture = Assets.getAssets().getTexture("gamescene/smuggler/" + itemName.toString().toLowerCase() + ".png");
         Json json = new Json();
         AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal("gamescene/smuggler/" + itemName.toString().toLowerCase() + ".json"));
 

@@ -83,6 +83,7 @@
  ],
  "meta": {
   "frameTags": [
+    { "name": "anim", "from": 0, "to": 8 }
   ]
  }
 }

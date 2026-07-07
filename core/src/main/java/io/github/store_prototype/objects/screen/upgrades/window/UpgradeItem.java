@@ -5,12 +5,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
 
-import io.github.render_demo.Assets;
-import io.github.render_demo.test1.upgrades.UpgradeScene;
+import io.github.store_prototype.objects.screen.upgrades.UpgradeScene;
+import io.github.store_prototype.utils.assets.Assets;
 
 public class UpgradeItem implements Disposable {
 

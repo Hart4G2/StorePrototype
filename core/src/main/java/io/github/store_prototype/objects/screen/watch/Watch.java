@@ -12,6 +12,7 @@ import io.github.store_prototype.objects.screen.aserprite.AsepriteData;
 import io.github.store_prototype.objects.screen.aserprite.FrameTag;
 import io.github.store_prototype.objects.screen.aserprite.frame.AsepriteFrame;
 import io.github.store_prototype.objects.screen.aserprite.frame.Frame;
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.time.WorldTime;
 import io.github.store_prototype.utils.size.ObjectSize;
 
@@ -31,7 +32,7 @@ public class Watch extends Actor {
     }
 
     private void loadFrames() {
-        Texture texture = new Texture(ANIMATION_TEXTURE);
+        Texture texture = Assets.getAssets().getTexture(ANIMATION_TEXTURE);
         Json json = new Json();
         AsepriteData data = json.fromJson(AsepriteData.class, Gdx.files.internal(ANIMATION_JSON));
 

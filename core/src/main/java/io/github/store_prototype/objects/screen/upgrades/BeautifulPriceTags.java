@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import io.github.store_prototype.utils.assets.Assets;
+
 public class BeautifulPriceTags extends Actor{
 
     private float x, y, width, height;
@@ -14,7 +16,7 @@ public class BeautifulPriceTags extends Actor{
     private TextureRegion texture;
 
     public BeautifulPriceTags() {
-        texture = new TextureRegion(new Texture("gamescene/upgrades/beautiful_price_tags.png"));
+        texture = new TextureRegion(Assets.getAssets().getTexture("gamescene/upgrades/beautiful_price_tags.png"));
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
