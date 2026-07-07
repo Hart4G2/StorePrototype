@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 public interface Person {
 
     enum PersonState {
-        RIGHT, LEFT, STAYING, BUYING, FALLING, SITTING, GETTING_UP
+        RIGHT, LEFT, STAYING, BUYING, SITTING, GETTING_UP
     }
 
     void render(float delta, Batch batch);
