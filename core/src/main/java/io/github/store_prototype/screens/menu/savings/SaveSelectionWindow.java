@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import io.github.store_prototype.Main;
 import io.github.store_prototype.utils.assets.Assets;
+import io.github.store_prototype.utils.size.ScreenScaler;
 
 public class SaveSelectionWindow extends Table {
     private final SaveManager saveManager;
@@ -22,20 +23,36 @@ public class SaveSelectionWindow extends Table {
     private final float[] currentAngle = new float[3];
     private final float[] targetAngle = new float[3];
 
+    private static final float REF_SPACING = 100f;
+    private static final float REF_BACK_BUTTON_WIDTH = 180f;
+    private static final float REF_BACK_BUTTON_HEIGHT = 60f;
+    private static final float REF_TITLE_PAD_BOTTOM = 40f;
+    private static final float REF_CONTENT_PAD_TOP = 100f;
+    private static final float REF_CONTENT_PAD_BOTTOM = 100f;
+    private static final float REF_BACK_BUTTON_PAD_TOP = 20f;
+
     public SaveSelectionWindow(Stage stage) {
         super(Assets.getAssets().getSkin());
         this.stage = stage;
         this.saveManager = new SaveManager();
 
-        setSize(Gdx.graphics.getWidth() * 0.8f, Gdx.graphics.getHeight() * 0.7f);
+        setSize(Gdx.graphics.getWidth() * 0.8f, Gdx.graphics.getHeight() * 0.8f);
         setPosition((Gdx.graphics.getWidth() - getWidth()) / 2f,
             (Gdx.graphics.getHeight() - getHeight()) / 2f);
 
+        float spacing = ScreenScaler.scaleX(REF_SPACING);
+        float backBtnW = ScreenScaler.scaleUniform(REF_BACK_BUTTON_WIDTH);
+        float backBtnH = ScreenScaler.scaleUniform(REF_BACK_BUTTON_HEIGHT);
+        float titlePadBottom = ScreenScaler.scaleY(REF_TITLE_PAD_BOTTOM);
+        float contentPadTop = ScreenScaler.scaleY(REF_CONTENT_PAD_TOP);
+        float contentPadBottom = ScreenScaler.scaleY(REF_CONTENT_PAD_BOTTOM);
+        float backBtnPadTop = ScreenScaler.scaleY(REF_BACK_BUTTON_PAD_TOP);
+
         Label titleLabel = new Label("Select Save Slot", Assets.getAssets().getSkin(), "title");
-        add(titleLabel).padBottom(40).colspan(3).row();
+        add(titleLabel).padBottom(titlePadBottom).colspan(3).row();
 
         HorizontalGroup slotsGroup = new HorizontalGroup();
-        slotsGroup.space(120);
+        slotsGroup.space(spacing);
         slotsGroup.center();
         for (int i = 0; i < 3; i++) {
             SaveSlotData data = saveManager.getSlot(i);
@@ -44,9 +61,10 @@ public class SaveSelectionWindow extends Table {
                 () -> onSlotSelected(slot),
                 () -> showDeleteConfirmation(slot));
             slotActors[i] = actor;
+            actor.setEffectEnabled(true);
             slotsGroup.addActor(actor);
         }
-        add(slotsGroup).pad(200, 0, 200, 0).center().row();
+        add(slotsGroup).pad(contentPadTop, 0, contentPadBottom, 0).center().row();
 
         backButton = new TextButton("Back", Assets.getAssets().getSkin(), "red");
         backButton.addListener(new ClickListener() {
@@ -55,7 +73,7 @@ public class SaveSelectionWindow extends Table {
                 hide();
             }
         });
-        add(backButton).width(180).height(60).colspan(3).center().padTop(20);
+        add(backButton).width(backBtnW).height(backBtnH).colspan(3).center().padTop(backBtnPadTop);
     }
 
     private void showDeleteConfirmation(int slot) {
@@ -104,7 +122,6 @@ public class SaveSelectionWindow extends Table {
 
     public void show() {
         refreshSlots();
-        stage.addActor(this);
         setVisible(true);
     }
 
@@ -150,13 +167,17 @@ public class SaveSelectionWindow extends Table {
             float factorX = Math.max(-1f, Math.min(1f, dx / (Gdx.graphics.getWidth() / 2f)));
             float factorY = Math.max(-1f, Math.min(1f, dy / (Gdx.graphics.getHeight() / 2f)));
 
-            float angleX = inside ? factorX * 15f : factorX * 2f;
-            float angleY = inside ? factorY * 8f : factorY * 1f;
+            float angleX = inside ? factorX * 3f : factorX * 1.2f;
+            float angleY = inside ? factorY * 3f : factorY;
             targetAngle[i] = angleX + angleY;
 
             float smoothing = 10f;
             currentAngle[i] += (targetAngle[i] - currentAngle[i]) * Math.min(1f, delta * smoothing);
             slot.setRotation(currentAngle[i]);
+
+            float rotXRad = (float) Math.toRadians(angleX);
+            float rotYRad = (float) Math.toRadians(angleY);
+            slot.setHoloRotation(rotXRad, rotYRad);
 
             float targetScale = inside ? 1.2f : 1.0f;
             float currentScale = slot.getScaleX();

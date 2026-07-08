@@ -1,10 +1,13 @@
 package io.github.store_prototype.objects.screen.GUI;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
+import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.ObjectSize;
 import io.github.store_prototype.utils.size.ScreenScaler;
 
@@ -30,7 +33,7 @@ public class Inventory extends Table {
     }
 
     public Inventory() {
-        size = new ObjectSize(10f, 800, 300f, 100f);
+        size = new ObjectSize(50f, 760, 300f, 100f);
         setSize(size.getWidth(), size.getHeight());
         align(Align.topLeft);
         setFillParent(false);
@@ -38,7 +41,6 @@ public class Inventory extends Table {
 
     public void addItem(Item item) {
         items.add(item);
-
         add(item.getImage()).size(itemWidth, itemWidth).pad(5);
 
         if(items.size % 5 == 0){

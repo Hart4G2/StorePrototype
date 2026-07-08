@@ -64,6 +64,8 @@ public class Bag extends Actor {
         float btnX = x + 3 * width / 8;
         float btnY = y - height / 8f;
         closeButton.setBounds(btnX, btnY, btnWidth, btnHeight);
+
+        recalculateAllItemsCoordinates();
     }
 
     private ClickListener generateCancelListener() {

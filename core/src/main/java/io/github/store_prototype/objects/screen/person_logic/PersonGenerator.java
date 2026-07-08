@@ -68,11 +68,11 @@ public class PersonGenerator {
         PersonState state = Utils.randomInt(1, 3) == 1 ? PersonState.RIGHT : PersonState.LEFT;
         float startX = state == PersonState.RIGHT ? -100 : 1700;
 
-        return new Smuggler(startX, 900, state);
+        return new Smuggler(startX, 300, state);
     }
 
     public static Person generateLeftSmuggler(){
-        return new Smuggler(1700, 900 / 2.8f, PersonState.LEFT);
+        return new Smuggler(1700, 300 / 2.8f, PersonState.LEFT);
     }
 
     public static Person generateRightSmuggler(){

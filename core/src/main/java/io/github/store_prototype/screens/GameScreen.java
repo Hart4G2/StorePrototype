@@ -8,7 +8,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -31,6 +33,7 @@ import io.github.store_prototype.objects.event_handling.SimplePublisher;
 import io.github.store_prototype.objects.event_handling.events.gui.ModalClosedEvent;
 import io.github.store_prototype.objects.screen.City;
 import io.github.store_prototype.objects.screen.GUI.Inventory;
+import io.github.store_prototype.objects.screen.GUI.Item;
 import io.github.store_prototype.objects.screen.GUI.ProductsPanel;
 import io.github.store_prototype.objects.screen.Store;
 import io.github.store_prototype.objects.screen.mini_games.fishing.FishingModal;
@@ -206,6 +209,9 @@ public class GameScreen implements Screen, WorldTime.DayChangeListener {
         UpgradeScene.getInstance().init(stage);
         stage.addActor(dayStartAnimation);
         stage.addActor(watch);
+        stage.addActor(Inventory.getInstance());
+
+        Inventory.getInstance().addItem(new Item(Inventory.Items.ALCOHOL, new TextureRegion(Assets.getAssets().getTexture("gamescene/smuggler/alcohol.png"), 21, 21)));
 
         productsPanel.setVisible(false);
 
@@ -247,6 +253,8 @@ public class GameScreen implements Screen, WorldTime.DayChangeListener {
         ScreenUtils.clear(1, 1, 1, 1f);
 
         WorldTime.getInstance().render(gameDelta);
+
+        DayEventsManager.getInstance().update(gameDelta);
 
         SkyState newSkyState = WorldTime.getInstance().getSkyState();
         if (sky.getState() != newSkyState) {

@@ -40,7 +40,6 @@ public class Smuggler extends QueuePerson {
         setAssets();
         this.state = state;
         size.setRefPosition(refX, refY);
-        size.updateFromReference();
 
         bag = new Bag();
         bag.setVisible(false);
@@ -52,15 +51,15 @@ public class Smuggler extends QueuePerson {
         Assets assets = Assets.getAssets();
 
         walkRight = assets.getAnimation("gamescene/person/smuggler/person_smuggler_walking", "Right");
-        walkRight.setFrameDuration(0.15f);
+        walkRight.setPlayMode(Animation.PlayMode.LOOP);
 
         walkLeft = assets.getAnimation("gamescene/person/smuggler/person_smuggler_walking", "Left");
-        walkLeft.setFrameDuration(0.15f);
+        walkLeft.setPlayMode(Animation.PlayMode.LOOP);
 
         if (size == null) {
             TextureRegion firstFrame = walkRight.getKeyFrame(0);
-            float refW = firstFrame.getRegionWidth() * 3.5f;
-            float refH = firstFrame.getRegionHeight() * 3.5f;
+            float refW = firstFrame.getRegionWidth() * 1.8f;
+            float refH = firstFrame.getRegionHeight() * 1.8f;
             size = new PersonSize(refW, refH);
         }
 
@@ -160,6 +159,6 @@ public class Smuggler extends QueuePerson {
     public void resize(float width, float height) {
         super.resize(width, height);
         bag.resize();
-        bag.setOpen(false);
+        bag.setOpen(bag.isOpen());
     }
 }

@@ -111,11 +111,6 @@ public class MenuScreen implements Screen {
         mainMenuGroup.addActor(exitButton);
         uiStage.addActor(mainMenuGroup);
 
-        // Создаём окно выбора сохранения (пока невидимое)
-        saveSelectionWindow = new SaveSelectionWindow(uiStage);
-        saveSelectionWindow.setVisible(false);
-        uiStage.addActor(saveSelectionWindow);
-
         gameButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -126,7 +121,10 @@ public class MenuScreen implements Screen {
 
     private void showSaveSelection() {
         mainMenuGroup.setVisible(false);
+        saveSelectionWindow = new SaveSelectionWindow(uiStage);
+        saveSelectionWindow.setVisible(false);
         saveSelectionWindow.show();
+        uiStage.addActor(saveSelectionWindow);
     }
 
     public void showMainMenu() {
@@ -201,7 +199,9 @@ public class MenuScreen implements Screen {
         exitButton.setBounds(Gdx.graphics.getWidth() / 2f - buttonWidth / 2f, Gdx.graphics.getHeight() / 2.35f, buttonWidth, buttonHeight);
         settingsDialog.resize(width, height);
 
-        saveSelectionWindow.invalidateHierarchy();
+        if(saveSelectionWindow != null) {
+            saveSelectionWindow.invalidateHierarchy();
+        }
     }
 
     @Override

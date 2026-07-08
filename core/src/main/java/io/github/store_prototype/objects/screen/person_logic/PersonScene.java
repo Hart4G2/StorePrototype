@@ -47,11 +47,6 @@ public class PersonScene implements SimpleEventListener {
 //        addPerson(PersonGenerator.generatePerson(4));
     }
 
-    private float generateTime = 0;
-    private int personIndex = 4;
-    private boolean isOldWoman = false;
-    private boolean isDucks = false;
-
     public void render(Batch batch, float delta) {
         sortZIndex();
 
@@ -75,30 +70,6 @@ public class PersonScene implements SimpleEventListener {
 
         persons.addAll(pendingAdditions);
         pendingAdditions.clear();
-
-        generateTime += delta;
-//
-//        if(generateTime > 3){
-//            generateTime = 0;
-//            if(isVendingBought){
-//                addPerson(PersonGenerator.generateLeftVendingBuyer(4));
-//            }
-//            personIndex++;
-//        }
-
-//        if(generateTime > 3 && !isOldWoman){
-//            generateTime = 0;
-//            addPerson(new OldWomanWithRadio());
-//            personIndex++;
-//            isOldWoman = true;
-//        }
-
-//        if(generateTime > 1 && !isDucks){
-//            duckChain = new DuckChain();
-//            pendingAdditions.addAll(duckChain.getDucks());
-//            personIndex++;
-//            isDucks = true;
-//        }
     }
 
     public void sortZIndex() {
