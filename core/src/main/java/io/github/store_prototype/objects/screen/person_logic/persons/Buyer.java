@@ -124,14 +124,12 @@ public class Buyer extends QueuePerson {
         switch (state){
             case RIGHT: {
                 renderAnimation(batch, walkRight);
-                size.setX(size.getX() + delta * speed);
-                updateReferenceFromActual();
+                moveRight(delta);
                 break;
             }
             case LEFT: {
                 renderAnimation(batch, walkLeft);
-                size.setX(size.getX() - delta * speed);
-                updateReferenceFromActual();
+                moveLeft(delta);
                 break;
             }
             case STAYING: {

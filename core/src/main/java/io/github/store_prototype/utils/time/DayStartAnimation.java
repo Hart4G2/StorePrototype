@@ -10,8 +10,6 @@ import io.github.store_prototype.utils.assets.Assets;
 
 public class DayStartAnimation extends Label {
 
-
-
     public DayStartAnimation(Skin skin) {
         super("DAY", skin, "title");
         setWidth(100);

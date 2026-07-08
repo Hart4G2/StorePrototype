@@ -53,8 +53,8 @@ public class DuckKid extends QueuePerson {
 
         if (size == null) {
             TextureRegion firstFrame = walk.getKeyFrame(0);
-            float refW = firstFrame.getRegionWidth() * 3f;
-            float refH = firstFrame.getRegionHeight() * 3f;
+            float refW = firstFrame.getRegionWidth() * 1.8f;
+            float refH = firstFrame.getRegionHeight() * 1.8f;
             size = new PersonSize(refW, refH);
         }
     }
@@ -65,8 +65,7 @@ public class DuckKid extends QueuePerson {
 
         switch (phase) {
             case WALKING_RIGHT:
-                size.setX(size.getX() + speed * delta);
-                updateReferenceFromActual();
+                moveRight(delta);
                 drawAnimation(batch, walk, 1f);
                 if (isStandingOnSewerage() && name.equals("kid_2")) {
                     phase = Phase.FALLING;
@@ -75,7 +74,7 @@ public class DuckKid extends QueuePerson {
                 }
                 break;
             case FALLING:
-                size.setY(size.getY() - ySpeed * delta);
+                moveDown(delta);
                 alpha -= fadeSpeed * delta;
                 drawAnimation(batch, walk, alpha);
                 updateReferenceFromActual();

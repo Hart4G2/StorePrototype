@@ -1,7 +1,10 @@
 package io.github.store_prototype.objects.screen.person_logic.persons;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import io.github.store_prototype.utils.size.PersonSize;
 import io.github.store_prototype.utils.size.ScreenScaler;
 import io.github.store_prototype.utils.size.StorePositionHelper;
@@ -109,6 +112,10 @@ public abstract class QueuePerson implements Person {
         return state;
     }
 
+    public void setState(PersonState state) {
+        this.state = state;
+    }
+
     @Override
     public float getX() {
         return size.getX();
@@ -119,7 +126,25 @@ public abstract class QueuePerson implements Person {
         return size.getY();
     }
 
-    public void setState(PersonState state) {
-        this.state = state;
+    protected void moveRight(float delta){
+        size.setX(size.getX() + delta * speed);
+        updateReferenceFromActual();
     }
+
+    protected void moveLeft(float delta){
+        size.setX(size.getX() - delta * speed);
+        updateReferenceFromActual();
+    }
+
+    protected void moveUp(float delta){
+        size.setY(size.getY() + delta * speed);
+        updateReferenceFromActual();
+    }
+
+    protected void moveDown(float delta){
+        size.setY(size.getY() - delta * speed);
+        updateReferenceFromActual();
+    }
+
+
 }

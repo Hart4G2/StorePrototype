@@ -127,16 +127,6 @@ public class FishingMen extends QueuePerson {
         batch.draw(men2, size.getX() + padding, size.getY(), size.getWidth(), size.getHeight());
     }
 
-    private void moveRight(float delta) {
-        size.setX(size.getX() + speed * delta);
-        updateReferenceFromActual();
-    }
-
-    private void moveLeft(float delta) {
-        size.setX(size.getX() - speed * delta);
-        updateReferenceFromActual();
-    }
-
     @Override
     protected void onReachCounter() {
         phase = Phase.DIALOG;

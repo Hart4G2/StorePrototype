@@ -6,12 +6,18 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.store_prototype.screens.GameScreen;
+import io.github.store_prototype.screens.ScreenFactory;
 import io.github.store_prototype.screens.menu.MenuScreen;
 
 public class Main extends Game {
 
-    private MenuScreen menuScreen;
+    private ScreenFactory screenFactory = new ScreenFactory() {
+        public MenuScreen createMenuScreen() { return new MenuScreen(); }
+        public GameScreen createGameScreen() { return new GameScreen(); }
+    };
+
     private GameScreen gameScreen;
+    private MenuScreen menuScreen;
     private static Main instance;
 
     public static Main getInstance() {
@@ -23,18 +29,15 @@ public class Main extends Game {
 
     @Override
     public void create() {
-        menuScreen = new MenuScreen(this);
-        gameScreen = new GameScreen(this);
-
+        menuScreen = screenFactory.createMenuScreen();
+        gameScreen = screenFactory.createGameScreen();
         setScreen(menuScreen);
     }
 
     @Override
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
-
         ScreenUtils.clear(Color.BLACK);
-
         getScreen().render(delta);
     }
 
@@ -52,8 +55,17 @@ public class Main extends Game {
         return gameScreen;
     }
 
+    public MenuScreen getMenuScreen() {
+        return menuScreen;
+    }
+
     public void setMenuScreen() {
         setScreen(menuScreen);
+    }
+
+    public void setGameScreen(int saveSlot) {
+        gameScreen.setSaveSlot(saveSlot);
+        setScreen(gameScreen);
     }
 
     public void setGameScreen() {
@@ -63,7 +75,11 @@ public class Main extends Game {
     public void restartGame() {
         setMenuScreen();
         gameScreen.dispose();
-        gameScreen = new GameScreen(this);
+        gameScreen = screenFactory.createGameScreen();
         setGameScreen();
+    }
+
+    public void setScreenFactory(ScreenFactory factory) {
+        this.screenFactory = factory;
     }
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -21,11 +22,11 @@ import com.crashinvaders.vfx.effects.VfxEffect;
 import com.crashinvaders.vfx.effects.VignettingEffect;
 
 import io.github.store_prototype.Main;
+import io.github.store_prototype.screens.menu.savings.SaveSelectionWindow;
 import io.github.store_prototype.utils.assets.Assets;
 
 public class MenuScreen implements Screen {
     private Viewport viewport;
-    private final Main game;
     private Stage uiStage;
     private OrthographicCamera camera;
     private TextButton gameButton;
@@ -35,6 +36,9 @@ public class MenuScreen implements Screen {
     private SettingsDialog settingsDialog;
     private String currentZone;
 
+    private SaveSelectionWindow saveSelectionWindow;
+    private Group mainMenuGroup;
+
     // background and effect
     private Stage backgroundStage;
     private VfxManager vfxManager;
@@ -42,15 +46,13 @@ public class MenuScreen implements Screen {
     private VfxEffect vignetteEffect;
     private VfxEffect curvatureEffect;
 
-    public MenuScreen(Main game) {
-        this.game = game;
+    public MenuScreen() {
         Skin skin = Assets.getAssets().getSkin();
 
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = 1f;
         viewport = new ScreenViewport(camera);
 
-        // background and effect
         backgroundStage = new Stage(viewport);
         menuBackground = new MenuBackground();
         menuBackground.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -70,19 +72,17 @@ public class MenuScreen implements Screen {
 
         gameButton = new TextButton("Start", skin);
         gameButton.setBounds(Gdx.graphics.getWidth() / 2f - buttonWidth / 2f, Gdx.graphics.getHeight() / 1.75f, buttonWidth, buttonHeight);
-        uiStage.addActor(gameButton);
 
-        gameButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                openGame();
-            }
-        });
+//        gameButton.addListener(new ClickListener(){
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                super.clicked(event, x, y);
+//                openGame();
+//            }
+//        });
 
         settingsButton = new TextButton("Settings", skin);
         settingsButton.setBounds(Gdx.graphics.getWidth() / 2f - buttonWidth / 2f, Gdx.graphics.getHeight() / 2f, buttonWidth, buttonHeight);
-        uiStage.addActor(settingsButton);
 
         settingsButton.addListener(new ClickListener(){
             @Override
@@ -94,7 +94,6 @@ public class MenuScreen implements Screen {
 
         exitButton = new TextButton("Exit", skin, "red");
         exitButton.setBounds(Gdx.graphics.getWidth() / 2f - buttonWidth / 2f, Gdx.graphics.getHeight() / 2.25f, buttonWidth, buttonHeight);
-        uiStage.addActor(exitButton);
 
         exitButton.addListener(new ClickListener(){
             @Override
@@ -105,6 +104,37 @@ public class MenuScreen implements Screen {
         });
 
         settingsDialog = new SettingsDialog("Settings");
+
+        mainMenuGroup = new Group();
+        mainMenuGroup.addActor(gameButton);
+        mainMenuGroup.addActor(settingsButton);
+        mainMenuGroup.addActor(exitButton);
+        uiStage.addActor(mainMenuGroup);
+
+        // Создаём окно выбора сохранения (пока невидимое)
+        saveSelectionWindow = new SaveSelectionWindow(uiStage);
+        saveSelectionWindow.setVisible(false);
+        uiStage.addActor(saveSelectionWindow);
+
+        gameButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                showSaveSelection();
+            }
+        });
+    }
+
+    private void showSaveSelection() {
+        mainMenuGroup.setVisible(false);
+        saveSelectionWindow.show();
+    }
+
+    public void showMainMenu() {
+        mainMenuGroup.setVisible(true);
+    }
+
+    public void openGame(int slot) {
+        Main.getInstance().setGameScreen(slot);
     }
 
     @Override
@@ -170,6 +200,8 @@ public class MenuScreen implements Screen {
         settingsButton.setBounds(Gdx.graphics.getWidth() / 2f - buttonWidth / 2f, Gdx.graphics.getHeight() / 2f, buttonWidth, buttonHeight);
         exitButton.setBounds(Gdx.graphics.getWidth() / 2f - buttonWidth / 2f, Gdx.graphics.getHeight() / 2.35f, buttonWidth, buttonHeight);
         settingsDialog.resize(width, height);
+
+        saveSelectionWindow.invalidateHierarchy();
     }
 
     @Override
@@ -199,7 +231,7 @@ public class MenuScreen implements Screen {
     }
 
     public void openGame(){
-        game.setGameScreen();
+        Main.getInstance().setGameScreen();
     }
 
     public void showSettings(){

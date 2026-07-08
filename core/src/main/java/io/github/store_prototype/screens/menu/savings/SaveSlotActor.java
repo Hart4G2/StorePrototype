@@ -7,7 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -22,9 +24,10 @@ public class SaveSlotActor extends Table {
     private final Label titleLabel;
     private final Label infoLabel;
     private final TextButton selectButton;
+    private final Button deleteButton;
     private boolean hovered;
 
-    public SaveSlotActor(int slotIndex, SaveSlotData data, Runnable onSelect) {
+    public SaveSlotActor(int slotIndex, SaveSlotData data, Runnable onSelect, Runnable onDelete) {
         super(Assets.getAssets().getSkin());
         this.slotIndex = slotIndex;
         this.data = data;
@@ -43,7 +46,22 @@ public class SaveSlotActor extends Table {
         infoLabel.setWrap(true);
         selectButton = new TextButton(data.isEmpty ? "New Game" : "Load", Assets.getAssets().getSkin());
 
-        add(titleLabel).pad(20, 10, 10, 10).row();
+        deleteButton = new TextButton("X", Assets.getAssets().getSkin(), "red");
+        if (deleteButton.getStyle() == null) {
+            deleteButton.setStyle(new Button.ButtonStyle());
+            deleteButton.add(new Label("X", Assets.getAssets().getSkin()));
+        }
+        deleteButton.setVisible(!data.isEmpty);
+        deleteButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                onDelete.run();
+            }
+        });
+
+        add(deleteButton).width(25).height(25).pad(5).right().row();
+        add(titleLabel).pad(20).row();
+
         add(infoLabel).pad(10).expand().fillX().row();
         add(selectButton).pad(10, 20, 20, 20).width(160).height(50).row();
 
@@ -67,6 +85,7 @@ public class SaveSlotActor extends Table {
         this.data = newData;
         infoLabel.setText(newData.getSummary());
         selectButton.setText(newData.isEmpty ? "New Game" : "Load");
+        deleteButton.setVisible(!newData.isEmpty);
     }
 
     public int getSlotIndex() {

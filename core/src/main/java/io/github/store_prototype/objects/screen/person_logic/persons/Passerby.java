@@ -54,10 +54,10 @@ public class Passerby implements Person {
         stateTime += delta;
 
         if(state == PersonState.RIGHT){
-            size.setX(size.getX() + delta * speed);
+            moveRight(delta);
             renderAnimation(batch, walkRight);
         } else {
-            size.setX(size.getX() - delta * speed);
+            moveLeft(delta);
             renderAnimation(batch, walkLeft);
         }
 
@@ -103,5 +103,15 @@ public class Passerby implements Person {
     @Override
     public float getY() {
         return size.getY();
+    }
+
+    private void moveRight(float delta){
+        size.setX(size.getX() + delta * speed);
+        updateReferenceFromActual();
+    }
+
+    private void moveLeft(float delta){
+        size.setX(size.getX() - delta * speed);
+        updateReferenceFromActual();
     }
 }

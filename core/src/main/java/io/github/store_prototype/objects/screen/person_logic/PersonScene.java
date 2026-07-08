@@ -42,9 +42,6 @@ public class PersonScene implements SimpleEventListener {
     public PersonScene() {
         SimplePublisher.getPublisher().addListener(this);
 
-//        duckChain = new DuckChain();
-//        persons.addAll(duckChain.getDucks());
-
 //        addPerson(new OldWomanWithRadio());
 //        addPerson(new FishingMen());
 //        addPerson(PersonGenerator.generatePerson(4));
@@ -145,16 +142,12 @@ public class PersonScene implements SimpleEventListener {
         } catch (Exception ignore) {}
     }
 
-    public void addEventSign(EventSign eventSign) {
-        eventSigns.add(eventSign);
-    }
-
     public void addEventSign(String eventName, float x, float y) {
         try {
             Animation<TextureRegion> animationNormal = Assets.getAssets().getAnimation("gamescene/events/event", "Without");
             Animation<TextureRegion> animationOutlined = Assets.getAssets().getAnimation("gamescene/events/event", "With");
-            TextureRegion textureNormal = animationNormal.getKeyFrames()[0];
-            TextureRegion textureOutlined = animationOutlined.getKeyFrames()[0];
+            TextureRegion textureNormal = animationNormal.getKeyFrame(0);
+            TextureRegion textureOutlined = animationOutlined.getKeyFrame(0);
             eventSigns.add(new EventSign(eventName, x, y, animationNormal, textureNormal, textureOutlined, Main.getInstance().getGameScreen().getStage()));
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -163,6 +156,15 @@ public class PersonScene implements SimpleEventListener {
 
     public void removeEventSign(EventSign eventSign) {
         eventSigns.remove(eventSign);
+    }
+
+    public void startDucks(){
+        duckChain = new DuckChain();
+        persons.addAll(duckChain.getDucks());
+    }
+
+    public void clearAllPersons() {
+        persons.clear();
     }
 }
 

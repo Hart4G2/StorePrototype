@@ -88,7 +88,6 @@ public class FishingModal extends Table {
         createFishingLine();
 
         statusLabel = new Label("Untangle the fishing line!", skin, "white_16");
-        statusLabel.setColor(Color.BLACK);
         statusLabel.setFontScale(2);
 
         okButton = new TextButton("OK", skin);

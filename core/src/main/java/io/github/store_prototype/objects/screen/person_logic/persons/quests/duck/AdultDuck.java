@@ -84,8 +84,8 @@ public class AdultDuck extends QueuePerson implements SimpleEventListener {
 
         if (size == null) {
             TextureRegion firstFrame = walkRight.getKeyFrame(0);
-            float refW = firstFrame.getRegionWidth() * 3f;
-            float refH = firstFrame.getRegionHeight() * 3f;
+            float refW = firstFrame.getRegionWidth() * 1.8f;
+            float refH = firstFrame.getRegionHeight() * 1.8f;
             size = new PersonSize(refW, refH);
         }
 
@@ -128,11 +128,12 @@ public class AdultDuck extends QueuePerson implements SimpleEventListener {
 
     private void goToSewerage(float delta) {
         if(!onSewerageY()){
-            size.setY(size.getY() - ySpeed * delta);
+            moveDown(delta);
         }
         if(!onSewerageY() && onSewerageX()){
-            size.setX(size.getX() - speed * delta);
+            moveRight(delta);
         }
+        updateReferenceFromActual();
 
         if(onSewerageX() && onSewerageY()){
             state = PersonState.STAYING;
@@ -162,11 +163,11 @@ public class AdultDuck extends QueuePerson implements SimpleEventListener {
     private void animate(Batch batch, float delta) {
         switch (state) {
             case RIGHT:
-                size.setX(size.getX() + speed * delta);
+                moveRight(delta);
                 render(batch, walkRight);
                 break;
             case LEFT:
-                size.setX(size.getX() - speed * delta);
+                moveLeft(delta);
                 render(batch, walkLeft);
                 break;
             case STAYING:

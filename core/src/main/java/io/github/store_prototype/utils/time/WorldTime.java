@@ -5,10 +5,15 @@ import static io.github.store_prototype.objects.screen.sky.Sky.*;
 import io.github.store_prototype.Main;
 
 public class WorldTime {
-    private float elapsedTime = 0f;
-    private final float dayLength = 24f;
-    private int daysCount;
+    public interface DayChangeListener {
+        void onDayChanged(int newDay);
+    }
+
     private float currentTime;
+    private final float dayLength = 24f;
+    private float timeSpeed = 0.5f;
+    private int daysCount;
+    private DayChangeListener dayChangeListener;
 
     private static WorldTime instance;
 
@@ -19,29 +24,38 @@ public class WorldTime {
         return instance;
     }
 
-    public WorldTime() {
-        daysCount = 0;
+    public void setDay(int day) {
+        this.daysCount = day;
+        currentTime = 0;
     }
 
-    public void nextDay(){
-        System.out.println("New day");
+    public int getCurrentDay() {
+        return daysCount;
+    }
+
+    public void setDayChangeListener(DayChangeListener listener) {
+        this.dayChangeListener = listener;
+    }
+
+    public void render(float delta) {
+        currentTime += timeSpeed * delta;
+        if (currentTime > dayLength) {
+            nextDay();
+        }
+    }
+
+    private void nextDay() {
         daysCount++;
-        Main.getInstance().getGameScreen().playDayStartAnimation(daysCount);
         currentTime = 0;
+        System.out.println("New day: " + daysCount);
+        if (dayChangeListener != null) {
+            dayChangeListener.onDayChanged(daysCount);
+        }
+        Main.getInstance().getGameScreen().playDayStartAnimation(daysCount);
     }
 
     public float getDayLength() {
         return dayLength;
-    }
-
-    private float timeSpeed = 0.5f;
-
-    public void render(float delta){
-        currentTime += timeSpeed * delta;
-
-        if(currentTime > dayLength){
-            nextDay();
-        }
     }
 
     public float getCurrentTime() {
@@ -59,6 +73,11 @@ public class WorldTime {
         } else {
             return SkyState.NIGHT;
         }
+    }
+
+    public void reset() {
+        daysCount = 0;
+        currentTime = 0;
     }
 }
 

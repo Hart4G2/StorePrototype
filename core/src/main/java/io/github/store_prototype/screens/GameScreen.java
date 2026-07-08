@@ -2,6 +2,7 @@ package io.github.store_prototype.screens;
 
 import static io.github.store_prototype.objects.screen.sky.Sky.*;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -35,7 +36,11 @@ import io.github.store_prototype.objects.screen.Store;
 import io.github.store_prototype.objects.screen.mini_games.fishing.FishingModal;
 import io.github.store_prototype.objects.screen.mini_games.radio.RadioModal;
 import io.github.store_prototype.objects.screen.person_logic.PersonScene;
+import io.github.store_prototype.objects.screen.person_logic.persons.StoreQueue;
+import io.github.store_prototype.objects.screen.person_logic.persons.quests.FishingMen;
 import io.github.store_prototype.objects.screen.person_logic.persons.quests.OldManWithBag;
+import io.github.store_prototype.objects.screen.person_logic.persons.quests.OldWomanWithRadio;
+import io.github.store_prototype.objects.screen.person_logic.persons.quests.duck.DuckChain;
 import io.github.store_prototype.objects.screen.road.Road;
 import io.github.store_prototype.objects.screen.road.RoadLight;
 import io.github.store_prototype.objects.screen.road.Sewerage;
@@ -45,18 +50,24 @@ import io.github.store_prototype.objects.screen.upgrades.window.UpgradeWindow;
 import io.github.store_prototype.objects.screen.watch.Watch;
 import io.github.store_prototype.objects.shaders.DayNightShader;
 import io.github.store_prototype.screens.menu.SettingsDialog;
+import io.github.store_prototype.screens.menu.savings.SaveManager;
+import io.github.store_prototype.screens.menu.savings.SaveSlotData;
 import io.github.store_prototype.utils.assets.Assets;
 import io.github.store_prototype.utils.size.ScreenScaler;
+import io.github.store_prototype.utils.time.DayEventsManager;
 import io.github.store_prototype.utils.time.DayStartAnimation;
 import io.github.store_prototype.utils.time.WorldTime;
 
-public class GameScreen implements Screen {
+public class GameScreen implements Screen, WorldTime.DayChangeListener {
 
-    private final Main game;
     private SpriteBatch spriteBatch;
     private ScreenViewport viewport;
     private Stage stage;
     private Skin skin;
+
+    // savings
+    private int currentSaveSlot = -1;
+    private SaveManager saveManager;
 
     private OrthographicCamera camera;
     private DayNightShader dayNightShader;
@@ -96,8 +107,7 @@ public class GameScreen implements Screen {
 
     private boolean initialized = false;
 
-    public GameScreen(Main game) {
-        this.game = game;
+    public GameScreen() {
         skin = Assets.getAssets().getSkin();
         this.spriteBatch = new SpriteBatch();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -220,7 +230,7 @@ public class GameScreen implements Screen {
         });
         stage.addActor(settingsButton);
 
-        PersonScene.getPersonScene().addPerson(new OldManWithBag(bench, stage));
+//        PersonScene.getPersonScene().addPerson(new OldManWithBag(bench, stage));
     }
 
     @Override
@@ -390,7 +400,7 @@ public class GameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 settingsDialog.setOnResolutionChanged(() -> {
-                    game.restartGame();   // перезапуск игры
+                    Main.getInstance().restartGame();   // перезапуск игры
                     settingsDialog.hide(); // закрыть диалог
                 });
                 settingsDialog.show(pauseStage);
@@ -400,7 +410,7 @@ public class GameScreen implements Screen {
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setMenuScreen();
+                Main.getInstance().setMenuScreen();
             }
         });
 
@@ -471,7 +481,23 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-        // This method is called when another screen replaces this one.
+        reset();
+    }
+
+    public void reset() {
+        WorldTime.getInstance().reset();
+
+        PersonScene.getPersonScene().clearAllPersons();
+        StoreQueue.getInstance().clear();
+
+        DayEventsManager.getInstance().reset();
+
+        if (isModalOpen) closeModal();
+        isPaused = false;
+
+        Gdx.input.setInputProcessor(stage);
+
+        currentSaveSlot = -1;
     }
 
     @Override
@@ -567,5 +593,29 @@ public class GameScreen implements Screen {
 
     public void playDayStartAnimation(int daysCount) {
         dayStartAnimation.play(daysCount);
+    }
+
+    public void setSaveSlot(int slot) {
+        this.currentSaveSlot = slot;
+        if (saveManager == null) saveManager = new SaveManager();
+        SaveSlotData data = saveManager.getSlot(slot);
+        WorldTime.getInstance().setDay(data.day);
+
+        DayEventsManager.getInstance().initDay(data.day);
+
+        WorldTime.getInstance().setDayChangeListener(this);
+    }
+
+    @Override
+    public void onDayChanged(int newDay) {
+        DayEventsManager.getInstance().onDayChanged(newDay);
+
+        if (currentSaveSlot >= 0) {
+            SaveSlotData data = saveManager.getSlot(currentSaveSlot);
+            data.day = newDay;
+            data.progressDescription = "Day " + newDay;
+            data.lastSaveTimestamp = System.currentTimeMillis();
+            saveManager.saveSlot(data);
+        }
     }
 }

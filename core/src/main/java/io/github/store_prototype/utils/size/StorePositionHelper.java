@@ -1,7 +1,5 @@
 package io.github.store_prototype.utils.size;
 
-import com.badlogic.gdx.Gdx;
-
 import io.github.store_prototype.objects.screen.person_logic.persons.Person.PersonState;
 
 public class StorePositionHelper {

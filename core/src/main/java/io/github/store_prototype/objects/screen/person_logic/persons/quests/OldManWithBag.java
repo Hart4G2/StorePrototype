@@ -299,8 +299,6 @@ public class OldManWithBag extends QueuePerson {
 
     @Override
     protected void onLeaveQueue() {
-        System.out.println("Leaving the store counter");
-
         SimplePublisher.getPublisher().publish(new PersonLeftStoreEvent());
         if(bagReturned){
             state = Math.random() > 0.5 ? PersonState.LEFT : PersonState.RIGHT;
@@ -352,23 +350,12 @@ public class OldManWithBag extends QueuePerson {
                 }
                 break;
             case BUYING:
-                System.out.println("Buying");
                 region = buyingTexture;
                 break;
             default:
                 region = standTexture;
         }
         batch.draw(region, size.getX(), size.getY(), size.getWidth(), size.getHeight());
-    }
-
-    private void moveRight(float delta) {
-        size.setX(size.getX() + speed * delta);
-        updateReferenceFromActual();
-    }
-
-    private void moveLeft(float delta) {
-        size.setX(size.getX() - speed * delta);
-        updateReferenceFromActual();
     }
 
     private static boolean debugFastTimers = false;

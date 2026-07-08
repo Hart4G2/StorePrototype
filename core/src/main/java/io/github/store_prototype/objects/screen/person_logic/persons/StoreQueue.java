@@ -60,4 +60,9 @@ public class StoreQueue implements SimpleEventListener {
     public int getIndexInQueue(Person person) {
         return queue.indexOf(person);
     }
+
+    public void clear() {
+        queue.clear();
+        activeBuyer = null;
+    }
 }

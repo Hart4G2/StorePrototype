@@ -105,16 +105,6 @@ public class OldWomanWithRadio extends QueuePerson {
         batch.draw(region, size.getX(), size.getY(), size.getWidth(), size.getHeight());
     }
 
-    private void moveRight(float delta) {
-        size.setX(size.getX() + speed * delta);
-        updateReferenceFromActual();
-    }
-
-    private void moveLeft(float delta) {
-        size.setX(size.getX() - speed * delta);
-        updateReferenceFromActual();
-    }
-
     @Override
     protected void onReachCounter() {
         phase = Phase.DIALOG;
