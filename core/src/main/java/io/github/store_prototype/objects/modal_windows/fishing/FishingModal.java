@@ -1,4 +1,4 @@
-package io.github.store_prototype.objects.screen.mini_games.fishing;
+package io.github.store_prototype.objects.modal_windows.fishing;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

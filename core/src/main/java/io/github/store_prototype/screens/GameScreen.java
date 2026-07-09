@@ -2,15 +2,12 @@ package io.github.store_prototype.screens;
 
 import static io.github.store_prototype.objects.screen.sky.Sky.*;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -31,19 +28,18 @@ import com.crashinvaders.vfx.effects.VignettingEffect;
 import io.github.store_prototype.Main;
 import io.github.store_prototype.objects.event_handling.SimplePublisher;
 import io.github.store_prototype.objects.event_handling.events.gui.ModalClosedEvent;
+import io.github.store_prototype.objects.modal_windows.cutscene.CutsceneData;
+import io.github.store_prototype.objects.modal_windows.cutscene.CutsceneLauncher;
+import io.github.store_prototype.objects.modal_windows.cutscene.CutsceneWindow;
+import io.github.store_prototype.objects.modal_windows.optovichok.OptovichokWindow;
 import io.github.store_prototype.objects.screen.City;
 import io.github.store_prototype.objects.screen.GUI.Inventory;
-import io.github.store_prototype.objects.screen.GUI.Item;
 import io.github.store_prototype.objects.screen.GUI.ProductsPanel;
 import io.github.store_prototype.objects.screen.Store;
-import io.github.store_prototype.objects.screen.mini_games.fishing.FishingModal;
-import io.github.store_prototype.objects.screen.mini_games.radio.RadioModal;
+import io.github.store_prototype.objects.modal_windows.fishing.FishingModal;
+import io.github.store_prototype.objects.modal_windows.radio.RadioModal;
 import io.github.store_prototype.objects.screen.person_logic.PersonScene;
 import io.github.store_prototype.objects.screen.person_logic.persons.StoreQueue;
-import io.github.store_prototype.objects.screen.person_logic.persons.quests.FishingMen;
-import io.github.store_prototype.objects.screen.person_logic.persons.quests.OldManWithBag;
-import io.github.store_prototype.objects.screen.person_logic.persons.quests.OldWomanWithRadio;
-import io.github.store_prototype.objects.screen.person_logic.persons.quests.duck.DuckChain;
 import io.github.store_prototype.objects.screen.road.Road;
 import io.github.store_prototype.objects.screen.road.RoadLight;
 import io.github.store_prototype.objects.screen.road.Sewerage;
@@ -61,7 +57,7 @@ import io.github.store_prototype.utils.time.DayEventsManager;
 import io.github.store_prototype.utils.time.DayStartAnimation;
 import io.github.store_prototype.utils.time.WorldTime;
 
-public class GameScreen implements Screen, WorldTime.DayChangeListener {
+public class GameScreen implements Screen, WorldTime.DayChangeListener, CutsceneLauncher {
 
     private SpriteBatch spriteBatch;
     private ScreenViewport viewport;
@@ -103,6 +99,9 @@ public class GameScreen implements Screen, WorldTime.DayChangeListener {
     private TextButton upgradesButton;
     private UpgradeWindow upgradesWindow;
 
+    // opt
+    private TextButton ordersButton;
+
     // modal windows
     private Stage modalStage;
     private Actor currentModal;
@@ -110,11 +109,13 @@ public class GameScreen implements Screen, WorldTime.DayChangeListener {
 
     private boolean initialized = false;
 
+    private CutsceneData pendingCutscene;
+
     public GameScreen() {
         skin = Assets.getAssets().getSkin();
         this.spriteBatch = new SpriteBatch();
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = .95f;
+        camera.zoom = .98f;
 
         viewport = new ScreenViewport(camera);
         stage = new Stage(viewport);
@@ -167,20 +168,26 @@ public class GameScreen implements Screen, WorldTime.DayChangeListener {
             }
         });
 
-        upgradesButton = new TextButton("Upgrades", skin);
-        upgradesButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                openUpgradesWindow();
-            }
-        });
-        stage.addActor(upgradesButton);
+
 
         vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
         bloomEffect = new BloomEffect();
         vignetteEffect = new VignettingEffect(false);
         vfxManager.addEffect((ChainVfxEffect) bloomEffect);
         vfxManager.addEffect((ChainVfxEffect) vignetteEffect);
+    }
+
+    @Override
+    public void show() {
+        init();
+
+        isPaused = false;
+        Gdx.input.setInputProcessor(stage);
+
+        if (pendingCutscene != null) {
+            openCutscene(pendingCutscene);
+            pendingCutscene = null;
+        }
     }
 
     public void init() {
@@ -210,9 +217,6 @@ public class GameScreen implements Screen, WorldTime.DayChangeListener {
         stage.addActor(dayStartAnimation);
         stage.addActor(watch);
         stage.addActor(Inventory.getInstance());
-
-        Inventory.getInstance().addItem(new Item(Inventory.Items.ALCOHOL, new TextureRegion(Assets.getAssets().getTexture("gamescene/smuggler/alcohol.png"), 21, 21)));
-
         productsPanel.setVisible(false);
 
         store.addListener(new InputListener() {
@@ -236,15 +240,25 @@ public class GameScreen implements Screen, WorldTime.DayChangeListener {
         });
         stage.addActor(settingsButton);
 
-//        PersonScene.getPersonScene().addPerson(new OldManWithBag(bench, stage));
-    }
+        upgradesButton = new TextButton("Upgrades", skin);
+        upgradesButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                openUpgradesWindow();
+            }
+        });
+        stage.addActor(upgradesButton);
 
-    @Override
-    public void show() {
-        init();
-
-        isPaused = false;
-        Gdx.input.setInputProcessor(stage);
+        ordersButton = new TextButton("Orders", skin);
+        ordersButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                openOptovichokWindow();
+            }
+        });
+        stage.addActor(ordersButton);
+        ordersButton.setSize(upgradesButton.getWidth(), upgradesButton.getHeight());
+        ordersButton.setPosition(upgradesButton.getX(), upgradesButton.getY() - upgradesButton.getHeight() - 5);
     }
 
     @Override
@@ -379,6 +393,9 @@ public class GameScreen implements Screen, WorldTime.DayChangeListener {
         upgradesButton.setSize(width / 12f, width / 45f);
         upgradesButton.setPosition(width - upgradesButton.getHeight() * 7f, height - upgradesButton.getHeight() * 2f);
 
+        ordersButton.setSize(upgradesButton.getWidth(), upgradesButton.getHeight());
+        ordersButton.setPosition(upgradesButton.getX(), upgradesButton.getY() - upgradesButton.getHeight() - 5);
+
         Inventory.getInstance().resize(width, height);
     }
 
@@ -470,6 +487,34 @@ public class GameScreen implements Screen, WorldTime.DayChangeListener {
         modalStage.addActor(fishing);
         Gdx.input.setInputProcessor(modalStage);
         isModalOpen = true;
+    }
+
+    public void openCutscene(CutsceneData data) {
+        if (isModalOpen) return;
+        CutsceneWindow window = new CutsceneWindow(data, skin, this::closeModal);
+        currentModal = window;
+        modalStage.addActor(window);
+        Gdx.input.setInputProcessor(modalStage);
+        isModalOpen = true;
+    }
+
+    @Override
+    public void launchCutscene(CutsceneData data) {
+        if (!initialized) {
+            pendingCutscene = data;
+        } else {
+            openCutscene(data);
+        }
+    }
+
+    public void openOptovichokWindow() {
+        if (isModalOpen) return;
+        OptovichokWindow window = new OptovichokWindow(skin, modalStage, this::closeModal);
+        currentModal = window;
+        modalStage.addActor(window);
+        Gdx.input.setInputProcessor(modalStage);
+        isModalOpen = true;
+        window.show();
     }
 
     public void closeModal() {

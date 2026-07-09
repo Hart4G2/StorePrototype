@@ -1,4 +1,4 @@
-package io.github.store_prototype.objects.screen.mini_games.radio;
+package io.github.store_prototype.objects.modal_windows.radio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
